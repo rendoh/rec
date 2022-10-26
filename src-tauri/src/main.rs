@@ -37,6 +37,8 @@ fn main() {
         .invoke_handler(tauri::generate_handler![
             task::commands::find_all,
             task::commands::create,
+            task::commands::update,
+            task::commands::delete,
         ])
         .setup(|app| {
             app.manage(sqlite_pool);
