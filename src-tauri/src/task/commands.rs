@@ -2,12 +2,17 @@ use tauri::State;
 
 use super::{
     handlers,
-    schemas::{CreateTask, Task, UpdateTask},
+    schemas::{CreateTask, FindTasks, Task, UpdateTask},
 };
 
 #[tauri::command]
-pub async fn find_all(pool: State<'_, sqlx::SqlitePool>) -> Result<Vec<Task>, String> {
-    let tasks = handlers::find_all(&pool).await.map_err(|e| e.to_string())?;
+pub async fn find_all(
+    pool: State<'_, sqlx::SqlitePool>,
+    payload: FindTasks,
+) -> Result<Vec<Task>, String> {
+    let tasks = handlers::find_all(&pool, payload)
+        .await
+        .map_err(|e| e.to_string())?;
 
     Ok(tasks)
 }

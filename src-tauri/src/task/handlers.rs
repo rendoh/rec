@@ -1,16 +1,20 @@
-use super::schemas::{CreateTask, Task, UpdateTask};
+use super::schemas::{CreateTask, FindTasks, Task, UpdateTask};
 use sqlx::{sqlite::SqlitePool, Error};
 
-pub async fn find_all(pool: &SqlitePool) -> Result<Vec<Task>, Error> {
+pub async fn find_all(pool: &SqlitePool, payload: FindTasks) -> Result<Vec<Task>, Error> {
     sqlx::query_as::<_, Task>(
         r#"
 SELECT
     *
 FROM
     tasks
+WHERE
+    started_at BETWEEN $1 AND $2
 ORDER BY
     started_at DESC"#,
     )
+    .bind(payload.from.unwrap_or("0".to_string()))
+    .bind(payload.to.unwrap_or("9".to_string()))
     .fetch_all(pool)
     .await
 }

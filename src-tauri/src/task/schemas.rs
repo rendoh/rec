@@ -21,3 +21,9 @@ pub struct UpdateTask {
     pub started_at: Option<String>,
     pub ended_at: Option<String>,
 }
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct FindTasks {
+    pub from: Option<String>,
+    pub to: Option<String>,
+}
