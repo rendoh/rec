@@ -13,8 +13,12 @@ WHERE
 ORDER BY
     started_at ASC"#,
     )
-    .bind(payload.from.unwrap_or("0".to_string()))
-    .bind(payload.to.unwrap_or("9".to_string()))
+    .bind(
+        payload
+            .from
+            .unwrap_or("1970-01-01T00:00:00.000Z".to_string()),
+    )
+    .bind(payload.to.unwrap_or("9999-12-31T23:59:59.999Z".to_string()))
     .fetch_all(pool)
     .await
 }
