@@ -36,7 +36,7 @@ const createTaskDtoSerializer = createTaskDtoSchema.extend({
 });
 
 export async function createTask(payload: CreateTaskDto) {
-  const createdTask = invoke<TaskDto>('create', {
+  const createdTask = await invoke<TaskDto>('create', {
     payload: createTaskDtoSerializer.parse(payload),
   });
   return taskSchema.parse(createdTask);
@@ -48,7 +48,7 @@ const updateTaskDtoSerializer = updateTaskDtoSchema.extend({
 });
 
 export async function updateTask(id: number, payload: UpdateTaskDto) {
-  const updatedTask = invoke<TaskDto>('update', {
+  const updatedTask = await invoke<TaskDto>('update', {
     id,
     payload: updateTaskDtoSerializer.parse(payload),
   });
