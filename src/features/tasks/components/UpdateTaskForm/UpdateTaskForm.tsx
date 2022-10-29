@@ -44,6 +44,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
   task,
   onComplete,
 }) => {
+  // TODO: refactor hooks
   const { control, register, handleSubmit, formState, reset, getValues } =
     useForm<UpdateTaskDto>({
       defaultValues: task,
@@ -78,14 +79,15 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
     },
     [],
   );
-  const isActive = !task.ended_at;
   const startedAtValue = getValues('started_at');
   const endedAtValue = getValues('ended_at');
+  const isActive = !endedAtValue;
   const [currentDate, setCurrentDate] = useState(() => new Date());
   useEffect(() => {
+    if (!isActive) return;
     const intervalId = setInterval(() => setCurrentDate(new Date()), 1000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [isActive]);
   const elapsedTime = formatElapsedTime(
     startedAtValue,
     endedAtValue || currentDate,
@@ -170,12 +172,11 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
                   value={field.value}
                   onChange={field.onChange}
                   onBlur={handleSubmit(onSubmit)}
-                  maxTime={endedAtValue ?? undefined}
+                  // maxTime={endedAtValue ?? undefined}
                 />
               )}
             />
             <div className={styles.tilde}> - </div>
-            {/* TODO: 日をまたぐケースに対応 */}
             {!isActive && (
               <Controller
                 name="ended_at"
@@ -186,7 +187,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
                     value={field.value}
                     onChange={field.onChange}
                     onBlur={handleSubmit(onSubmit)}
-                    minTime={startedAtValue}
+                    // minTime={startedAtValue}
                   />
                 )}
               />
