@@ -5,7 +5,7 @@ import { TaskList } from '../TaskList';
 import { useDailyTasks } from './DailyTasks.hooks';
 import * as styles from './DailyTasks.css';
 import { IconButton } from '../../../../components/IconButton';
-import { Classes, IconSize } from '@blueprintjs/core';
+import { Card, Classes, IconSize } from '@blueprintjs/core';
 import clsx from 'clsx';
 
 type MonthNavButtonProps = {
@@ -44,8 +44,8 @@ export const DailyTasks: FC = () => {
   const isToday = isSameDay(today, currentDate);
 
   return (
-    <div>
-      <header className={styles.header}>
+    <div className={styles.root}>
+      <Card className={styles.header}>
         <MonthNavButton
           icon="double-chevron-left"
           label="Previous month"
@@ -69,7 +69,9 @@ export const DailyTasks: FC = () => {
           label="Next month"
           onClick={nextMonth}
         />
-      </header>
+        {/* TODO: add today button */}
+        {/* TODO: add toggle UI for dark mode */}
+      </Card>
       <TaskList tasks={tasks} onUpdate={reloadTasks}>
         {isToday && <CreateTaskForm onComplete={reloadTasks} />}
       </TaskList>
