@@ -89,7 +89,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
   return (
     <Card>
       {/* TODO: open modal before delete */}
-      <IconButton icon="trash" onClick={remove} />
+      <IconButton icon="trash" onClick={remove} aria-label="Delete this task" />
       <FormGroup
         helperText={formState.errors.title?.message}
         intent={formState.errors.title && 'danger'}
