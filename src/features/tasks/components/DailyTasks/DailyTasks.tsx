@@ -40,12 +40,13 @@ export const DailyTasks: FC = () => {
     prevMonth,
     currentDate,
   } = useDailyTasks();
+  // TODO: update today?
   const [today] = useState<Readonly<Date>>(() => new Date());
   const isToday = isSameDay(today, currentDate);
 
   return (
     <div className={styles.root}>
-      <Card className={styles.header}>
+      <Card className={styles.header} elevation={2}>
         <MonthNavButton
           icon="double-chevron-left"
           label="Previous month"

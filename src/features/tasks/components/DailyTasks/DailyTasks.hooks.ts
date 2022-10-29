@@ -20,6 +20,7 @@ function useDateRange(): Readonly<{
   from: Date;
   to: Date;
 }> {
+  // TODO: update current date?
   const [currentDate, setCurrentDate] = useState(() => new Date());
 
   const nextDay = useCallback(() => {

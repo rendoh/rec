@@ -1,6 +1,11 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Card, ControlGroup, FormGroup, InputGroup } from '@blueprintjs/core';
-import { TimePicker } from '@blueprintjs/datetime';
+import {
+  Card,
+  Classes,
+  ControlGroup,
+  FormGroup,
+  InputGroup,
+} from '@blueprintjs/core';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -14,6 +19,7 @@ import { IconButton } from '../../../../components/IconButton';
 import { isFuture } from 'date-fns';
 import { deleteTask, updateTask } from '../../api';
 import * as styles from './UpdateTaskForm.css';
+import { TimePicker } from '../../../../components/TimePicker';
 import clsx from 'clsx';
 
 function formatElapsedTime(start: Date, end: Date, includeSeconds = false) {
@@ -87,52 +93,33 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
   );
 
   return (
-    <Card>
-      {/* TODO: open modal before delete */}
-      <IconButton icon="trash" onClick={remove} aria-label="Delete this task" />
-      <FormGroup
-        helperText={formState.errors.title?.message}
-        intent={formState.errors.title && 'danger'}
-      >
-        <InputGroup
-          {...bpRegister(
-            register('title', {
-              onBlur: handleSubmit(onSubmit),
-            }),
-          )}
+    <Card elevation={2}>
+      <div className={styles.headerRow}>
+        <FormGroup
+          className={styles.formGroup}
+          helperText={formState.errors.title?.message}
           intent={formState.errors.title && 'danger'}
-          maxLength={maxTitleLength}
-          onKeyUp={handleKeyUpEnter}
-        />
-      </FormGroup>
-      <p>{elapsedTime}</p>
-      <FormGroup
-        helperText={formState.errors.ended_at?.message}
-        intent={formState.errors.ended_at && 'danger'}
-      >
-        <ControlGroup>
-          <Controller
-            name="started_at"
-            control={control}
-            render={({ field }) => (
-              <TimePicker
-                className={clsx({
-                  [styles.invalidTimePicker]: formState.errors.ended_at,
-                })}
-                value={field.value}
-                onChange={field.onChange}
-                onBlur={handleSubmit(onSubmit)}
-                maxTime={endedAtValue ?? undefined}
-              />
+        >
+          <InputGroup
+            className={styles.input}
+            large
+            {...bpRegister(
+              register('title', {
+                onBlur: handleSubmit(onSubmit),
+              }),
             )}
+            intent={formState.errors.title && 'danger'}
+            maxLength={maxTitleLength}
+            onKeyUp={handleKeyUpEnter}
           />
-          <div className={styles.tilde}> - </div>
-          {/* TODO: 日をまたぐケースに対応 */}
-          <Controller
-            name="ended_at"
-            control={control}
-            render={({ field }) =>
-              isActive ? (
+        </FormGroup>
+        <div className={styles.actions}>
+          {/* TODO: open modal before delete */}
+          {isActive && (
+            <Controller
+              name="ended_at"
+              control={control}
+              render={({ field }) => (
                 <IconButton
                   aria-label="Stop"
                   icon="pause"
@@ -142,21 +129,58 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
                     handleSubmit(onSubmit)(e);
                   }}
                 />
-              ) : (
+              )}
+            />
+          )}
+          <IconButton
+            icon="trash"
+            onClick={remove}
+            aria-label="Delete this task"
+          />
+        </div>
+      </div>
+      <div className={styles.detailRow}>
+        <FormGroup
+          helperText={formState.errors.ended_at?.message}
+          intent={formState.errors.ended_at && 'danger'}
+        >
+          <ControlGroup>
+            <Controller
+              name="started_at"
+              control={control}
+              render={({ field }) => (
                 <TimePicker
-                  className={clsx({
-                    [styles.invalidTimePicker]: formState.errors.ended_at,
-                  })}
+                  isInvalid={!!formState.errors.ended_at}
                   value={field.value}
                   onChange={field.onChange}
                   onBlur={handleSubmit(onSubmit)}
-                  minTime={startedAtValue}
+                  maxTime={endedAtValue ?? undefined}
                 />
-              )
-            }
-          />
-        </ControlGroup>
-      </FormGroup>
+              )}
+            />
+            <div className={styles.tilde}> - </div>
+            {/* TODO: 日をまたぐケースに対応 */}
+            {!isActive && (
+              <Controller
+                name="ended_at"
+                control={control}
+                render={({ field }) => (
+                  <TimePicker
+                    isInvalid={!!formState.errors.ended_at}
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={handleSubmit(onSubmit)}
+                    minTime={startedAtValue}
+                  />
+                )}
+              />
+            )}
+          </ControlGroup>
+        </FormGroup>
+        <p className={clsx(Classes.MONOSPACE_TEXT, styles.elapsedTime)}>
+          {elapsedTime}
+        </p>
+      </div>
     </Card>
   );
 };
