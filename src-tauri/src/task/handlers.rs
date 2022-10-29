@@ -11,7 +11,7 @@ FROM
 WHERE
     started_at BETWEEN $1 AND $2
 ORDER BY
-    started_at DESC"#,
+    started_at ASC"#,
     )
     .bind(payload.from.unwrap_or("0".to_string()))
     .bind(payload.to.unwrap_or("9".to_string()))
@@ -20,6 +20,19 @@ ORDER BY
 }
 
 pub async fn create(pool: &SqlitePool, payload: CreateTask) -> Result<Task, Error> {
+    sqlx::query(
+        r#"
+UPDATE
+    tasks
+SET
+    ended_at = $1
+WHERE
+    ended_at IS NULL"#,
+    )
+    .bind(&payload.started_at)
+    .execute(pool)
+    .await?;
+
     sqlx::query_as::<_, Task>(
         r#"
 INSERT INTO
@@ -29,7 +42,7 @@ VALUES
 RETURNING *"#,
     )
     .bind(payload.title)
-    .bind(payload.started_at)
+    .bind(&payload.started_at)
     .fetch_one(pool)
     .await
 }
