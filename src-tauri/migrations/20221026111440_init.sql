@@ -1,6 +1,6 @@
 CREATE TABLE tasks (
-  id       INTEGER PRIMARY KEY AUTOINCREMENT,
-  title    TEXT NOT NULL,
-  started_at TIMESTAMP NOT NULL,
-  ended_at   TIMESTAMP
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    started_at TIMESTAMP NOT NULL,
+    ended_at TIMESTAMP
 );
