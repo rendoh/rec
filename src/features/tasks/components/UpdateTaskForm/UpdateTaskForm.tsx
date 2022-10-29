@@ -1,5 +1,11 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { Card, Classes, ControlGroup, FormGroup } from '@blueprintjs/core';
+import {
+  Button,
+  Card,
+  Classes,
+  ControlGroup,
+  FormGroup,
+} from '@blueprintjs/core';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Task, UpdateTaskDto, updateTaskDtoSchema } from '../../schemas';
@@ -11,6 +17,10 @@ import * as styles from './UpdateTaskForm.css';
 import { TimePicker } from '../../../../components/TimePicker';
 import clsx from 'clsx';
 import { TaskTitleField } from '../TaskTitleField';
+import {
+  Popover2 as Popover,
+  Classes as PopoverClasses,
+} from '@blueprintjs/popover2';
 
 function formatElapsedTime(start: Date, end: Date, includeSeconds = false) {
   const duration = Math.floor((end.getTime() - start.getTime()) / 1000);
@@ -102,7 +112,6 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
           />
         </FormGroup>
         <div className={styles.actions}>
-          {/* TODO: open modal before delete */}
           {isActive && (
             <Controller
               name="ended_at"
@@ -120,10 +129,29 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
               )}
             />
           )}
-          <IconButton
-            icon="trash"
-            onClick={remove}
-            aria-label="Delete this task"
+          <Popover
+            placement="bottom-end"
+            content={
+              <div>
+                <Button
+                  intent="none"
+                  className={PopoverClasses.POPOVER2_DISMISS}
+                >
+                  Cancel
+                </Button>
+                <Button intent="danger" onClick={remove}>
+                  Delete
+                </Button>
+              </div>
+            }
+            renderTarget={({ isOpen, ref, ...targetProps }) => (
+              <IconButton
+                {...targetProps}
+                elementRef={ref}
+                icon={isOpen ? 'cross' : 'trash'}
+                aria-label="Delete this task"
+              />
+            )}
           />
         </div>
       </div>
