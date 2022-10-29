@@ -6,7 +6,7 @@ import {
   startOfDay,
   subDays,
 } from 'date-fns';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { findTasks } from './features/tasks/api';
 import { CreateTaskForm } from './features/tasks/components/CreateTaskForm';
 import { UpdateTaskForm } from './features/tasks/components/UpdateTaskForm';
@@ -27,12 +27,15 @@ function useDateRange(): Readonly<{
     setCurrentDate(subDays(currentDate, 1));
   }, [currentDate]);
 
+  const from = useMemo(() => startOfDay(currentDate), [currentDate]);
+  const to = useMemo(() => endOfDay(currentDate), [currentDate]);
+
   return {
     currentDate,
     next,
     prev,
-    from: startOfDay(currentDate),
-    to: endOfDay(currentDate),
+    from,
+    to,
   };
 }
 
