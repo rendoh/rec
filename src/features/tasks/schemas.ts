@@ -22,7 +22,6 @@ export const taskSchema = z.object({
 });
 export type Task = z.infer<typeof taskSchema>;
 
-// TODO: validate datetime for min-max range
 export const findTasksDtoSchema = z.object({
   from: dateSchema.nullish(),
   to: dateSchema.nullish(),
