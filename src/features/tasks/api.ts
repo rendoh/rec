@@ -7,8 +7,8 @@ import {
   FindTaskDto,
   findTasksDtoSchema,
   taskSchema,
+  taskTitleSchema,
   UpdateTaskDto,
-  updateTaskDtoSchema,
 } from './schemas';
 
 const dateToIsoString = dateSchema.transform((date) => date.toISOString());
@@ -42,7 +42,8 @@ export async function createTask(payload: CreateTaskDto) {
   return taskSchema.parse(createdTask);
 }
 
-const updateTaskDtoSerializer = updateTaskDtoSchema.extend({
+const updateTaskDtoSerializer = z.object({
+  title: taskTitleSchema.nullish(),
   started_at: dateToIsoString.nullish(),
   ended_at: dateToIsoString.nullish(),
 });
@@ -59,66 +60,4 @@ export async function deleteTask(id: number) {
   return invoke<null>('delete', {
     id,
   });
-}
-
-// TODO: remove this
-const tasks = [
-  {
-    title: 'Project A',
-    started_at: new Date('2022-10-25T08:00:00.000+09:00'),
-    ended_at: new Date('2022-10-25T10:00:00.000+09:00'),
-  },
-  {
-    title: 'Project B',
-    started_at: new Date('2022-10-25T10:00:00.000+09:00'),
-    ended_at: new Date('2022-10-25T11:30:00.000+09:00'),
-  },
-  {
-    title: 'Project A',
-    started_at: new Date('2022-10-25T11:30:00.000+09:00'),
-    ended_at: new Date('2022-10-25T12:00:00.000+09:00'),
-  },
-  {
-    title: 'Project A',
-    started_at: new Date('2022-10-25T13:00:00.000+09:00'),
-    ended_at: new Date('2022-10-25T17:00:00.000+09:00'),
-  },
-  {
-    title: 'Project B',
-    started_at: new Date('2022-10-27T17:00:00.000+09:00'),
-    ended_at: new Date('2022-10-27T19:00:00.000+09:00'),
-  },
-  {
-    title: 'Project A',
-    started_at: new Date('2022-10-27T22:00:00.000+09:00'),
-    ended_at: new Date('2022-10-28T01:00:00.000+09:00'),
-  },
-  {
-    title: 'Project A',
-    started_at: new Date('2022-10-28T08:00:00.000+09:00'),
-    ended_at: new Date('2022-10-28T12:00:00.000+09:00'),
-  },
-  {
-    title: 'Project C',
-    started_at: new Date('2022-10-28T13:00:00.000+09:00'),
-    ended_at: new Date('2022-10-28T17:00:00.000+09:00'),
-  },
-  {
-    title: 'Project B',
-    started_at: new Date('2022-10-29T13:00:00.000+09:00'),
-    ended_at: new Date('2022-10-29T14:30:00.000+09:00'),
-  },
-];
-
-async function seed() {
-  for (const task of tasks) {
-    const createdTask = await createTask({
-      title: task.title,
-      started_at: task.started_at,
-    });
-    await updateTask(createdTask.id, {
-      started_at: createdTask.started_at,
-      ended_at: task.ended_at,
-    });
-  }
 }

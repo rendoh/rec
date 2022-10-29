@@ -1,6 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import { FormGroup, InputGroup } from '@blueprintjs/core';
-import { TimePicker, TimePrecision } from '@blueprintjs/datetime';
+import { Card, ControlGroup, FormGroup, InputGroup } from '@blueprintjs/core';
+import { TimePicker } from '@blueprintjs/datetime';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -11,9 +11,24 @@ import {
 } from '../../schemas';
 import { blueprintRegister as bpRegister } from '../../../../utils/blueprintRegister';
 import { IconButton } from '../../../../components/IconButton';
-import { format } from 'date-fns';
+import { isFuture } from 'date-fns';
 import { deleteTask, updateTask } from '../../api';
+import * as styles from './UpdateTaskForm.css';
+import clsx from 'clsx';
 
+function formatElapsedTime(start: Date, end: Date, includeSeconds = false) {
+  const duration = Math.floor((end.getTime() - start.getTime()) / 1000);
+  const hours = Math.floor(duration / 3600)
+    .toString()
+    .padStart(2, '0');
+  const minutes = Math.floor((duration / 60) % 60)
+    .toString()
+    .padStart(2, '0');
+  const seconds = includeSeconds
+    ? ':' + (duration % 60).toString().padStart(2, '0')
+    : '';
+  return `${hours}:${minutes}${seconds}`;
+}
 export type UpdateTaskFormProps = {
   task: Task;
   onComplete?: () => void;
@@ -23,7 +38,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
   task,
   onComplete,
 }) => {
-  const { control, register, handleSubmit, formState, reset } =
+  const { control, register, handleSubmit, formState, reset, getValues } =
     useForm<UpdateTaskDto>({
       defaultValues: task,
       resolver: zodResolver(updateTaskDtoSchema),
@@ -50,13 +65,29 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
     onComplete?.();
   }, [onComplete, task.id]);
 
+  const handleKeyUpEnter = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key !== 'Enter') return;
+      e.currentTarget.blur();
+    },
+    [],
+  );
+  const isActive = !task.ended_at;
+  const startedAtValue = getValues('started_at');
+  const endedAtValue = getValues('ended_at');
+  const [currentDate, setCurrentDate] = useState(() => new Date());
+  useEffect(() => {
+    const intervalId = setInterval(() => setCurrentDate(new Date()), 1000);
+    return () => clearInterval(intervalId);
+  }, []);
+  const elapsedTime = formatElapsedTime(
+    startedAtValue,
+    endedAtValue || currentDate,
+    isActive,
+  );
+
   return (
-    <form
-      style={{
-        margin: 10,
-        border: '1px solid black',
-      }}
-    >
+    <Card>
       {/* TODO: open modal before delete */}
       <IconButton icon="trash" onClick={remove} />
       <FormGroup
@@ -71,44 +102,60 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
           )}
           intent={formState.errors.title && 'danger'}
           maxLength={maxTitleLength}
+          onKeyUp={handleKeyUpEnter}
         />
       </FormGroup>
-      {/* TODO: elapsed time */}
-      {/* <p>started at: {format(task.started_at, 'HH:mm')}</p> */}
-      {/* <p>ended at: {task.ended_at ? format(task.ended_at, 'HH:mm') : '-'}</p> */}
-      <Controller
-        name="started_at"
-        control={control}
-        render={({ field }) => (
-          <TimePicker
-            value={field.value}
-            onChange={field.onChange}
-            onBlur={handleSubmit(onSubmit)}
+      <p>{elapsedTime}</p>
+      <FormGroup
+        helperText={formState.errors.ended_at?.message}
+        intent={formState.errors.ended_at && 'danger'}
+      >
+        <ControlGroup>
+          <Controller
+            name="started_at"
+            control={control}
+            render={({ field }) => (
+              <TimePicker
+                className={clsx({
+                  [styles.invalidTimePicker]: formState.errors.ended_at,
+                })}
+                value={field.value}
+                onChange={field.onChange}
+                onBlur={handleSubmit(onSubmit)}
+                maxTime={endedAtValue ?? undefined}
+              />
+            )}
           />
-        )}
-      />
-      <Controller
-        name="ended_at"
-        control={control}
-        render={({ field }) =>
-          task.ended_at ? (
-            <TimePicker
-              value={field.value}
-              onChange={field.onChange}
-              onBlur={handleSubmit(onSubmit)}
-            />
-          ) : (
-            <IconButton
-              aria-label="Stop"
-              icon="pause"
-              onClick={() => {
-                field.onChange(new Date());
-                handleSubmit(onSubmit)();
-              }}
-            />
-          )
-        }
-      />
-    </form>
+          <div className={styles.tilde}> - </div>
+          <Controller
+            name="ended_at"
+            control={control}
+            render={({ field }) =>
+              isActive ? (
+                <IconButton
+                  aria-label="Stop"
+                  icon="pause"
+                  disabled={!startedAtValue || isFuture(startedAtValue)}
+                  onClick={(e) => {
+                    field.onChange(new Date());
+                    handleSubmit(onSubmit)(e);
+                  }}
+                />
+              ) : (
+                <TimePicker
+                  className={clsx({
+                    [styles.invalidTimePicker]: formState.errors.ended_at,
+                  })}
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={handleSubmit(onSubmit)}
+                  minTime={startedAtValue}
+                />
+              )
+            }
+          />
+        </ControlGroup>
+      </FormGroup>
+    </Card>
   );
 };

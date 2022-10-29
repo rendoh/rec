@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export const maxTitleLength = 32;
 
-const taskTitleSchema = z
+export const taskTitleSchema = z
   .string()
   .min(1, {
     message: 'Task title must contain at least 1 character',
@@ -35,10 +35,14 @@ export const createTaskDtoSchema = z.object({
 });
 export type CreateTaskDto = z.infer<typeof createTaskDtoSchema>;
 
-// TODO: validate datetime for min-max range
-export const updateTaskDtoSchema = z.object({
-  title: taskTitleSchema.nullish(),
-  started_at: dateSchema.nullish(),
-  ended_at: dateSchema.nullish(),
-});
+export const updateTaskDtoSchema = z
+  .object({
+    title: taskTitleSchema,
+    started_at: dateSchema,
+    ended_at: dateSchema.nullish(),
+  })
+  .refine(({ started_at, ended_at }) => !ended_at || started_at < ended_at, {
+    message: 'Incorrect time',
+    path: ['ended_at'],
+  });
 export type UpdateTaskDto = z.infer<typeof updateTaskDtoSchema>;
