@@ -53,7 +53,8 @@ SET
         ended_at
     )
 WHERE
-    id = $1"#,
+    id = $1
+RETURNING *"#,
     )
     .bind(id)
     .bind(payload.title)
