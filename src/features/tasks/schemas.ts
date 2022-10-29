@@ -1,6 +1,15 @@
 import { z } from 'zod';
 
-const taskTitleSchema = z.string().max(256);
+export const maxTitleLength = 32;
+
+const taskTitleSchema = z
+  .string()
+  .min(1, {
+    message: 'Task title must contain at least 1 character',
+  })
+  .max(maxTitleLength, {
+    message: `Task title must contain at most ${maxTitleLength} characters`,
+  });
 export const dateSchema = z.preprocess((arg) => {
   if (typeof arg == 'string' || arg instanceof Date) return new Date(arg);
 }, z.date());
