@@ -1,21 +1,38 @@
-import { addDays, endOfDay, startOfDay, subDays } from 'date-fns';
+import {
+  addDays,
+  addMonths,
+  endOfDay,
+  startOfDay,
+  startOfMonth,
+  subDays,
+  subMonths,
+} from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { findTasks } from '../../api';
 import { Task } from '../../schemas';
 
 function useDateRange(): Readonly<{
   currentDate: Date;
-  next: () => void;
-  prev: () => void;
+  nextDay: () => void;
+  prevDay: () => void;
+  nextMonth: () => void;
+  prevMonth: () => void;
   from: Date;
   to: Date;
 }> {
   const [currentDate, setCurrentDate] = useState(() => new Date());
-  const next = useCallback(() => {
+
+  const nextDay = useCallback(() => {
     setCurrentDate(addDays(currentDate, 1));
   }, [currentDate]);
-  const prev = useCallback(() => {
+  const prevDay = useCallback(() => {
     setCurrentDate(subDays(currentDate, 1));
+  }, [currentDate]);
+  const nextMonth = useCallback(() => {
+    setCurrentDate(addMonths(startOfMonth(currentDate), 1));
+  }, [currentDate]);
+  const prevMonth = useCallback(() => {
+    setCurrentDate(subMonths(startOfMonth(currentDate), 1));
   }, [currentDate]);
 
   const from = useMemo(() => startOfDay(currentDate), [currentDate]);
@@ -23,15 +40,17 @@ function useDateRange(): Readonly<{
 
   return {
     currentDate,
-    next,
-    prev,
+    nextDay,
+    prevDay,
+    nextMonth,
+    prevMonth,
     from,
     to,
   };
 }
 
 export function useDailyTasks() {
-  const { from, to, next, prev, currentDate } = useDateRange();
+  const { from, to, ...rest } = useDateRange();
   const [tasks, setTasks] = useState<Task[]>([]);
   const reloadTasks = useCallback(() => {
     findTasks({ from, to }).then(setTasks);
@@ -41,10 +60,8 @@ export function useDailyTasks() {
   }, [reloadTasks]);
 
   return {
-    currentDate,
     tasks,
     reloadTasks,
-    next,
-    prev,
+    ...rest,
   };
 }
