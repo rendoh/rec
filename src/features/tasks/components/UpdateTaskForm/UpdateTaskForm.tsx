@@ -40,7 +40,6 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
     [onComplete, task.id],
   );
 
-  // TODO: use this with updated_at
   useEffect(() => {
     reset(task);
   }, [reset, task]);
