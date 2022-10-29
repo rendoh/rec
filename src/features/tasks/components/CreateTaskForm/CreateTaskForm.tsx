@@ -59,7 +59,7 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({ onComplete }) => {
         />
       </FormGroup>
       {format(currentDate, 'HH:mm:ss')}
-      <IconButton icon="play" type="submit" />
+      <IconButton icon="play" type="submit" aria-label="Start" />
     </form>
   );
 };

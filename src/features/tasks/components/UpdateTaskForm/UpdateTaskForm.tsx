@@ -12,7 +12,7 @@ import {
 import { blueprintRegister as bpRegister } from '../../../../utils/blueprintRegister';
 import { IconButton } from '../../../../components/IconButton';
 import { format } from 'date-fns';
-import { updateTask } from '../../api';
+import { deleteTask, updateTask } from '../../api';
 
 export type UpdateTaskFormProps = {
   task: Task;
@@ -44,6 +44,12 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
     reset(task);
   }, [reset, task]);
 
+  // TODO: handle error
+  const remove = useCallback(async () => {
+    await deleteTask(task.id);
+    onComplete?.();
+  }, [onComplete, task.id]);
+
   return (
     <form
       style={{
@@ -51,6 +57,8 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
         border: '1px solid black',
       }}
     >
+      {/* TODO: open modal before delete */}
+      <IconButton icon="trash" onClick={remove} />
       <FormGroup
         helperText={formState.errors.title?.message}
         intent={formState.errors.title && 'danger'}
@@ -91,6 +99,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
             />
           ) : (
             <IconButton
+              aria-label="Stop"
               icon="pause"
               onClick={() => {
                 field.onChange(new Date());
