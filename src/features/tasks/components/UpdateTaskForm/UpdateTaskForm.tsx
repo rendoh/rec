@@ -1,19 +1,8 @@
 import { FC, useCallback, useEffect, useState } from 'react';
-import {
-  Card,
-  Classes,
-  ControlGroup,
-  FormGroup,
-  InputGroup,
-} from '@blueprintjs/core';
+import { Card, Classes, ControlGroup, FormGroup } from '@blueprintjs/core';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  maxTitleLength,
-  Task,
-  UpdateTaskDto,
-  updateTaskDtoSchema,
-} from '../../schemas';
+import { Task, UpdateTaskDto, updateTaskDtoSchema } from '../../schemas';
 import { blueprintRegister as bpRegister } from '../../../../utils/blueprintRegister';
 import { IconButton } from '../../../../components/IconButton';
 import { isFuture } from 'date-fns';
@@ -21,6 +10,7 @@ import { deleteTask, updateTask } from '../../api';
 import * as styles from './UpdateTaskForm.css';
 import { TimePicker } from '../../../../components/TimePicker';
 import clsx from 'clsx';
+import { TaskTitleField } from '../TaskTitleField';
 
 function formatElapsedTime(start: Date, end: Date, includeSeconds = false) {
   const duration = Math.floor((end.getTime() - start.getTime()) / 1000);
@@ -100,16 +90,14 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
           helperText={formState.errors.title?.message}
           intent={formState.errors.title && 'danger'}
         >
-          <InputGroup
-            className={styles.input}
-            large
+          <TaskTitleField
+            interactiveOutline
             {...bpRegister(
               register('title', {
                 onBlur: handleSubmit(onSubmit),
               }),
             )}
-            intent={formState.errors.title && 'danger'}
-            maxLength={maxTitleLength}
+            isError={!!formState.errors.title}
             onKeyUp={handleKeyUpEnter}
           />
         </FormGroup>

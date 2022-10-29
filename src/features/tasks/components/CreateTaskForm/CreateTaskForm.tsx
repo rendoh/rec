@@ -1,17 +1,14 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import { FormGroup, InputGroup } from '@blueprintjs/core';
+import { FC, useCallback } from 'react';
+import { Card, FormGroup } from '@blueprintjs/core';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import {
-  CreateTaskDto,
-  createTaskDtoSchema,
-  maxTitleLength,
-} from '../../schemas';
+import { CreateTaskDto, createTaskDtoSchema } from '../../schemas';
 import { blueprintRegister as bpRegister } from '../../../../utils/blueprintRegister';
 import { IconButton } from '../../../../components/IconButton';
-import { format } from 'date-fns';
 import { createTask } from '../../api';
+import * as styles from './CreateTaskForm.css';
+import { TaskTitleField } from '../TaskTitleField';
 
 const createTaskFormSchema = createTaskDtoSchema.omit({ started_at: true });
 type CreateTaskFormValues = z.infer<typeof createTaskFormSchema>;
@@ -40,26 +37,25 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({ onComplete }) => {
     [onComplete, reset],
   );
 
-  const [currentDate, setCurrentDate] = useState(() => new Date());
-  useEffect(() => {
-    const intervalId = setInterval(() => setCurrentDate(new Date()), 1000);
-    return () => clearInterval(intervalId);
-  }, []);
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <FormGroup
-        helperText={formState.errors.title?.message}
-        intent={formState.errors.title && 'danger'}
-      >
-        <InputGroup
-          {...bpRegister(register('title'))}
-          intent={formState.errors.title && 'danger'}
-          maxLength={maxTitleLength}
-        />
-      </FormGroup>
-      {format(currentDate, 'HH:mm:ss')}
-      <IconButton icon="play" type="submit" aria-label="Start" />
-    </form>
+    <Card elevation={2}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className={styles.row}>
+          <FormGroup
+            className={styles.formGroup}
+            helperText={formState.errors.title?.message}
+            intent={formState.errors.title && 'danger'}
+          >
+            <TaskTitleField
+              placeholder="Project / Task"
+              {...bpRegister(register('title'))}
+              isError={!!formState.errors.title}
+            />
+          </FormGroup>
+          <IconButton icon="play" type="submit" aria-label="Start" />
+        </div>
+        {/* TODO: suggest */}
+      </form>
+    </Card>
   );
 };

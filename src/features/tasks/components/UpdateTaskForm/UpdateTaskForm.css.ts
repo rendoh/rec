@@ -10,26 +10,13 @@ const row = style({
 export const headerRow = style([
   row,
   {
-    gap: 10,
+    gap: 20,
   },
 ]);
 
 export const formGroup = style({
   margin: 0,
   flex: 1,
-});
-
-export const input = style({});
-
-globalStyle(`${input} .${Classes.INPUT}`, {
-  fontSize: '22px !important',
-  fontWeight: 'bold',
-  letterSpacing: '.05em',
-});
-
-globalStyle(`${input} .${Classes.INPUT}:not(:hover):not(:focus)`, {
-  boxShadow: 'none',
-  background: 'inherit',
 });
 
 export const actions = style([
