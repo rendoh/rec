@@ -11,6 +11,7 @@ import {
   Classes,
   Icon,
   IconSize,
+  NonIdealState,
   Switch,
 } from '@blueprintjs/core';
 import clsx from 'clsx';
@@ -126,6 +127,14 @@ export const DailyTasks: FC = () => {
           <Icon icon="flash" size={10} />
         </div>
       </Card>
+      {tasks.length === 0 && !isToday && (
+        <NonIdealState
+          className={styles.empty}
+          icon="th-disconnect"
+          title="No tasks"
+          description="No tasks were found for the day."
+        />
+      )}
       <TaskList tasks={tasks} onUpdate={onUpdate}>
         {isToday && (
           <CreateTaskForm

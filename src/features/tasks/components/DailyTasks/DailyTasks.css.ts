@@ -76,3 +76,7 @@ export const monthMoveButton = style({
     },
   },
 });
+
+export const empty = style({
+  height: `calc(100vh - ${headerHeight + 40}px)`,
+});
