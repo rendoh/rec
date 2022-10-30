@@ -1,5 +1,5 @@
 import { format, isSameDay } from 'date-fns';
-import { FC } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { CreateTaskForm } from '../CreateTaskForm';
 import { TaskList } from '../TaskList';
 import { useDailyTasks, useToday, useToggleTheme } from './DailyTasks.hooks';
@@ -14,6 +14,7 @@ import {
   Switch,
 } from '@blueprintjs/core';
 import clsx from 'clsx';
+import { findRecentTaskTitles } from '../../api';
 
 type MonthNavButtonProps = {
   className?: string;
@@ -44,6 +45,23 @@ const MonthNavButton: FC<MonthNavButtonProps> = ({
   />
 );
 
+function useRecentTaskTitles() {
+  const [recentTaskTitles, setRecentTaskTitles] = useState<string[]>([]);
+  const reloadRecentTaskTitles = useCallback(async () => {
+    // TODO: handle error
+    const titles = await findRecentTaskTitles();
+    setRecentTaskTitles(titles);
+  }, []);
+  useEffect(() => {
+    reloadRecentTaskTitles();
+  }, [reloadRecentTaskTitles]);
+
+  return {
+    recentTaskTitles,
+    reloadRecentTaskTitles,
+  };
+}
+
 export const DailyTasks: FC = () => {
   const {
     tasks,
@@ -58,6 +76,12 @@ export const DailyTasks: FC = () => {
   const today = useToday();
   const isToday = isSameDay(today, currentDate);
   const { isLightTheme, toggleTheme } = useToggleTheme();
+  const { recentTaskTitles, reloadRecentTaskTitles } = useRecentTaskTitles();
+
+  const onUpdate = useCallback(() => {
+    reloadTasks();
+    reloadRecentTaskTitles();
+  }, [reloadRecentTaskTitles, reloadTasks]);
 
   return (
     <div className={styles.root}>
@@ -102,8 +126,13 @@ export const DailyTasks: FC = () => {
           <Icon icon="flash" size={10} />
         </div>
       </Card>
-      <TaskList tasks={tasks} onUpdate={reloadTasks}>
-        {isToday && <CreateTaskForm onComplete={reloadTasks} />}
+      <TaskList tasks={tasks} onUpdate={onUpdate}>
+        {isToday && (
+          <CreateTaskForm
+            recentTaskTitles={recentTaskTitles}
+            onComplete={onUpdate}
+          />
+        )}
       </TaskList>
     </div>
   );

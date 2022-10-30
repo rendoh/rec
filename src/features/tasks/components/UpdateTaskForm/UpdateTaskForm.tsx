@@ -101,7 +101,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
   );
 
   return (
-    <Card elevation={2}>
+    <Card elevation={1}>
       <div className={styles.headerRow}>
         <FormGroup
           className={styles.formGroup}

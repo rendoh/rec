@@ -61,3 +61,7 @@ export async function deleteTask(id: number) {
     id,
   });
 }
+
+export async function findRecentTaskTitles() {
+  return invoke<string[]>('find_recent_tasks');
+}

@@ -9,24 +9,29 @@ import { IconButton } from '../../../../components/IconButton';
 import { createTask } from '../../api';
 import * as styles from './CreateTaskForm.css';
 import { TaskTitleField } from '../TaskTitleField';
+import { StartTaskButton } from '../StartTaskButton';
 
 const createTaskFormSchema = createTaskDtoSchema.omit({ started_at: true });
 type CreateTaskFormValues = z.infer<typeof createTaskFormSchema>;
 
 export type CreateTaskFormProps = {
+  recentTaskTitles: string[];
   onComplete?: () => void;
 };
 
-export const CreateTaskForm: FC<CreateTaskFormProps> = ({ onComplete }) => {
+export const CreateTaskForm: FC<CreateTaskFormProps> = ({
+  recentTaskTitles,
+  onComplete,
+}) => {
   const { register, handleSubmit, formState, reset } =
     useForm<CreateTaskFormValues>({
       resolver: zodResolver(createTaskFormSchema),
     });
 
-  const onSubmit: SubmitHandler<CreateTaskFormValues> = useCallback(
-    async (values) => {
+  const handleCreateTask = useCallback(
+    async (title: string) => {
       const createTaskDto: CreateTaskDto = {
-        ...values,
+        title: title,
         started_at: new Date(),
       };
       // TODO: handle error
@@ -37,8 +42,15 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({ onComplete }) => {
     [onComplete, reset],
   );
 
+  const onSubmit: SubmitHandler<CreateTaskFormValues> = useCallback(
+    async (values) => {
+      handleCreateTask(values.title);
+    },
+    [handleCreateTask],
+  );
+
   return (
-    <Card elevation={2}>
+    <Card elevation={1}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.row}>
           <FormGroup
@@ -54,7 +66,12 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({ onComplete }) => {
           </FormGroup>
           <IconButton icon="play" type="submit" aria-label="Start" />
         </div>
-        {/* TODO: suggest */}
+        <p className={styles.recentTasksTitle}>Recent tasks</p>
+        <div className={styles.startButtons}>
+          {recentTaskTitles.map((title, i) => (
+            <StartTaskButton key={i} title={title} onStart={handleCreateTask} />
+          ))}
+        </div>
       </form>
     </Card>
   );
