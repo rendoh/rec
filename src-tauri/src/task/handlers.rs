@@ -48,7 +48,7 @@ VALUES
     ($1, $2)
 RETURNING *"#,
     )
-    .bind(payload.title)
+    .bind(payload.title.trim())
     .bind(&payload.started_at)
     .fetch_one(pool)
     .await
@@ -77,7 +77,7 @@ WHERE
 RETURNING *"#,
     )
     .bind(id)
-    .bind(payload.title)
+    .bind(payload.title.map(|title| title.trim().to_string()))
     .bind(payload.started_at)
     .bind(payload.ended_at)
     .fetch_one(pool)
