@@ -79,7 +79,6 @@ export function useToday() {
     const now = new Date();
     const startOfNextDay = startOfDay(addDays(now, 1));
     const difference = startOfNextDay.getTime() - now.getTime();
-    console.log(difference);
     const timerId = setTimeout(() => {
       setToday(startOfNextDay);
     }, difference);
