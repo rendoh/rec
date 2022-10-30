@@ -20,7 +20,6 @@ function useDateRange(): Readonly<{
   from: Date;
   to: Date;
 }> {
-  // TODO: update current date?
   const [currentDate, setCurrentDate] = useState(() => new Date());
 
   const nextDay = useCallback(() => {
@@ -65,4 +64,24 @@ export function useDailyTasks() {
     reloadTasks,
     ...rest,
   };
+}
+
+export function useToday() {
+  const [today, setToday] = useState<Readonly<Date>>(() => new Date());
+
+  useEffect(() => {
+    const now = new Date();
+    const startOfNextDay = startOfDay(addDays(now, 1));
+    const difference = startOfNextDay.getTime() - now.getTime();
+    console.log(difference);
+    const timerId = setTimeout(() => {
+      setToday(startOfNextDay);
+    }, difference);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, []);
+
+  return today;
 }

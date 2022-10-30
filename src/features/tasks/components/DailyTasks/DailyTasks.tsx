@@ -1,8 +1,8 @@
 import { format, isSameDay } from 'date-fns';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { CreateTaskForm } from '../CreateTaskForm';
 import { TaskList } from '../TaskList';
-import { useDailyTasks } from './DailyTasks.hooks';
+import { useDailyTasks, useToday } from './DailyTasks.hooks';
 import * as styles from './DailyTasks.css';
 import { IconButton } from '../../../../components/IconButton';
 import { Card, Classes, IconSize } from '@blueprintjs/core';
@@ -40,8 +40,7 @@ export const DailyTasks: FC = () => {
     prevMonth,
     currentDate,
   } = useDailyTasks();
-  // TODO: update today?
-  const [today] = useState<Readonly<Date>>(() => new Date());
+  const today = useToday();
   const isToday = isSameDay(today, currentDate);
 
   return (
