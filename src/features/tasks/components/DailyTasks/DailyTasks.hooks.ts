@@ -1,3 +1,4 @@
+import { Classes } from '@blueprintjs/core';
 import {
   addDays,
   addMonths,
@@ -17,6 +18,7 @@ function useDateRange(): Readonly<{
   prevDay: () => void;
   nextMonth: () => void;
   prevMonth: () => void;
+  toToday: () => void;
   from: Date;
   to: Date;
 }> {
@@ -34,6 +36,9 @@ function useDateRange(): Readonly<{
   const prevMonth = useCallback(() => {
     setCurrentDate(subMonths(startOfMonth(currentDate), 1));
   }, [currentDate]);
+  const toToday = useCallback(() => {
+    setCurrentDate(new Date());
+  }, []);
 
   const from = useMemo(() => startOfDay(currentDate), [currentDate]);
   const to = useMemo(() => endOfDay(currentDate), [currentDate]);
@@ -44,6 +49,7 @@ function useDateRange(): Readonly<{
     prevDay,
     nextMonth,
     prevMonth,
+    toToday,
     from,
     to,
   };
@@ -84,4 +90,19 @@ export function useToday() {
   }, []);
 
   return today;
+}
+
+export function useToggleTheme() {
+  const [isLightTheme, setIsLightTheme] = useState(false);
+  const toggleTheme = useCallback(() => {
+    setIsLightTheme((currentValue) => {
+      const newValue = !currentValue;
+      document.body.classList.toggle(Classes.DARK, !newValue);
+      return newValue;
+    });
+  }, []);
+  return {
+    isLightTheme,
+    toggleTheme,
+  };
 }

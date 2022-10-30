@@ -35,3 +35,44 @@ export const date = style({
   fontWeight: 700,
   letterSpacing: '.05em',
 });
+
+export const todayButton = style({
+  position: 'absolute',
+  left: 20,
+  '@media': {
+    '(max-width: 480px)': {
+      display: 'none',
+    },
+  },
+});
+
+export const themeGroup = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 2,
+  position: 'absolute',
+  top: 0,
+  bottom: 0,
+  right: 20,
+  '@media': {
+    '(max-width: 480px)': {
+      display: 'none',
+    },
+  },
+});
+
+export const themeSwitch = style({
+  margin: '2px 0 0 10px',
+});
+
+globalStyle(`${themeSwitch} input:checked ~ .${Classes.CONTROL_INDICATOR}`, {
+  background: '#ccc !important',
+});
+
+export const monthMoveButton = style({
+  '@media': {
+    '(max-width: 580px)': {
+      display: 'none',
+    },
+  },
+});
