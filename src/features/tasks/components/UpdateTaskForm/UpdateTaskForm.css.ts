@@ -44,7 +44,10 @@ globalStyle(`${detailRow} .${Classes.FORM_GROUP}`, {
   margin: '0',
 });
 
+export const dateTimeControlGroup = style({
+  alignItems: 'center',
+});
+
 export const tilde = style({
-  alignSelf: 'center',
   margin: '0 5px',
 });

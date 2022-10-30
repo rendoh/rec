@@ -5,13 +5,14 @@ import {
   Classes,
   ControlGroup,
   FormGroup,
+  Icon,
 } from '@blueprintjs/core';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Task, UpdateTaskDto, updateTaskDtoSchema } from '../../schemas';
 import { blueprintRegister as bpRegister } from '../../../../utils/blueprintRegister';
 import { IconButton } from '../../../../components/IconButton';
-import { isFuture } from 'date-fns';
+import { isFuture, isSameDay } from 'date-fns';
 import { deleteTask, updateTask } from '../../api';
 import * as styles from './UpdateTaskForm.css';
 import { TimePicker } from '../../../../components/TimePicker';
@@ -21,8 +22,9 @@ import {
   Popover2 as Popover,
   Classes as PopoverClasses,
 } from '@blueprintjs/popover2';
+import { DayCounter } from '../../../../components/DayCounter';
 
-function formatElapsedTime(start: Date, end: Date, includeSeconds = false) {
+function formatElapsedTime(start: Date, end: Date) {
   const duration = Math.floor((end.getTime() - start.getTime()) / 1000);
   const hours = Math.floor(duration / 3600)
     .toString()
@@ -30,10 +32,8 @@ function formatElapsedTime(start: Date, end: Date, includeSeconds = false) {
   const minutes = Math.floor((duration / 60) % 60)
     .toString()
     .padStart(2, '0');
-  const seconds = includeSeconds
-    ? ':' + (duration % 60).toString().padStart(2, '0')
-    : '';
-  return `${hours}:${minutes}${seconds}`;
+  const seconds = (duration % 60).toString().padStart(2, '0');
+  return `${hours}:${minutes}:${seconds}`;
 }
 export type UpdateTaskFormProps = {
   task: Task;
@@ -91,7 +91,13 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
   const elapsedTime = formatElapsedTime(
     startedAtValue,
     endedAtValue || currentDate,
-    isActive,
+  );
+
+  const isInSameDay = endedAtValue && isSameDay(startedAtValue, endedAtValue);
+  const [isDayCounterOpen, setIsDayCounterOpen] = useState(false);
+  const toggleDayCounter = useCallback(
+    () => setIsDayCounterOpen((v) => !v),
+    [],
   );
 
   return (
@@ -162,7 +168,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
           helperText={formState.errors.ended_at?.message}
           intent={formState.errors.ended_at && 'danger'}
         >
-          <ControlGroup>
+          <ControlGroup className={styles.dateTimeControlGroup}>
             <Controller
               name="started_at"
               control={control}
@@ -172,25 +178,52 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
                   value={field.value}
                   onChange={field.onChange}
                   onBlur={handleSubmit(onSubmit)}
-                  // maxTime={endedAtValue ?? undefined}
                 />
               )}
             />
             <div className={styles.tilde}> - </div>
             {!isActive && (
-              <Controller
-                name="ended_at"
-                control={control}
-                render={({ field }) => (
-                  <TimePicker
-                    isInvalid={!!formState.errors.ended_at}
-                    value={field.value}
-                    onChange={field.onChange}
-                    onBlur={handleSubmit(onSubmit)}
-                    // minTime={startedAtValue}
+              <>
+                <Controller
+                  name="ended_at"
+                  control={control}
+                  render={({ field }) => (
+                    <TimePicker
+                      isInvalid={!!formState.errors.ended_at}
+                      value={field.value}
+                      onChange={field.onChange}
+                      onBlur={handleSubmit(onSubmit)}
+                    />
+                  )}
+                />
+                {isInSameDay && (
+                  <Button small onClick={toggleDayCounter}>
+                    <Icon
+                      icon={isDayCounterOpen ? 'chevron-left' : 'chevron-right'}
+                    />
+                  </Button>
+                )}
+                {(isDayCounterOpen || !isInSameDay) && (
+                  <Controller
+                    name="ended_at"
+                    control={control}
+                    render={({ field }) =>
+                      field.value ? (
+                        <DayCounter
+                          baseDate={startedAtValue}
+                          value={field.value}
+                          onChange={(value) => {
+                            field.onChange(value);
+                            handleSubmit(onSubmit)();
+                          }}
+                        />
+                      ) : (
+                        <>Something is wrong</>
+                      )
+                    }
                   />
                 )}
-              />
+              </>
             )}
           </ControlGroup>
         </FormGroup>
