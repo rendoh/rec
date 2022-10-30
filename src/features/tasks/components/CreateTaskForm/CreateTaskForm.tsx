@@ -66,12 +66,20 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
           </FormGroup>
           <IconButton icon="play" type="submit" aria-label="Start" />
         </div>
-        <p className={styles.recentTasksTitle}>Recent tasks</p>
-        <div className={styles.startButtons}>
-          {recentTaskTitles.map((title, i) => (
-            <StartTaskButton key={i} title={title} onStart={handleCreateTask} />
-          ))}
-        </div>
+        {recentTaskTitles.length > 0 && (
+          <>
+            <p className={styles.recentTasksTitle}>Recent tasks</p>
+            <div className={styles.startButtons}>
+              {recentTaskTitles.map((title, i) => (
+                <StartTaskButton
+                  key={i}
+                  title={title}
+                  onStart={handleCreateTask}
+                />
+              ))}
+            </div>
+          </>
+        )}
       </form>
     </Card>
   );
