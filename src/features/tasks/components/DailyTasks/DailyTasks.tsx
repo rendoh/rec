@@ -103,7 +103,7 @@ export const DailyTasks: FC = () => {
           onClick={prevDay}
         />
         <p className={clsx(Classes.MONOSPACE_TEXT, styles.date)}>
-          {format(currentDate, 'yyyy/MM/dd')}
+          {format(currentDate, 'yyyy/MM/dd (iii)')}
         </p>
         <MonthNavButton
           icon="chevron-right"

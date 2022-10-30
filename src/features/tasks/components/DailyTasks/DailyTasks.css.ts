@@ -30,10 +30,10 @@ globalStyle(`.${Classes.DARK} ${header}.${Classes.CARD}`, {
 });
 
 export const date = style({
-  fontSize: 20,
+  fontSize: 16,
   margin: '0 25px',
   fontWeight: 700,
-  letterSpacing: '.05em',
+  letterSpacing: '.02em',
 });
 
 export const todayButton = style({
