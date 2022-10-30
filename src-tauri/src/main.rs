@@ -39,6 +39,7 @@ fn main() {
             task::commands::create,
             task::commands::update,
             task::commands::delete,
+            task::commands::find_recent_tasks,
         ])
         .setup(|app| {
             app.manage(sqlite_pool);

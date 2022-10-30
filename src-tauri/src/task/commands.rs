@@ -46,3 +46,12 @@ pub async fn update(
 pub async fn delete(pool: State<'_, sqlx::SqlitePool>, id: i32) -> Result<(), String> {
     handlers::delete(&pool, id).await.map_err(|e| e.to_string())
 }
+
+#[tauri::command]
+pub async fn find_recent_tasks(pool: State<'_, sqlx::SqlitePool>) -> Result<Vec<String>, String> {
+    let tasks = handlers::find_recent_tasks(&pool)
+        .await
+        .map_err(|e| e.to_string())?;
+
+    Ok(tasks)
+}

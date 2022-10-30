@@ -1,5 +1,8 @@
 use super::schemas::{CreateTask, FindTasks, Task, UpdateTask};
-use sqlx::{sqlite::SqlitePool, Error};
+use sqlx::{
+    sqlite::{SqlitePool, SqliteRow},
+    Error, Row,
+};
 
 pub async fn find_all(pool: &SqlitePool, payload: FindTasks) -> Result<Vec<Task>, Error> {
     sqlx::query_as::<_, Task>(
@@ -94,4 +97,26 @@ WHERE
     .await?;
 
     Ok(())
+}
+
+pub async fn find_recent_tasks(pool: &SqlitePool) -> Result<Vec<String>, Error> {
+    let rows = sqlx::query(
+        r#"
+SELECT
+    title,
+    Max(started_at)
+FROM
+    tasks
+GROUP BY
+    title
+ORDER BY
+    started_at DESC
+LIMIT
+    6"#,
+    )
+    .map(|row: SqliteRow| row.try_get("title").unwrap())
+    .fetch_all(pool)
+    .await?;
+
+    Ok(rows)
 }
