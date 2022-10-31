@@ -50,7 +50,7 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
   );
 
   return (
-    <Card elevation={1}>
+    <Card elevation={1} className={styles.root}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.row}>
           <FormGroup

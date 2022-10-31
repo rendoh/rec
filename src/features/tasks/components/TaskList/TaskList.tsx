@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import { FC } from 'react';
 import { Task } from '../../schemas';
 import { UpdateTaskForm } from '../UpdateTaskForm';
 import * as styles from './TaskList.css';
@@ -8,15 +8,10 @@ export type TaskListProps = {
   onUpdate: () => void;
 };
 
-export const TaskList: FC<PropsWithChildren & TaskListProps> = ({
-  tasks,
-  onUpdate,
-  children,
-}) => (
+export const TaskList: FC<TaskListProps> = ({ tasks, onUpdate }) => (
   <div className={styles.list}>
     {tasks.map((task) => (
       <UpdateTaskForm key={task.id} task={task} onComplete={onUpdate} />
     ))}
-    {children}
   </div>
 );

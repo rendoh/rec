@@ -1,4 +1,16 @@
-import { style } from '@vanilla-extract/css';
+import { Classes, Colors } from '@blueprintjs/core';
+import { globalStyle, style } from '@vanilla-extract/css';
+
+export const root = style({});
+
+globalStyle(`${root}.${Classes.CARD}`, {
+  boxShadow: 'none',
+  borderTop: `1px solid ${Colors.LIGHT_GRAY1}`,
+});
+
+globalStyle(`.${Classes.DARK} ${root}.${Classes.CARD}`, {
+  borderTopColor: Colors.GRAY1,
+});
 
 export const row = style({
   display: 'flex',

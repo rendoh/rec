@@ -139,29 +139,34 @@ export const DailyTasks: FC = () => {
           <Icon icon="flash" size={10} />
         </div>
       </Card>
-      {tasks.length === 0 && !isToday && (
-        <NonIdealState
-          className={styles.empty}
-          icon="th-disconnect"
-          title="No tasks"
-          description="No tasks were found for the day."
-        />
-      )}
-      {tasks.length > 0 && (
-        <div className={styles.actions}>
-          <Button icon="th-filtered" onClick={openAggregationModal}>
-            Aggregate tasks
-          </Button>
-        </div>
-      )}
-      <TaskList tasks={tasks} onUpdate={onUpdate}>
-        {isToday && (
+
+      <div className={styles.content}>
+        {tasks.length === 0 && !isToday && (
+          <NonIdealState
+            className={styles.empty}
+            icon="th-disconnect"
+            title="No tasks"
+            description="No tasks were found for the day."
+          />
+        )}
+        {tasks.length > 0 && (
+          <div className={styles.actions}>
+            <Button icon="th-filtered" onClick={openAggregationModal}>
+              Aggregate
+            </Button>
+          </div>
+        )}
+        <TaskList tasks={tasks} onUpdate={onUpdate} />
+      </div>
+
+      {isToday && (
+        <div className={styles.footer}>
           <CreateTaskForm
             recentTaskTitles={recentTaskTitles}
             onComplete={onUpdate}
           />
-        )}
-      </TaskList>
+        </div>
+      )}
 
       <Dialog
         isOpen={isAggregationModalOpen}

@@ -1,22 +1,20 @@
 import { Classes, Colors } from '@blueprintjs/core';
 import { globalStyle, style } from '@vanilla-extract/css';
 
-const headerHeight = 60;
-
 export const root = style({
-  padding: `${headerHeight + 20}px 20px 20px`,
+  position: 'relative',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-between',
+  height: '100vh',
 });
 
 export const header = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  height: headerHeight,
-  position: 'fixed',
-  top: 0,
-  left: 0,
-  width: '100%',
-  zIndex: 2,
+  height: 60,
+  position: 'relative',
 });
 
 globalStyle(`${header}.${Classes.CARD}`, {
@@ -27,6 +25,14 @@ globalStyle(`${header}.${Classes.CARD}`, {
 globalStyle(`.${Classes.DARK} ${header}.${Classes.CARD}`, {
   borderBottomColor: Colors.GRAY1,
 });
+
+export const content = style({
+  padding: 20,
+  flex: 1,
+  overflowY: 'auto',
+});
+
+export const footer = style({});
 
 export const date = style({
   fontSize: 16,
@@ -77,7 +83,7 @@ export const monthMoveButton = style({
 });
 
 export const empty = style({
-  height: `calc(100vh - ${headerHeight + 40}px)`,
+  height: `100%`,
 });
 
 export const actions = style({
