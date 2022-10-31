@@ -8,13 +8,16 @@ pub async fn find_all(pool: &SqlitePool, payload: FindTasks) -> Result<Vec<Task>
     sqlx::query_as::<_, Task>(
         r#"
 SELECT
-    *
+    tasks.id,
+    tasks.title,
+    strftime('%Y-%m-%dT%H:%M:%fZ', tasks.started_at, 'utc') AS started_at,
+    strftime('%Y-%m-%dT%H:%M:%fZ', tasks.ended_at, 'utc') AS ended_at
 FROM
     tasks
 WHERE
-    started_at BETWEEN $1 AND $2
+    tasks.started_at BETWEEN $1 AND $2
 ORDER BY
-    started_at DESC"#,
+    tasks.started_at DESC"#,
     )
     .bind(
         payload
@@ -33,7 +36,7 @@ pub async fn create(pool: &SqlitePool, payload: CreateTask) -> Result<Task, Erro
 UPDATE
     tasks
 SET
-    ended_at = $1
+    ended_at = datetime($1, 'localtime')
 WHERE
     ended_at IS NULL"#,
     )
@@ -46,8 +49,12 @@ WHERE
 INSERT INTO
     tasks (title, started_at)
 VALUES
-    ($1, $2)
-RETURNING *"#,
+    ($1, datetime($2, 'localtime'))
+RETURNING
+    id,
+    title,
+    strftime('%Y-%m-%dT%H:%M:%fZ', started_at, 'utc') AS started_at,
+    strftime('%Y-%m-%dT%H:%M:%fZ', ended_at, 'utc') AS ended_at"#,
     )
     .bind(payload.title.trim())
     .bind(&payload.started_at)
@@ -66,16 +73,20 @@ SET
         title
     ),
     started_at = ifnull(
-        $3,
+        datetime($3, 'localtime'),
         started_at
     ),
     ended_at = ifnull(
-        $4,
+        datetime($4, 'localtime'),
         ended_at
     )
 WHERE
     id = $1
-RETURNING *"#,
+RETURNING
+    id,
+    title,
+    strftime('%Y-%m-%dT%H:%M:%fZ', started_at, 'utc') AS started_at,
+    strftime('%Y-%m-%dT%H:%M:%fZ', ended_at, 'utc') AS ended_at"#,
     )
     .bind(id)
     .bind(payload.title.map(|title| title.trim().to_string()))
