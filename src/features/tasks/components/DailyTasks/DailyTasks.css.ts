@@ -4,8 +4,7 @@ import { globalStyle, style } from '@vanilla-extract/css';
 const headerHeight = 60;
 
 export const root = style({
-  paddingTop: headerHeight + 20,
-  paddingBottom: 20,
+  padding: `${headerHeight + 20}px 20px 20px`,
 });
 
 export const header = style({
@@ -79,4 +78,15 @@ export const monthMoveButton = style({
 
 export const empty = style({
   height: `calc(100vh - ${headerHeight + 40}px)`,
+});
+
+export const actions = style({
+  display: 'flex',
+  justifyContent: 'flex-end',
+  marginBottom: 20,
+});
+
+export const dialogContent = style({
+  padding: '10px 30px 0',
+  marginBottom: -10,
 });

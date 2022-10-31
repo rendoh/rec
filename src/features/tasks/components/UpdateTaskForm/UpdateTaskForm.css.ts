@@ -29,7 +29,7 @@ export const actions = style([
 
 export const elapsedTime = style({
   fontWeight: 'bold',
-  fontSize: 20,
+  fontSize: 18,
   margin: '0 8px',
 });
 

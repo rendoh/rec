@@ -4,5 +4,4 @@ export const list = style({
   display: 'flex',
   flexDirection: 'column',
   gap: 20,
-  padding: '0 20px',
 });

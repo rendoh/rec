@@ -23,18 +23,9 @@ import {
   Classes as PopoverClasses,
 } from '@blueprintjs/popover2';
 import { DayCounter } from '../../../../components/DayCounter';
+import { formatDurationTime } from '../../../../utils/formatDurationTime';
+import { useEverySecond } from '../../../../hooks/useEverySecond';
 
-function formatElapsedTime(start: Date, end: Date) {
-  const duration = Math.floor((end.getTime() - start.getTime()) / 1000);
-  const hours = Math.floor(duration / 3600)
-    .toString()
-    .padStart(2, '0');
-  const minutes = Math.floor((duration / 60) % 60)
-    .toString()
-    .padStart(2, '0');
-  const seconds = (duration % 60).toString().padStart(2, '0');
-  return `${hours}:${minutes}:${seconds}`;
-}
 export type UpdateTaskFormProps = {
   task: Task;
   onComplete?: () => void;
@@ -82,15 +73,10 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
   const startedAtValue = getValues('started_at');
   const endedAtValue = getValues('ended_at');
   const isActive = !endedAtValue;
-  const [currentDate, setCurrentDate] = useState(() => new Date());
-  useEffect(() => {
-    if (!isActive) return;
-    const intervalId = setInterval(() => setCurrentDate(new Date()), 1000);
-    return () => clearInterval(intervalId);
-  }, [isActive]);
-  const elapsedTime = formatElapsedTime(
-    startedAtValue,
-    endedAtValue || currentDate,
+  const currentDate = useEverySecond(!isActive);
+
+  const elapsedTime = formatDurationTime(
+    (endedAtValue || currentDate).getTime() - startedAtValue.getTime(),
   );
 
   const isInSameDay = endedAtValue && isSameDay(startedAtValue, endedAtValue);

@@ -27,6 +27,7 @@ ORDER BY
 }
 
 pub async fn create(pool: &SqlitePool, payload: CreateTask) -> Result<Task, Error> {
+    // TODO: validate started_at < ended_at on this auto set
     sqlx::query(
         r#"
 UPDATE

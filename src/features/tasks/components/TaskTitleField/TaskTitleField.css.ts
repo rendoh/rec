@@ -5,7 +5,7 @@ export const root = style({});
 export const interactiveOutline = style({});
 
 globalStyle(`${root} .${Classes.INPUT}`, {
-  fontSize: '22px !important',
+  fontSize: '20px !important',
   fontWeight: 'bold',
   letterSpacing: '.05em',
 });

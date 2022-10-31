@@ -9,6 +9,7 @@ import {
   Button,
   Card,
   Classes,
+  Dialog,
   Icon,
   IconSize,
   NonIdealState,
@@ -16,6 +17,7 @@ import {
 } from '@blueprintjs/core';
 import clsx from 'clsx';
 import { findRecentTaskTitles } from '../../api';
+import { TaskAggregator } from '../TaskAggregator';
 
 type MonthNavButtonProps = {
   className?: string;
@@ -84,6 +86,16 @@ export const DailyTasks: FC = () => {
     reloadRecentTaskTitles();
   }, [reloadRecentTaskTitles, reloadTasks]);
 
+  const [isAggregationModalOpen, setIsAggregationModalOpen] = useState(false);
+  const openAggregationModal = useCallback(
+    () => setIsAggregationModalOpen(true),
+    [],
+  );
+  const closeAggregationModal = useCallback(
+    () => setIsAggregationModalOpen(false),
+    [],
+  );
+
   return (
     <div className={styles.root}>
       <Card className={styles.header} elevation={2}>
@@ -135,6 +147,13 @@ export const DailyTasks: FC = () => {
           description="No tasks were found for the day."
         />
       )}
+      {tasks.length > 0 && (
+        <div className={styles.actions}>
+          <Button icon="th-filtered" onClick={openAggregationModal}>
+            Aggregate tasks
+          </Button>
+        </div>
+      )}
       <TaskList tasks={tasks} onUpdate={onUpdate}>
         {isToday && (
           <CreateTaskForm
@@ -143,6 +162,16 @@ export const DailyTasks: FC = () => {
           />
         )}
       </TaskList>
+
+      <Dialog
+        isOpen={isAggregationModalOpen}
+        title={format(today, 'yyyy/MM/dd')}
+        onClose={closeAggregationModal}
+      >
+        <div className={styles.dialogContent}>
+          <TaskAggregator tasks={tasks} />
+        </div>
+      </Dialog>
     </div>
   );
 };
