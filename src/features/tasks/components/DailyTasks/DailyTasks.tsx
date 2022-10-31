@@ -19,6 +19,7 @@ import {
   Icon,
   IconSize,
   NonIdealState,
+  Spinner,
   Switch,
 } from '@blueprintjs/core';
 import clsx from 'clsx';
@@ -56,6 +57,7 @@ const MonthNavButton: FC<MonthNavButtonProps> = ({
 export const DailyTasks: FC = () => {
   const {
     tasks,
+    isLoading,
     reloadTasks,
     nextDay,
     prevDay,
@@ -133,12 +135,19 @@ export const DailyTasks: FC = () => {
       </Card>
 
       <div className={styles.content} ref={scrollContainerRef}>
-        {tasks.length > 0 ? (
-          <div className={styles.actions}>
-            <Button icon="th-filtered" onClick={openAggregationModal}>
-              Aggregate
-            </Button>
+        {isLoading ? (
+          <div className={styles.spinnerWrapper}>
+            <Spinner />
           </div>
+        ) : tasks.length > 0 ? (
+          <>
+            <div className={styles.actions}>
+              <Button icon="th-filtered" onClick={openAggregationModal}>
+                Aggregate
+              </Button>
+            </div>
+            <TaskList tasks={tasks} onUpdate={handleUpdate} />
+          </>
         ) : (
           <NonIdealState
             className={styles.empty}
@@ -147,7 +156,6 @@ export const DailyTasks: FC = () => {
             description="No tasks were found for this day."
           />
         )}
-        <TaskList tasks={tasks} onUpdate={handleUpdate} />
       </div>
 
       {isToday && (

@@ -58,8 +58,13 @@ function useDateRange(): Readonly<{
 export function useDailyTasks() {
   const { from, to, ...rest } = useDateRange();
   const [tasks, setTasks] = useState<Task[]>([]);
-  const reloadTasks = useCallback(() => {
-    findTasks({ from, to }).then(setTasks);
+  const [isLoading, setIsLoading] = useState(true);
+  const reloadTasks = useCallback(async () => {
+    setIsLoading(true);
+    // TODO: handle error
+    const tasks = await findTasks({ from, to });
+    setTasks(tasks);
+    setIsLoading(false);
   }, [from, to]);
   useEffect(() => {
     reloadTasks();
@@ -68,6 +73,7 @@ export function useDailyTasks() {
   return {
     tasks,
     reloadTasks,
+    isLoading,
     ...rest,
   };
 }

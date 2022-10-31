@@ -83,7 +83,13 @@ export const monthMoveButton = style({
 });
 
 export const empty = style({
-  height: `100%`,
+  height: '100%',
+});
+
+export const spinnerWrapper = style({
+  height: '100%',
+  display: 'grid',
+  placeItems: 'center',
 });
 
 export const actions = style({
