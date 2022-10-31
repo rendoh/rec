@@ -1,8 +1,14 @@
 import { format, isSameDay } from 'date-fns';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useRef } from 'react';
 import { CreateTaskForm } from '../CreateTaskForm';
 import { TaskList } from '../TaskList';
-import { useDailyTasks, useToday, useToggleTheme } from './DailyTasks.hooks';
+import {
+  useDailyTasks,
+  useDialogState,
+  useRecentTaskTitles,
+  useToday,
+  useToggleTheme,
+} from './DailyTasks.hooks';
 import * as styles from './DailyTasks.css';
 import { IconButton } from '../../../../components/IconButton';
 import {
@@ -16,7 +22,6 @@ import {
   Switch,
 } from '@blueprintjs/core';
 import clsx from 'clsx';
-import { findRecentTaskTitles } from '../../api';
 import { TaskAggregator } from '../TaskAggregator';
 
 type MonthNavButtonProps = {
@@ -48,23 +53,6 @@ const MonthNavButton: FC<MonthNavButtonProps> = ({
   />
 );
 
-function useRecentTaskTitles() {
-  const [recentTaskTitles, setRecentTaskTitles] = useState<string[]>([]);
-  const reloadRecentTaskTitles = useCallback(async () => {
-    // TODO: handle error
-    const titles = await findRecentTaskTitles();
-    setRecentTaskTitles(titles);
-  }, []);
-  useEffect(() => {
-    reloadRecentTaskTitles();
-  }, [reloadRecentTaskTitles]);
-
-  return {
-    recentTaskTitles,
-    reloadRecentTaskTitles,
-  };
-}
-
 export const DailyTasks: FC = () => {
   const {
     tasks,
@@ -80,21 +68,25 @@ export const DailyTasks: FC = () => {
   const isToday = isSameDay(today, currentDate);
   const { isLightTheme, toggleTheme } = useToggleTheme();
   const { recentTaskTitles, reloadRecentTaskTitles } = useRecentTaskTitles();
+  const {
+    isOpen: isAggregationModalOpen,
+    openDialog: openAggregationModal,
+    closeDialog: closeAggregationModal,
+  } = useDialogState();
 
-  const onUpdate = useCallback(() => {
+  const handleUpdate = useCallback(() => {
     reloadTasks();
     reloadRecentTaskTitles();
   }, [reloadRecentTaskTitles, reloadTasks]);
 
-  const [isAggregationModalOpen, setIsAggregationModalOpen] = useState(false);
-  const openAggregationModal = useCallback(
-    () => setIsAggregationModalOpen(true),
-    [],
-  );
-  const closeAggregationModal = useCallback(
-    () => setIsAggregationModalOpen(false),
-    [],
-  );
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const handleCreateCompleted = useCallback(() => {
+    handleUpdate();
+    scrollContainerRef.current?.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, [handleUpdate]);
 
   return (
     <div className={styles.root}>
@@ -140,7 +132,7 @@ export const DailyTasks: FC = () => {
         </div>
       </Card>
 
-      <div className={styles.content}>
+      <div className={styles.content} ref={scrollContainerRef}>
         {tasks.length === 0 && !isToday && (
           <NonIdealState
             className={styles.empty}
@@ -156,14 +148,14 @@ export const DailyTasks: FC = () => {
             </Button>
           </div>
         )}
-        <TaskList tasks={tasks} onUpdate={onUpdate} />
+        <TaskList tasks={tasks} onUpdate={handleUpdate} />
       </div>
 
       {isToday && (
         <div className={styles.footer}>
           <CreateTaskForm
             recentTaskTitles={recentTaskTitles}
-            onComplete={onUpdate}
+            onComplete={handleCreateCompleted}
           />
         </div>
       )}

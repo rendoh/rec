@@ -9,7 +9,7 @@ import {
   subMonths,
 } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { findTasks } from '../../api';
+import { findRecentTaskTitles, findTasks } from '../../api';
 import { Task } from '../../schemas';
 
 function useDateRange(): Readonly<{
@@ -103,5 +103,33 @@ export function useToggleTheme() {
   return {
     isLightTheme,
     toggleTheme,
+  };
+}
+
+export function useRecentTaskTitles() {
+  const [recentTaskTitles, setRecentTaskTitles] = useState<string[]>([]);
+  const reloadRecentTaskTitles = useCallback(async () => {
+    // TODO: handle error
+    const titles = await findRecentTaskTitles();
+    setRecentTaskTitles(titles);
+  }, []);
+  useEffect(() => {
+    reloadRecentTaskTitles();
+  }, [reloadRecentTaskTitles]);
+
+  return {
+    recentTaskTitles,
+    reloadRecentTaskTitles,
+  };
+}
+
+export function useDialogState(initialState = false) {
+  const [isOpen, setIsOpen] = useState(initialState);
+  const openDialog = useCallback(() => setIsOpen(true), []);
+  const closeDialog = useCallback(() => setIsOpen(false), []);
+  return {
+    isOpen,
+    openDialog,
+    closeDialog,
   };
 }

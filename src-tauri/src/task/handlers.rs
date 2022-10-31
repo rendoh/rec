@@ -14,7 +14,7 @@ FROM
 WHERE
     started_at BETWEEN $1 AND $2
 ORDER BY
-    started_at ASC"#,
+    started_at DESC"#,
     )
     .bind(
         payload
