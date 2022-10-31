@@ -30,6 +30,7 @@ export const content = style({
   padding: 20,
   flex: 1,
   overflowY: 'auto',
+  position: 'relative',
 });
 
 export const footer = style({});
@@ -87,9 +88,14 @@ export const empty = style({
 });
 
 export const spinnerWrapper = style({
+  width: '100%',
   height: '100%',
   display: 'grid',
   placeItems: 'center',
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  background: 'rgba(128, 128, 128, .2)',
 });
 
 export const actions = style({

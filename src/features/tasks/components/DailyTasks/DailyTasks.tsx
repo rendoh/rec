@@ -1,5 +1,5 @@
 import { format, isSameDay } from 'date-fns';
-import { FC, useCallback, useRef } from 'react';
+import { FC, useCallback } from 'react';
 import { CreateTaskForm } from '../CreateTaskForm';
 import { TaskList } from '../TaskList';
 import {
@@ -81,15 +81,6 @@ export const DailyTasks: FC = () => {
     reloadRecentTaskTitles();
   }, [reloadRecentTaskTitles, reloadTasks]);
 
-  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
-  const handleCreateCompleted = useCallback(() => {
-    handleUpdate();
-    scrollContainerRef.current?.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  }, [handleUpdate]);
-
   return (
     <div className={styles.root}>
       <Card className={styles.header} elevation={2}>
@@ -134,12 +125,13 @@ export const DailyTasks: FC = () => {
         </div>
       </Card>
 
-      <div className={styles.content} ref={scrollContainerRef}>
-        {isLoading ? (
+      <div className={styles.content}>
+        {isLoading && (
           <div className={styles.spinnerWrapper}>
             <Spinner />
           </div>
-        ) : tasks.length > 0 ? (
+        )}
+        {tasks.length > 0 ? (
           <>
             <div className={styles.actions}>
               <Button icon="th-filtered" onClick={openAggregationModal}>
@@ -162,7 +154,7 @@ export const DailyTasks: FC = () => {
         <div className={styles.footer}>
           <CreateTaskForm
             recentTaskTitles={recentTaskTitles}
-            onComplete={handleCreateCompleted}
+            onComplete={handleUpdate}
           />
         </div>
       )}
