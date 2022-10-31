@@ -133,20 +133,19 @@ export const DailyTasks: FC = () => {
       </Card>
 
       <div className={styles.content} ref={scrollContainerRef}>
-        {tasks.length === 0 && !isToday && (
-          <NonIdealState
-            className={styles.empty}
-            icon="th-disconnect"
-            title="No tasks"
-            description="No tasks were found for the day."
-          />
-        )}
-        {tasks.length > 0 && (
+        {tasks.length > 0 ? (
           <div className={styles.actions}>
             <Button icon="th-filtered" onClick={openAggregationModal}>
               Aggregate
             </Button>
           </div>
+        ) : (
+          <NonIdealState
+            className={styles.empty}
+            icon="th-disconnect"
+            title="No tasks"
+            description="No tasks were found for this day."
+          />
         )}
         <TaskList tasks={tasks} onUpdate={handleUpdate} />
       </div>
