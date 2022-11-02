@@ -33,6 +33,11 @@ export const elapsedTime = style({
   margin: '0 8px',
 });
 
+export const elapsedTimeInvalid = style({
+  fontSize: 12,
+  fontWeight: 'normal',
+});
+
 export const detailRow = style([
   row,
   {

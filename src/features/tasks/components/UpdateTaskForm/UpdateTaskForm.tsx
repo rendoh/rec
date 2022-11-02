@@ -75,9 +75,10 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
   const isActive = !endedAtValue;
   const currentDate = useEverySecond(!isActive);
 
-  const elapsedTime = formatDurationTime(
-    (endedAtValue || currentDate).getTime() - startedAtValue.getTime(),
-  );
+  const elapsedMs =
+    (endedAtValue || currentDate).getTime() - startedAtValue.getTime();
+  const elapsedTime =
+    elapsedMs >= 0 ? formatDurationTime(elapsedMs) : 'Are you a time traveler?';
 
   const isInSameDay = endedAtValue && isSameDay(startedAtValue, endedAtValue);
   const [isDayCounterOpen, setIsDayCounterOpen] = useState(false);
@@ -213,7 +214,11 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
             )}
           </ControlGroup>
         </FormGroup>
-        <p className={clsx(Classes.MONOSPACE_TEXT, styles.elapsedTime)}>
+        <p
+          className={clsx(Classes.MONOSPACE_TEXT, styles.elapsedTime, {
+            [styles.elapsedTimeInvalid]: elapsedMs <= 0,
+          })}
+        >
           {elapsedTime}
         </p>
       </div>
