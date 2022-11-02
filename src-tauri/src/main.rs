@@ -4,6 +4,7 @@
 )]
 
 mod db;
+mod error;
 mod task;
 use tauri::Manager;
 

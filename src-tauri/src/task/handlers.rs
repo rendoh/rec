@@ -1,10 +1,13 @@
+use crate::error::ApiError;
+
 use super::schemas::{CreateTask, FindTasks, Task, UpdateTask};
 use sqlx::{
     sqlite::{SqlitePool, SqliteRow},
-    Error, Row,
+    Row,
 };
+use validator::Validate;
 
-pub async fn find_all(pool: &SqlitePool, payload: FindTasks) -> Result<Vec<Task>, Error> {
+pub async fn find_all(pool: &SqlitePool, payload: FindTasks) -> Result<Vec<Task>, ApiError> {
     sqlx::query_as::<_, Task>(
         r#"
 SELECT
@@ -27,10 +30,13 @@ ORDER BY
     .bind(payload.to.unwrap_or("9999-12-31T23:59:59.999Z".to_string()))
     .fetch_all(pool)
     .await
+    .map_err(ApiError::DbError)
 }
 
-pub async fn create(pool: &SqlitePool, payload: CreateTask) -> Result<Task, Error> {
-    // TODO: validate started_at < ended_at on this auto set
+pub async fn create(pool: &SqlitePool, payload: CreateTask) -> Result<Task, ApiError> {
+    payload.validate().map_err(ApiError::ValidationError)?;
+
+    // TODO validate range
     sqlx::query(
         r#"
 UPDATE
@@ -42,7 +48,8 @@ WHERE
     )
     .bind(&payload.started_at)
     .execute(pool)
-    .await?;
+    .await
+    .map_err(ApiError::DbError)?;
 
     sqlx::query_as::<_, Task>(
         r#"
@@ -60,10 +67,12 @@ RETURNING
     .bind(&payload.started_at)
     .fetch_one(pool)
     .await
+    .map_err(ApiError::DbError)
 }
 
-pub async fn update(pool: &SqlitePool, id: i32, payload: UpdateTask) -> Result<Task, Error> {
-    // TODO: validate started_at < ended_at on this auto set
+pub async fn update(pool: &SqlitePool, id: i32, payload: UpdateTask) -> Result<Task, ApiError> {
+    payload.validate().map_err(ApiError::ValidationError)?;
+
     sqlx::query_as::<_, Task>(
         r#"
 UPDATE
@@ -95,9 +104,10 @@ RETURNING
     .bind(payload.ended_at)
     .fetch_one(pool)
     .await
+    .map_err(ApiError::DbError)
 }
 
-pub async fn delete(pool: &SqlitePool, id: i32) -> Result<(), Error> {
+pub async fn delete(pool: &SqlitePool, id: i32) -> Result<(), ApiError> {
     sqlx::query(
         r#"
 DELETE FROM
@@ -107,12 +117,13 @@ WHERE
     )
     .bind(id)
     .execute(pool)
-    .await?;
+    .await
+    .map_err(ApiError::DbError)?;
 
     Ok(())
 }
 
-pub async fn find_recent_tasks(pool: &SqlitePool) -> Result<Vec<String>, Error> {
+pub async fn find_recent_tasks(pool: &SqlitePool) -> Result<Vec<String>, ApiError> {
     let rows = sqlx::query(
         r#"
 SELECT
@@ -129,7 +140,8 @@ LIMIT
     )
     .map(|row: SqliteRow| row.try_get("title").unwrap())
     .fetch_all(pool)
-    .await?;
+    .await
+    .map_err(ApiError::DbError)?;
 
     Ok(rows)
 }

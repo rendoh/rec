@@ -16,20 +16,41 @@ pub struct Task {
 
 #[derive(Debug, Serialize, Deserialize, Validate)]
 pub struct CreateTask {
-    #[validate(length(min = 1, max = 32))]
+    #[validate(length(
+        min = 1,
+        max = 32,
+        message = "Title must be at least 1 and no more than 32 characters",
+    ))]
     pub title: String,
-    #[validate(custom = "validate_datetime_format")]
+    #[validate(custom(
+        function = "validate_datetime_format",
+        message = "Incorrect date format"
+    ))]
     pub started_at: String,
 }
 
 #[derive(Debug, Serialize, Deserialize, Validate)]
-#[validate(schema(function = "validate_range", skip_on_field_errors = false))]
+#[validate(schema(
+    function = "validate_range",
+    skip_on_field_errors = false,
+    message = "Incorrect date range"
+))]
 pub struct UpdateTask {
-    #[validate(length(min = 1, max = 32))]
+    #[validate(length(
+        min = 1,
+        max = 32,
+        message = "Title must be at least 1 and no more than 32 characters",
+    ))]
     pub title: Option<String>,
-    #[validate(custom = "validate_datetime_format")]
+    #[validate(custom(
+        function = "validate_datetime_format",
+        message = "Incorrect date format"
+    ))]
     pub started_at: Option<String>,
-    #[validate(custom = "validate_datetime_format")]
+    #[validate(custom(
+        function = "validate_datetime_format",
+        message = "Incorrect date format"
+    ))]
     pub ended_at: Option<String>,
 }
 
