@@ -63,6 +63,7 @@ RETURNING
 }
 
 pub async fn update(pool: &SqlitePool, id: i32, payload: UpdateTask) -> Result<Task, Error> {
+    // TODO: validate started_at < ended_at on this auto set
     sqlx::query_as::<_, Task>(
         r#"
 UPDATE
