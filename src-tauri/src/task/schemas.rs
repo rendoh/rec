@@ -5,13 +5,13 @@ use validator::{Validate, ValidationError};
 
 #[derive(Debug, Serialize, Deserialize, FromRow, Validate)]
 pub struct Task {
-    id: i32,
+    pub id: i32,
     #[validate(length(min = 1, max = 32))]
-    title: String,
+    pub title: String,
     #[validate(custom = "validate_datetime_format")]
-    started_at: String,
+    pub started_at: String,
     #[validate(custom = "validate_datetime_format")]
-    ended_at: Option<String>,
+    pub ended_at: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Validate)]

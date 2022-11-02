@@ -36,7 +36,32 @@ ORDER BY
 pub async fn create(pool: &SqlitePool, payload: CreateTask) -> Result<Task, ApiError> {
     payload.validate().map_err(ApiError::ValidationError)?;
 
-    // TODO validate range
+    let active_task = sqlx::query_as::<_, Task>(
+        r#"
+SELECT
+    tasks.id,
+    tasks.title,
+    strftime('%Y-%m-%dT%H:%M:%fZ', tasks.started_at, 'utc') AS started_at,
+    strftime('%Y-%m-%dT%H:%M:%fZ', tasks.ended_at, 'utc') AS ended_at
+FROM
+    tasks
+WHERE
+    ended_at IS NULL"#,
+    )
+    .fetch_optional(pool)
+    .await
+    .map_err(ApiError::DbError)?;
+
+    if let Some(active_task) = active_task {
+        UpdateTask {
+            title: Some(active_task.title),
+            started_at: Some(active_task.started_at),
+            ended_at: Some(payload.started_at.clone()),
+        }
+        .validate()
+        .map_err(ApiError::ValidationError)?;
+    }
+
     sqlx::query(
         r#"
 UPDATE
