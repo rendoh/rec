@@ -19,12 +19,12 @@ pub struct CreateTask {
     #[validate(length(
         min = 1,
         max = 32,
-        message = "Title must be at least 1 and no more than 32 characters",
+        message = "タイトルは1文字以上32文字以下である必要があります",
     ))]
     pub title: String,
     #[validate(custom(
         function = "validate_datetime_format",
-        message = "Incorrect date format"
+        message = "不正な日付フォーマットです"
     ))]
     pub started_at: String,
 }
@@ -33,23 +33,23 @@ pub struct CreateTask {
 #[validate(schema(
     function = "validate_range",
     skip_on_field_errors = false,
-    message = "Incorrect date range"
+    message = "不正な期間です"
 ))]
 pub struct UpdateTask {
     #[validate(length(
         min = 1,
         max = 32,
-        message = "Title must be at least 1 and no more than 32 characters",
+        message = "タイトルは1文字以上32文字以下である必要があります",
     ))]
     pub title: Option<String>,
     #[validate(custom(
         function = "validate_datetime_format",
-        message = "Incorrect date format"
+        message = "不正な日付フォーマットです"
     ))]
     pub started_at: Option<String>,
     #[validate(custom(
         function = "validate_datetime_format",
-        message = "Incorrect date format"
+        message = "不正な日付フォーマットです"
     ))]
     pub ended_at: Option<String>,
 }

@@ -18,9 +18,11 @@ impl Serialize for ApiError {
             Self::ValidationError(validation_errors) => {
                 Error::new(collect_validation_messages(validation_errors)).serialize(serializer)
             }
-            Self::DbError(sqlx_error) => {
-                Error::new(vec![sqlx_error.to_string()]).serialize(serializer)
-            }
+            Self::DbError(sqlx_error) => Error::new(vec![format!(
+                "予期せぬエラーが発生しました: {}",
+                sqlx_error.to_string()
+            )])
+            .serialize(serializer),
         }
     }
 }

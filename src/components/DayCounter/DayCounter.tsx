@@ -6,16 +6,16 @@ import * as styles from './DayCounter.css';
 function getTextByDifference(diff: number) {
   switch (diff) {
     case 0: {
-      return 'Same day';
+      return '同日';
     }
     case 1: {
-      return 'Next day';
+      return '翌日';
     }
     case -1: {
-      return 'Previous day';
+      return '前日';
     }
     default: {
-      return `${Math.abs(diff)} days ${diff > 0 ? 'later' : 'ago'}`;
+      return `${Math.abs(diff)}日${diff > 0 ? '後' : '前'}`;
     }
   }
 }
@@ -24,11 +24,13 @@ export type DayCounterProps = {
   value: Date;
   baseDate: Date;
   onChange: (value: Date) => void;
+  disablePastDateSelect?: boolean;
 };
 export const DayCounter: FC<DayCounterProps> = ({
   value,
   baseDate,
   onChange,
+  disablePastDateSelect = false,
 }) => {
   const add = useCallback(() => {
     onChange(addDays(value, 1));
@@ -40,7 +42,7 @@ export const DayCounter: FC<DayCounterProps> = ({
 
   return (
     <span className={styles.root}>
-      <Button small onClick={sub}>
+      <Button small onClick={sub} disabled={disablePastDateSelect && diff <= 0}>
         -
       </Button>
       <span className={Classes.TEXT_SMALL}>{getTextByDifference(diff)}</span>

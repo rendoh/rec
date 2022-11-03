@@ -24,6 +24,7 @@ import {
 } from '@blueprintjs/core';
 import clsx from 'clsx';
 import { TaskAggregator } from '../TaskAggregator';
+import { ja } from 'date-fns/locale';
 
 type MonthNavButtonProps = {
   className?: string;
@@ -101,7 +102,9 @@ export const DailyTasks: FC = () => {
           onClick={prevDay}
         />
         <p className={clsx(Classes.MONOSPACE_TEXT, styles.date)}>
-          {format(currentDate, 'yyyy/MM/dd (iii)')}
+          {format(currentDate, 'yyyy/MM/dd (iii)', {
+            locale: ja,
+          })}
         </p>
         <MonthNavButton
           icon="chevron-right"
@@ -135,7 +138,7 @@ export const DailyTasks: FC = () => {
           <>
             <div className={styles.actions}>
               <Button icon="th-filtered" onClick={openAggregationModal}>
-                Aggregate
+                集計
               </Button>
             </div>
             <TaskList tasks={tasks} onUpdate={handleUpdate} />
@@ -144,8 +147,8 @@ export const DailyTasks: FC = () => {
           <NonIdealState
             className={styles.empty}
             icon="th-disconnect"
-            title="No tasks"
-            description="No tasks were found for this day."
+            title="Not found"
+            description="該当の日付にタスクが見つかりませんでした"
           />
         )}
       </div>
@@ -161,7 +164,7 @@ export const DailyTasks: FC = () => {
 
       <Dialog
         isOpen={isAggregationModalOpen}
-        title={format(today, 'yyyy/MM/dd')}
+        title={`${format(today, 'yyyy/MM/dd')} のタスク集計結果`}
         onClose={closeAggregationModal}
       >
         <div className={styles.dialogContent}>

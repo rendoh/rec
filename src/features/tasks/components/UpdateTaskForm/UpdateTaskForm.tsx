@@ -45,10 +45,14 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
   const onSubmit: SubmitHandler<UpdateTaskDto> = useCallback(
     async (values) => {
       // TODO: handle error
-      await updateTask(task.id, {
-        ...values,
-      });
-      onComplete?.();
+      try {
+        await updateTask(task.id, {
+          ...values,
+        });
+        onComplete?.();
+      } catch (error) {
+        console.log(error);
+      }
     },
     [onComplete, task.id],
   );
@@ -132,10 +136,10 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
                   intent="none"
                   className={PopoverClasses.POPOVER2_DISMISS}
                 >
-                  Cancel
+                  戻る
                 </Button>
                 <Button intent="danger" onClick={remove}>
-                  Delete
+                  削除
                 </Button>
               </div>
             }
@@ -197,6 +201,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
                     render={({ field }) =>
                       field.value ? (
                         <DayCounter
+                          disablePastDateSelect
                           baseDate={startedAtValue}
                           value={field.value}
                           onChange={(value) => {

@@ -5,10 +5,10 @@ export const maxTitleLength = 32;
 export const taskTitleSchema = z
   .string()
   .min(1, {
-    message: 'Task title must contain at least 1 character',
+    message: `タイトルは1文字以上${maxTitleLength}文字以下で入力してください`,
   })
   .max(maxTitleLength, {
-    message: `Task title must contain at most ${maxTitleLength} characters`,
+    message: `タイトルは1文字以上${maxTitleLength}文字以下で入力してください`,
   });
 export const dateSchema = z.preprocess((arg) => {
   if (typeof arg == 'string' || arg instanceof Date) return new Date(arg);
@@ -41,7 +41,7 @@ export const updateTaskDtoSchema = z
     ended_at: dateSchema.nullish(),
   })
   .refine(({ started_at, ended_at }) => !ended_at || started_at < ended_at, {
-    message: 'Incorrect time',
+    message: '日付の範囲が正しくありません',
     path: ['ended_at'],
   });
 export type UpdateTaskDto = z.infer<typeof updateTaskDtoSchema>;

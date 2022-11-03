@@ -35,9 +35,13 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
         started_at: new Date(),
       };
       // TODO: handle error
-      await createTask(createTaskDto);
-      reset();
-      onComplete?.();
+      try {
+        await createTask(createTaskDto);
+        reset();
+        onComplete?.();
+      } catch (error) {
+        console.log(error);
+      }
     },
     [onComplete, reset],
   );
@@ -59,7 +63,7 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
             intent={formState.errors.title && 'danger'}
           >
             <TaskTitleField
-              placeholder="Project / Task"
+              placeholder="タスク・プロジェクト名"
               {...bpRegister(register('title'))}
               isError={!!formState.errors.title}
             />
@@ -68,7 +72,7 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
         </div>
         {recentTaskTitles.length > 0 && (
           <>
-            <p className={styles.recentTasksTitle}>Recent tasks</p>
+            <p className={styles.recentTasksTitle}>最近のタスク</p>
             <div className={styles.startButtons}>
               {recentTaskTitles.map((title, i) => (
                 <StartTaskButton
