@@ -7,6 +7,8 @@ pub enum ApiError {
     ValidationError(ValidationErrors),
     #[error("DbError: {0}")]
     DbError(sqlx::Error),
+    #[error("CustomError: {0}")]
+    CustomError(String),
 }
 
 impl Serialize for ApiError {
@@ -23,6 +25,9 @@ impl Serialize for ApiError {
                 sqlx_error.to_string()
             )])
             .serialize(serializer),
+            Self::CustomError(message) => {
+                Error::new(vec![message.to_string()]).serialize(serializer)
+            }
         }
     }
 }

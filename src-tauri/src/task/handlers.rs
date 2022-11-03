@@ -58,7 +58,11 @@ pub async fn create(pool: &SqlitePool, payload: CreateTask) -> Result<Task, ApiE
             ended_at: Some(payload.started_at.clone()),
         }
         .validate()
-        .map_err(ApiError::ValidationError)?;
+        .map_err(|_| {
+            ApiError::CustomError(
+                "稼働中のタスクの開始時刻に未来の日時が指定されているため、稼働中のタスクを終了できません".to_string(),
+            )
+        })?;
     }
 
     sqlx::query(indoc! {r#"
