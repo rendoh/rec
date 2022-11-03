@@ -98,14 +98,24 @@ export function useToday() {
 }
 
 export function useToggleTheme() {
-  const [isLightTheme, setIsLightTheme] = useState(false);
+  const [isLightTheme, setIsLightTheme] = useState<boolean>(false);
+
   const toggleTheme = useCallback(() => {
     setIsLightTheme((currentValue) => {
-      const newValue = !currentValue;
-      document.body.classList.toggle(Classes.DARK, !newValue);
-      return newValue;
+      const isLight = !currentValue;
+      document.body.classList.toggle(Classes.DARK, !isLight);
+      localStorage.setItem('RECAPP_isLightTheme', isLight ? '1' : '0');
+      return isLight;
     });
   }, []);
+
+  useEffect(() => {
+    if (localStorage.getItem('RECAPP_isLightTheme') === '1') {
+      setIsLightTheme(true);
+      document.body.classList.remove(Classes.DARK);
+    }
+  }, []);
+
   return {
     isLightTheme,
     toggleTheme,
