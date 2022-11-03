@@ -10,6 +10,7 @@ import { createTask } from '../../api';
 import * as styles from './CreateTaskForm.css';
 import { TaskTitleField } from '../TaskTitleField';
 import { StartTaskButton } from '../StartTaskButton';
+import { handleErrorMessages } from '../../../../components/ErrorToaster';
 
 const createTaskFormSchema = createTaskDtoSchema.omit({ started_at: true });
 type CreateTaskFormValues = z.infer<typeof createTaskFormSchema>;
@@ -34,13 +35,12 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
         title: title,
         started_at: new Date(),
       };
-      // TODO: handle error
       try {
         await createTask(createTaskDto);
         reset();
         onComplete?.();
-      } catch (error) {
-        console.log(error);
+      } catch (error: unknown) {
+        handleErrorMessages(error);
       }
     },
     [onComplete, reset],
@@ -68,7 +68,12 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
               isError={!!formState.errors.title}
             />
           </FormGroup>
-          <IconButton icon="play" type="submit" aria-label="Start" />
+          <IconButton
+            className={styles.startButton}
+            icon="play"
+            type="submit"
+            aria-label="Start"
+          />
         </div>
         {recentTaskTitles.length > 0 && (
           <>

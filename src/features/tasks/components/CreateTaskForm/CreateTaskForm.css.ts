@@ -15,8 +15,12 @@ globalStyle(`.${Classes.DARK} ${root}.${Classes.CARD}`, {
 export const row = style({
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'center',
+  alignItems: 'self-start',
   gap: 20,
+});
+
+export const startButton = style({
+  marginTop: 5,
 });
 
 export const formGroup = style({

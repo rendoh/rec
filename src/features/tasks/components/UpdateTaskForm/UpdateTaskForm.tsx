@@ -25,6 +25,7 @@ import {
 import { DayCounter } from '../../../../components/DayCounter';
 import { formatDurationTime } from '../../../../utils/formatDurationTime';
 import { useEverySecond } from '../../../../hooks/useEverySecond';
+import { handleErrorMessages } from '../../../../components/ErrorToaster';
 
 export type UpdateTaskFormProps = {
   task: Task;
@@ -35,7 +36,6 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
   task,
   onComplete,
 }) => {
-  // TODO: refactor hooks
   const { control, register, handleSubmit, formState, reset, getValues } =
     useForm<UpdateTaskDto>({
       defaultValues: task,
@@ -44,14 +44,13 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
 
   const onSubmit: SubmitHandler<UpdateTaskDto> = useCallback(
     async (values) => {
-      // TODO: handle error
       try {
         await updateTask(task.id, {
           ...values,
         });
         onComplete?.();
-      } catch (error) {
-        console.log(error);
+      } catch (error: unknown) {
+        handleErrorMessages(error);
       }
     },
     [onComplete, task.id],
@@ -61,10 +60,13 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
     reset(task);
   }, [reset, task]);
 
-  // TODO: handle error
   const remove = useCallback(async () => {
-    await deleteTask(task.id);
-    onComplete?.();
+    try {
+      await deleteTask(task.id);
+      onComplete?.();
+    } catch (error: unknown) {
+      handleErrorMessages(error);
+    }
   }, [onComplete, task.id]);
 
   const handleKeyUpEnter = useCallback(

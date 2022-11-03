@@ -11,6 +11,7 @@ export const headerRow = style([
   row,
   {
     gap: 20,
+    alignItems: 'flex-start',
   },
 ]);
 
@@ -24,6 +25,7 @@ export const actions = style([
   {
     flexShrink: 0,
     gap: 10,
+    marginTop: 5,
   },
 ]);
 

@@ -9,6 +9,7 @@ import {
   subMonths,
 } from 'date-fns';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { handleErrorMessages } from '../../../../components/ErrorToaster';
 import { findRecentTaskTitles, findTasks } from '../../api';
 import { Task } from '../../schemas';
 
@@ -61,10 +62,14 @@ export function useDailyTasks() {
   const [isLoading, setIsLoading] = useState(true);
   const reloadTasks = useCallback(async () => {
     setIsLoading(true);
-    // TODO: handle error
-    const tasks = await findTasks({ from, to });
-    setTasks(tasks);
-    setIsLoading(false);
+    try {
+      const tasks = await findTasks({ from, to });
+      setTasks(tasks);
+    } catch (error: unknown) {
+      handleErrorMessages(error);
+    } finally {
+      setIsLoading(false);
+    }
   }, [from, to]);
   useEffect(() => {
     reloadTasks();
@@ -125,9 +130,12 @@ export function useToggleTheme() {
 export function useRecentTaskTitles() {
   const [recentTaskTitles, setRecentTaskTitles] = useState<string[]>([]);
   const reloadRecentTaskTitles = useCallback(async () => {
-    // TODO: handle error
-    const titles = await findRecentTaskTitles();
-    setRecentTaskTitles(titles);
+    try {
+      const titles = await findRecentTaskTitles();
+      setRecentTaskTitles(titles);
+    } catch (error: unknown) {
+      handleErrorMessages(error);
+    }
   }, []);
   useEffect(() => {
     reloadRecentTaskTitles();
