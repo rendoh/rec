@@ -28,7 +28,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.rec.app",
+      "identifier": "com.rec.timetracker",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
