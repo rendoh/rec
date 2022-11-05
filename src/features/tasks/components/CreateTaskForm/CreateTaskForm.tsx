@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { CreateTaskDto, createTaskDtoSchema } from '../../schemas';
 import { blueprintRegister as bpRegister } from '../../../../utils/blueprintRegister';
-import { IconButton } from '../../../../components/IconButton';
+import { IconButton } from '../../../../components/_IconButton';
 import { createTask } from '../../api';
 import * as styles from './CreateTaskForm.css';
 import { TaskTitleField } from '../TaskTitleField';

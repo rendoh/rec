@@ -1,5 +1,6 @@
 import { Classes, Colors } from '@blueprintjs/core';
 import { globalStyle, style } from '@vanilla-extract/css';
+import { vars } from '../../../../styles/theme.css';
 
 export const root = style({
   position: 'relative',
@@ -15,16 +16,17 @@ export const header = style({
   alignItems: 'center',
   height: 60,
   position: 'relative',
+  backgroundColor: vars.color.neutralLight,
 });
 
-globalStyle(`${header}.${Classes.CARD}`, {
-  boxShadow: 'none',
-  borderBottom: `1px solid ${Colors.LIGHT_GRAY1}`,
-});
+// globalStyle(`${header}.${Classes.CARD}`, {
+//   boxShadow: 'none',
+//   borderBottom: `1px solid ${Colors.LIGHT_GRAY1}`,
+// });
 
-globalStyle(`.${Classes.DARK} ${header}.${Classes.CARD}`, {
-  borderBottomColor: Colors.GRAY1,
-});
+// globalStyle(`.${Classes.DARK} ${header}.${Classes.CARD}`, {
+//   borderBottomColor: Colors.GRAY1,
+// });
 
 export const content = style({
   padding: 20,

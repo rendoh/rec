@@ -11,7 +11,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Task, UpdateTaskDto, updateTaskDtoSchema } from '../../schemas';
 import { blueprintRegister as bpRegister } from '../../../../utils/blueprintRegister';
-import { IconButton } from '../../../../components/IconButton';
+import { IconButton } from '../../../../components/_IconButton';
 import { isFuture, isSameDay } from 'date-fns';
 import { deleteTask, updateTask } from '../../api';
 import * as styles from './UpdateTaskForm.css';

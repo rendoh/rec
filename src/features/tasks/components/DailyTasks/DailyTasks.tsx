@@ -10,7 +10,7 @@ import {
   useToggleTheme,
 } from './DailyTasks.hooks';
 import * as styles from './DailyTasks.css';
-import { IconButton } from '../../../../components/IconButton';
+import { IconButton } from '../../../../components/_IconButton';
 import {
   Button,
   Card,
@@ -25,6 +25,7 @@ import {
 import clsx from 'clsx';
 import { TaskAggregator } from '../TaskAggregator';
 import { ja } from 'date-fns/locale';
+import { DailyTasksHeader } from './DailyTasksHeader';
 
 type MonthNavButtonProps = {
   className?: string;
@@ -84,6 +85,15 @@ export const DailyTasks: FC = () => {
 
   return (
     <div className={styles.root}>
+      <DailyTasksHeader
+        date={currentDate}
+        onPrevMonthClick={prevMonth}
+        onPrevDateClick={prevDay}
+        onNextDateClick={nextDay}
+        onNextMonthClick={nextMonth}
+        onTodayClick={toToday}
+        disabledToday={isToday}
+      />
       <Card className={styles.header} elevation={2}>
         {!isToday && (
           <Button className={styles.todayButton} onClick={toToday}>
