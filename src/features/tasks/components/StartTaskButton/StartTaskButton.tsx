@@ -1,5 +1,7 @@
-import { Button } from '@blueprintjs/core';
 import { FC, useCallback } from 'react';
+import { BsPlayFill } from 'react-icons/bs';
+import { Button } from '../../../../components/Button';
+import * as styles from './StartTaskButton.css';
 
 export type StartTaskButtonProps = {
   title: string;
@@ -13,13 +15,10 @@ export const StartTaskButton: FC<StartTaskButtonProps> = ({
   const handleClick = useCallback(() => onStart(title), [onStart, title]);
   return (
     <Button
-      minimal
-      outlined
-      fill
-      large
+      border
+      className={styles.root}
       onClick={handleClick}
-      alignText="left"
-      icon="play"
+      leftIcon={<BsPlayFill />}
     >
       {title}
     </Button>

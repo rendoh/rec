@@ -1,16 +1,36 @@
-import { Classes } from '@blueprintjs/core';
-import { globalStyle, style } from '@vanilla-extract/css';
+import { recipe, RecipeVariants } from '@vanilla-extract/recipes';
+import { vars } from '../../../../styles/theme.css';
 
-export const root = style({});
-export const interactiveOutline = style({});
+export const root = recipe({
+  base: {
+    width: '100%',
+    borderRadius: 4,
+    fontSize: 16,
+    backgroundColor: vars.color.neutralLight,
+    padding: '6px 12px',
+    outline: 'none',
+    border: '1px solid transparent',
+    selectors: {
+      '&::placeholder': {
+        color: vars.color.neutral,
+      },
+    },
+  },
 
-globalStyle(`${root} .${Classes.INPUT}`, {
-  fontSize: '20px !important',
-  fontWeight: 'bold',
-  letterSpacing: '.05em',
+  variants: {
+    error: {
+      true: {
+        borderColor: vars.color.error,
+      },
+      false: {
+        selectors: {
+          '&:focus': {
+            borderColor: vars.color.neutral,
+          },
+        },
+      },
+    },
+  },
 });
 
-globalStyle(`${interactiveOutline} .${Classes.INPUT}:not(:hover):not(:focus)`, {
-  boxShadow: 'none',
-  background: 'inherit',
-});
+export type RootVariants = RecipeVariants<typeof root>;

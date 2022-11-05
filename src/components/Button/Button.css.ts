@@ -1,15 +1,20 @@
+import { style } from '@vanilla-extract/css';
 import { recipe, RecipeVariants } from '@vanilla-extract/recipes';
 import { vars } from '../../styles/theme.css';
 
 export const root = recipe({
   base: {
-    cursor: 'pointer',
     background: vars.color.neutralLighter,
     borderRadius: 4,
     padding: '5px 10px',
     lineHeight: 1.25,
+    display: 'inline-flex',
+    alignItems: 'center',
     selectors: {
-      '&:hover': {
+      '&:not(:disabled)': {
+        cursor: 'pointer',
+      },
+      '&:hover:not(:disabled)': {
         background: vars.color.neutralLight,
       },
       '&:disabled': {
@@ -28,3 +33,9 @@ export const root = recipe({
 });
 
 export type RootVariants = RecipeVariants<typeof root>;
+
+export const leftIcon = style({
+  marginRight: 6,
+  display: 'inline-grid',
+  placeItems: 'center',
+});

@@ -94,49 +94,6 @@ export const DailyTasks: FC = () => {
         onTodayClick={toToday}
         disabledToday={isToday}
       />
-      <Card className={styles.header} elevation={2}>
-        {!isToday && (
-          <Button className={styles.todayButton} onClick={toToday}>
-            Today
-          </Button>
-        )}
-        <MonthNavButton
-          className={styles.monthMoveButton}
-          icon="double-chevron-left"
-          label="Previous month"
-          onClick={prevMonth}
-        />
-        <MonthNavButton
-          icon="chevron-left"
-          label="Previous day"
-          onClick={prevDay}
-        />
-        <p className={clsx(Classes.MONOSPACE_TEXT, styles.date)}>
-          {format(currentDate, 'yyyy/MM/dd (iii)', {
-            locale: ja,
-          })}
-        </p>
-        <MonthNavButton
-          icon="chevron-right"
-          label="Next day"
-          onClick={nextDay}
-        />
-        <MonthNavButton
-          className={styles.monthMoveButton}
-          icon="double-chevron-right"
-          label="Next month"
-          onClick={nextMonth}
-        />
-        <div className={styles.themeGroup}>
-          <Icon icon="moon" size={10} />
-          <Switch
-            className={styles.themeSwitch}
-            checked={isLightTheme}
-            onChange={() => toggleTheme()}
-          />
-          <Icon icon="flash" size={10} />
-        </div>
-      </Card>
 
       <div className={styles.content}>
         {isLoading && (

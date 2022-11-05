@@ -13,6 +13,7 @@ export const vars = createThemeContract({
     neutralLighter: '',
     black: '',
     white: '',
+    error: '',
   },
 });
 
@@ -26,8 +27,9 @@ export const lightThemeClass = createTheme(vars, {
     // neutralTertiary: '#595959',
     neutral: '#ccc',
     neutralLight: '#e8e8e8',
-    neutralLighter: '#f1f1f1',
+    neutralLighter: '#f2f2f2',
     black: '#2d2d2d',
     white: '#fafafa',
+    error: '#e57373',
   },
 });

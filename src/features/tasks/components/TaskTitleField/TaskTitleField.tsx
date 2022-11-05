@@ -1,30 +1,22 @@
-import { FC } from 'react';
-import { InputGroup, InputGroupProps2 } from '@blueprintjs/core';
+import { forwardRef } from 'react';
 import { maxTitleLength } from '../../schemas';
 import * as styles from './TaskTitleField.css';
 import clsx from 'clsx';
 
-export type TaskTitleFieldProps = Omit<
-  InputGroupProps2,
-  'large' | 'maxLength'
-> & {
-  interactiveOutline?: boolean;
-  isError?: boolean;
-};
+export type TaskTitleFieldProps = JSX.IntrinsicElements['input'] &
+  styles.RootVariants & {
+    interactiveOutline?: boolean;
+  };
 
-export const TaskTitleField: FC<TaskTitleFieldProps> = ({
-  className,
-  isError,
-  interactiveOutline,
-  ...props
-}) => (
-  <InputGroup
-    className={clsx(styles.root, className, {
-      [styles.interactiveOutline]: interactiveOutline,
-    })}
-    large
-    intent={isError ? 'danger' : undefined}
-    maxLength={maxTitleLength}
-    {...props}
-  />
+export const TaskTitleField = forwardRef<HTMLInputElement, TaskTitleFieldProps>(
+  ({ className, error, ...props }, ref) => (
+    <input
+      {...props}
+      ref={ref}
+      className={clsx(styles.root({ error }), className)}
+      maxLength={maxTitleLength}
+    />
+  ),
 );
+
+TaskTitleField.displayName = 'TaskTitleField';

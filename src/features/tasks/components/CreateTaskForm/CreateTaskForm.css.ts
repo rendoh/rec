@@ -1,40 +1,29 @@
-import { Classes, Colors } from '@blueprintjs/core';
-import { globalStyle, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
+import { vars } from '../../../../styles/theme.css';
 
-export const root = style({});
-
-globalStyle(`${root}.${Classes.CARD}`, {
-  boxShadow: 'none',
-  borderTop: `1px solid ${Colors.LIGHT_GRAY1}`,
-});
-
-globalStyle(`.${Classes.DARK} ${root}.${Classes.CARD}`, {
-  borderTopColor: Colors.GRAY1,
+export const root = style({
+  backgroundColor: vars.color.neutralLighter,
+  padding: 10,
 });
 
 export const row = style({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'self-start',
-  gap: 20,
+  gap: 10,
 });
 
-export const startButton = style({
-  marginTop: 5,
-});
-
-export const formGroup = style({
-  margin: 0,
+export const fieldGroup = style({
   flex: 1,
 });
 
-export const recentTasksTitle = style({
-  margin: '20px 0 10px',
+export const startButton = style({
+  marginTop: 3,
 });
 
 export const startButtons = style({
   display: 'grid',
   gridTemplateColumns: 'repeat(3, 1fr)',
-
+  marginTop: 10,
   gap: 10,
 });

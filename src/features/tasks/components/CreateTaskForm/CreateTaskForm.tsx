@@ -1,16 +1,17 @@
 import { FC, useCallback } from 'react';
-import { Card, FormGroup } from '@blueprintjs/core';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { CreateTaskDto, createTaskDtoSchema } from '../../schemas';
 import { blueprintRegister as bpRegister } from '../../../../utils/blueprintRegister';
-import { IconButton } from '../../../../components/_IconButton';
+import { IconButton } from '../../../../components/IconButton';
 import { createTask } from '../../api';
 import * as styles from './CreateTaskForm.css';
 import { TaskTitleField } from '../TaskTitleField';
 import { StartTaskButton } from '../StartTaskButton';
 import { handleErrorMessages } from '../../../../components/ErrorToaster';
+import { InvalidMessage } from '../../../../components/InvalidMessage';
+import { BsPlayFill } from 'react-icons/bs';
 
 const createTaskFormSchema = createTaskDtoSchema.omit({ started_at: true });
 type CreateTaskFormValues = z.infer<typeof createTaskFormSchema>;
@@ -54,30 +55,28 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
   );
 
   return (
-    <Card elevation={1} className={styles.root}>
+    <div className={styles.root}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.row}>
-          <FormGroup
-            className={styles.formGroup}
-            helperText={formState.errors.title?.message}
-            intent={formState.errors.title && 'danger'}
-          >
+          <div className={styles.fieldGroup}>
             <TaskTitleField
+              {...register('title')}
               placeholder="タスク・プロジェクト名"
-              {...bpRegister(register('title'))}
-              isError={!!formState.errors.title}
+              error={!!formState.errors.title}
             />
-          </FormGroup>
+            <InvalidMessage>{formState.errors.title?.message}</InvalidMessage>
+          </div>
           <IconButton
+            border
             className={styles.startButton}
-            icon="play"
             type="submit"
-            aria-label="Start"
-          />
+            aria-label="開始"
+          >
+            <BsPlayFill />
+          </IconButton>
         </div>
         {recentTaskTitles.length > 0 && (
           <>
-            <p className={styles.recentTasksTitle}>最近のタスク</p>
             <div className={styles.startButtons}>
               {recentTaskTitles.map((title, i) => (
                 <StartTaskButton
@@ -90,6 +89,6 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({
           </>
         )}
       </form>
-    </Card>
+    </div>
   );
 };
