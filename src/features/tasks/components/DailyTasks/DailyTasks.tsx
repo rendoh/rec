@@ -67,6 +67,7 @@ export const DailyTasks: FC = () => {
               <Button
                 leftIcon={<BsFilterLeft />}
                 onClick={openAggregationModal}
+                border
               >
                 集計
               </Button>
