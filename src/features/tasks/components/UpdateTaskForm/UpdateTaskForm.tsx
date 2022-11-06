@@ -1,16 +1,10 @@
-import { FC, useCallback, useEffect, useState } from 'react';
-import {
-  Button,
-  Classes,
-  ControlGroup,
-  FormGroup,
-  Icon,
-} from '@blueprintjs/core';
+import { FC, useCallback, useEffect } from 'react';
+import { Classes, FormGroup } from '@blueprintjs/core';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Task, UpdateTaskDto, updateTaskDtoSchema } from '../../schemas';
 import { IconButton } from '../../../../components/IconButton';
-import { isFuture, isSameDay } from 'date-fns';
+import { isFuture } from 'date-fns';
 import { deleteTask, updateTask } from '../../api';
 import * as styles from './UpdateTaskForm.css';
 import { TimeField } from '../../../../components/TimeField';
@@ -80,21 +74,10 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
     (endedAtValue || currentDate).getTime() - startedAtValue.getTime(),
   );
 
-  const isInSameDay = endedAtValue && isSameDay(startedAtValue, endedAtValue);
-  const [isDayCounterOpen, setIsDayCounterOpen] = useState(false);
-  const toggleDayCounter = useCallback(
-    () => setIsDayCounterOpen((v) => !v),
-    [],
-  );
-
   return (
     <div className={styles.root}>
       <div className={styles.headerRow}>
-        <FormGroup
-          className={styles.formGroup}
-          helperText={formState.errors.title?.message}
-          intent={formState.errors.title && 'danger'}
-        >
+        <div className={styles.titleField}>
           <TaskTitleField
             {...register('title', {
               onBlur: handleSubmit(onSubmit),
@@ -104,7 +87,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
             error={!!formState.errors.title}
           />
           <InvalidMessage>{formState.errors.title?.message}</InvalidMessage>
-        </FormGroup>
+        </div>
         <div className={styles.actions}>
           {isActive && (
             <Controller
@@ -155,11 +138,8 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
         </div>
       </div>
       <div className={styles.detailRow}>
-        <FormGroup
-          helperText={formState.errors.ended_at?.message}
-          intent={formState.errors.ended_at && 'danger'}
-        >
-          <ControlGroup className={styles.dateTimeControlGroup}>
+        <div>
+          <div className={styles.range}>
             <Controller
               name="started_at"
               control={control}
@@ -173,38 +153,30 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
                 />
               )}
             />
-            <div className={styles.tilde}> - </div>
+            <div> - </div>
             {!isActive && (
-              <>
-                <Controller
-                  name="ended_at"
-                  control={control}
-                  render={({ field }) =>
-                    field.value ? (
-                      <TimeField
-                        error={!!formState.errors.ended_at}
-                        value={field.value}
-                        onChange={field.onChange}
-                        onBlur={handleSubmit(onSubmit)}
-                        interactiveOutline
-                        over24BaseDate={startedAtValue}
-                      />
-                    ) : (
-                      <></>
-                    )
-                  }
-                />
-                {isInSameDay && (
-                  <Button small onClick={toggleDayCounter}>
-                    <Icon
-                      icon={isDayCounterOpen ? 'chevron-left' : 'chevron-right'}
+              <Controller
+                name="ended_at"
+                control={control}
+                render={({ field }) =>
+                  field.value ? (
+                    <TimeField
+                      error={!!formState.errors.ended_at}
+                      value={field.value}
+                      onChange={field.onChange}
+                      onBlur={handleSubmit(onSubmit)}
+                      interactiveOutline
+                      over24BaseDate={startedAtValue}
                     />
-                  </Button>
-                )}
-              </>
+                  ) : (
+                    <InvalidMessage>Something wrong</InvalidMessage>
+                  )
+                }
+              />
             )}
-          </ControlGroup>
-        </FormGroup>
+          </div>
+          <InvalidMessage>{formState.errors.ended_at?.message}</InvalidMessage>
+        </div>
         <p className={clsx(Classes.MONOSPACE_TEXT, styles.elapsedTime)}>
           {elapsedTime}
         </p>

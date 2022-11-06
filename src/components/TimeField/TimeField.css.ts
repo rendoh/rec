@@ -10,7 +10,7 @@ export const root = recipe({
     gap: 6,
     width: '100%',
     backgroundColor: vars.color.neutralLight,
-    padding: '6px 6px',
+    padding: 6,
   },
 
   variants: {

@@ -1,10 +1,10 @@
-import { Classes } from '@blueprintjs/core';
-import { globalStyle, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
 import { vars } from '../../../../styles/theme.css';
 
 export const root = style({
   backgroundColor: vars.color.neutralLighter,
   padding: 12,
+  borderRadius: 4,
 });
 
 const row = style({
@@ -21,8 +21,7 @@ export const headerRow = style([
   },
 ]);
 
-export const formGroup = style({
-  margin: 0,
+export const titleField = style({
   flex: 1,
 });
 
@@ -37,25 +36,20 @@ export const actions = style([
 
 export const elapsedTime = style({
   fontWeight: 'bold',
-  fontSize: 18,
-  margin: '0 8px',
+  fontSize: 16,
+  margin: '0 4px',
 });
 
 export const detailRow = style([
   row,
   {
-    marginTop: 10,
+    marginTop: 4,
   },
 ]);
 
-globalStyle(`${detailRow} .${Classes.FORM_GROUP}`, {
-  margin: '0',
-});
-
-export const dateTimeControlGroup = style({
-  alignItems: 'center',
-});
-
-export const tilde = style({
-  margin: '0 5px',
-});
+export const range = style([
+  row,
+  {
+    gap: 5,
+  },
+]);
