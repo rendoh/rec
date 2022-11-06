@@ -129,6 +129,7 @@ describe('時間フィールドの数値入力時', () => {
     });
   });
 });
+
 describe('分フィールドの数値入力時', () => {
   const cases: Case[] = [
     [0, 0, 0],
@@ -177,4 +178,139 @@ test('分フィールドにBackspace入力で0分になる', () => {
     key: 'Backspace',
   });
   expect(onChange.mock.calls[0][0].getMinutes()).toBe(0);
+});
+
+describe('BaseDateが渡されているケース', () => {
+  test('時間フィールドのArrowUpキー押下時、23時の場合は翌日の0時にセットされる', () => {
+    render(
+      <TimeField
+        value={new Date('2022-11-11T23:30:00.000Z')}
+        onChange={onChange}
+        over24BaseDate={new Date('2022-11-11T23:00:00.000Z')}
+      />,
+    );
+
+    fireEvent.keyDown(screen.getByLabelText('時'), {
+      key: 'ArrowUp',
+    });
+    expect(onChange.mock.calls[0][0].getHours()).toBe(0);
+    expect(onChange.mock.calls[0][0].getDate()).toBe(12);
+  });
+
+  test('翌日以降の時間を24を超えて表記される', () => {
+    render(
+      <TimeField
+        value={new Date('2022-11-12T03:30:00.000Z')}
+        onChange={onChange}
+        over24BaseDate={new Date('2022-11-11T23:00:00.000Z')}
+      />,
+    );
+    expect(screen.getByLabelText('時').textContent).toBe('27');
+  });
+
+  test('分フィールドのArrowUpキー押下時、59分の場合は同時間の0分に折り返す挙動は、BaseDateの有無によらず挙動に変化はない', () => {
+    render(
+      <TimeField
+        value={new Date('2022-11-11T10:59:00.000Z')}
+        onChange={onChange}
+        over24BaseDate={new Date('2022-11-11T23:00:00.000Z')}
+      />,
+    );
+    fireEvent.keyDown(screen.getByLabelText('分'), {
+      key: 'ArrowUp',
+    });
+    expect(onChange.mock.calls[0][0].getMinutes()).toBe(0);
+    expect(onChange.mock.calls[0][0].getHours()).toBe(10);
+  });
+
+  test('分フィールドのArrowDownキー押下時、0分の場合は同時間の59分に折り返す挙動は、BaseDateの有無によらず挙動に変化はない', () => {
+    render(
+      <TimeField
+        value={new Date('2022-11-11T10:00:00.000Z')}
+        onChange={onChange}
+        over24BaseDate={new Date('2022-11-11T23:00:00.000Z')}
+      />,
+    );
+    fireEvent.keyDown(screen.getByLabelText('分'), {
+      key: 'ArrowDown',
+    });
+    expect(onChange.mock.calls[0][0].getMinutes()).toBe(59);
+    expect(onChange.mock.calls[0][0].getHours()).toBe(10);
+  });
+
+  describe('時間フィールドの数値入力時', () => {
+    const cases: Case[] = [
+      [0, 0, 0],
+      [0, 1, 1],
+      [0, 2, 2],
+      [0, 3, 3],
+      [0, 4, 4],
+      [0, 5, 5],
+      [1, 0, 10],
+      [1, 1, 11],
+      [2, 0, 20],
+      [2, 1, 21],
+      [2, 4, 24],
+      [3, 0, 30],
+      [3, 1, 31],
+      [10, 0, 100],
+      [10, 1, 101],
+    ];
+
+    cases.forEach(([now, input, expected]) => {
+      test(`${now}時に${input}を入力すると${expected}時になる`, () => {
+        render(
+          <TimeField
+            value={
+              new Date(`2022-11-11T${String(now).padStart(2, '0')}:00:00.000Z`)
+            }
+            onChange={onChange}
+            over24BaseDate={new Date('2022-11-11T00:00:00.000Z')}
+          />,
+        );
+        fireEvent.keyDown(screen.getByLabelText('時'), {
+          key: input.toString(),
+        });
+
+        expect(onChange.mock.calls[0][0].getDate()).toBe(
+          11 + Math.floor(expected / 24),
+        );
+        expect(onChange.mock.calls[0][0].getHours()).toBe(expected % 24);
+      });
+    });
+  });
+
+  describe('時間フィールドにBackspace入力時、1の位を削除した値になる', () => {
+    const cases: [now: number, expected: number][] = [
+      [123, 12],
+      [12, 1],
+      [1, 0],
+      [25, 2],
+      [36, 3],
+    ];
+    cases.forEach(([now, expected]) => {
+      test(`${now}時のときにBackspace入力で${expected}時になる`, () => {
+        render(
+          <TimeField
+            value={
+              new Date(
+                `2022-11-${11 + Math.floor(now / 24)}T${String(
+                  now % 24,
+                ).padStart(2, '0')}:00:00.000Z`,
+              )
+            }
+            onChange={onChange}
+            over24BaseDate={new Date('2022-11-11T00:00:00.000Z')}
+          />,
+        );
+        fireEvent.keyDown(screen.getByLabelText('時'), {
+          key: 'Backspace',
+        });
+        expect(onChange.mock.calls[0][0].getHours()).toBe(expected);
+        expect(onChange.mock.calls[0][0].getDate()).toBe(
+          11 + Math.floor(expected / 24),
+        );
+      });
+    });
+  });
 });

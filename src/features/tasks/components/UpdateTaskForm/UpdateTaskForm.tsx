@@ -202,6 +202,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
                         onChange={field.onChange}
                         onBlur={handleSubmit(onSubmit)}
                         interactiveOutline
+                        over24BaseDate={startedAtValue}
                       />
                     ) : (
                       <></>

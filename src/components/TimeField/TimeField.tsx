@@ -1,7 +1,16 @@
 import { FC, KeyboardEvent, MouseEvent, useRef } from 'react';
 import * as styles from './TimeField.css';
 import clsx from 'clsx';
-import { format, getHours, getMinutes, setHours, setMinutes } from 'date-fns';
+import {
+  addHours,
+  differenceInCalendarDays,
+  format,
+  getHours,
+  getMinutes,
+  setHours,
+  setMinutes,
+  subHours,
+} from 'date-fns';
 import { wrap } from '../../utils/wrap';
 import { useCallback, FocusEventHandler } from 'react';
 
@@ -10,6 +19,7 @@ export type TimeFieldProps = {
   value: Date;
   onChange: (date: Date) => void;
   onBlur?: FocusEventHandler;
+  over24BaseDate?: Date;
 } & styles.RootVariants;
 
 export const TimeField: FC<TimeFieldProps> = ({
@@ -19,6 +29,7 @@ export const TimeField: FC<TimeFieldProps> = ({
   onChange,
   onBlur,
   interactiveOutline,
+  over24BaseDate,
 }) => {
   const hoursDivRef = useRef<HTMLDivElement | null>(null);
   const minutesDivRef = useRef<HTMLDivElement | null>(null);
@@ -27,6 +38,7 @@ export const TimeField: FC<TimeFieldProps> = ({
     onChange,
     type: 'hours',
     siblingRef: minutesDivRef,
+    over24BaseDate,
   });
   const handleMinutesKeyDown = useTimeFieldKeyboard({
     value,
@@ -39,6 +51,9 @@ export const TimeField: FC<TimeFieldProps> = ({
       e.target !== minutesDivRef.current && hoursDivRef.current?.focus(),
     [],
   );
+
+  const diffWithBaseDate =
+    over24BaseDate && differenceInCalendarDays(value, over24BaseDate);
 
   return (
     <div
@@ -59,7 +74,9 @@ export const TimeField: FC<TimeFieldProps> = ({
         ref={hoursDivRef}
         aria-label="時"
       >
-        {format(value, 'HH')}
+        {diffWithBaseDate
+          ? diffWithBaseDate * 24 + value.getHours()
+          : format(value, 'HH')}
       </div>
       <div>:</div>
       <div
@@ -81,11 +98,13 @@ function useTimeFieldKeyboard({
   onChange,
   type,
   siblingRef,
+  over24BaseDate,
 }: {
   value: Date;
   onChange: (date: Date) => void;
   type: 'hours' | 'minutes';
   siblingRef: React.MutableRefObject<HTMLDivElement | null>;
+  over24BaseDate?: Date;
 }) {
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -108,27 +127,51 @@ function useTimeFieldKeyboard({
       const isHours = type === 'hours';
       const setter = isHours ? setHours : setMinutes;
       const getter = isHours ? getHours : getMinutes;
-      const max = isHours ? 24 : 60;
 
       if (e.key === 'Backspace') {
-        onChange(setter(value, 0));
+        if (over24BaseDate && isHours) {
+          const hours =
+            differenceInCalendarDays(value, over24BaseDate) * 24 +
+            value.getHours();
+          const sliced = Number(hours.toString().slice(0, -1)) || 0;
+          const diff = hours - sliced;
+          onChange(subHours(value, diff));
+        } else {
+          onChange(setter(value, 0));
+        }
         return;
       }
 
+      const max = isHours ? 24 : 60;
       if (e.key.match(/^[0-9]{1}$/)) {
-        const currentValue = getter(value);
-        let newValue = Number(`${currentValue.toString().at(-1)}${e.key}`);
-        if (newValue >= max) {
-          newValue = Number(e.key);
+        if (over24BaseDate && isHours) {
+          const hours =
+            differenceInCalendarDays(value, over24BaseDate) * 24 +
+            value.getHours();
+          const concatted = Number(`${hours}${e.key}`);
+          const diff = concatted - hours;
+          onChange(addHours(value, diff));
+        } else {
+          const currentValue = getter(value);
+          let newValue = Number(`${currentValue.toString().at(-1)}${e.key}`);
+          if (newValue >= max) {
+            newValue = Number(e.key);
+          }
+          onChange(setter(value, newValue));
         }
-        onChange(setter(value, newValue));
         return;
       }
 
       const direction = e.key === 'ArrowUp' ? 1 : -1;
-      onChange(setter(value, wrap(0, max, getter(value) + direction)));
+      if (over24BaseDate && isHours) {
+        const date = new Date(value);
+        date.setHours(date.getHours() + direction);
+        onChange(date);
+      } else {
+        onChange(setter(value, wrap(0, max, getter(value) + direction)));
+      }
     },
-    [onChange, siblingRef, type, value],
+    [onChange, over24BaseDate, siblingRef, type, value],
   );
 
   return handleKeyDown;
