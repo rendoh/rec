@@ -1,7 +1,6 @@
 import { FC, useCallback, useEffect, useState } from 'react';
 import {
   Button,
-  Card,
   Classes,
   ControlGroup,
   FormGroup,
@@ -10,7 +9,6 @@ import {
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Task, UpdateTaskDto, updateTaskDtoSchema } from '../../schemas';
-import { blueprintRegister as bpRegister } from '../../../../utils/blueprintRegister';
 import { IconButton } from '../../../../components/IconButton';
 import { isFuture, isSameDay } from 'date-fns';
 import { deleteTask, updateTask } from '../../api';
@@ -18,24 +16,11 @@ import * as styles from './UpdateTaskForm.css';
 import { TimeField } from '../../../../components/TimeField';
 import clsx from 'clsx';
 import { TaskTitleField } from '../TaskTitleField';
-import {
-  Popover2 as Popover,
-  Classes as PopoverClasses,
-} from '@blueprintjs/popover2';
-import { DayCounter } from '../../../../components/DayCounter';
 import { formatDurationTime } from '../../../../utils/formatDurationTime';
 import { useEverySecond } from '../../../../hooks/useEverySecond';
 import { handleErrorMessages } from '../../../../components/ErrorToaster';
 import { InvalidMessage } from '../../../../components/InvalidMessage';
-import {
-  BsPause,
-  BsPauseBtn,
-  BsPauseFill,
-  BsStop,
-  BsTrash,
-  BsTrash2,
-  BsTrashFill,
-} from 'react-icons/bs';
+import { BsPauseFill, BsTrashFill } from 'react-icons/bs';
 
 export type UpdateTaskFormProps = {
   task: Task;
@@ -215,27 +200,6 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
                       icon={isDayCounterOpen ? 'chevron-left' : 'chevron-right'}
                     />
                   </Button>
-                )}
-                {(isDayCounterOpen || !isInSameDay) && (
-                  <Controller
-                    name="ended_at"
-                    control={control}
-                    render={({ field }) =>
-                      field.value ? (
-                        <DayCounter
-                          disablePastDateSelect
-                          baseDate={startedAtValue}
-                          value={field.value}
-                          onChange={(value) => {
-                            field.onChange(value);
-                            handleSubmit(onSubmit)();
-                          }}
-                        />
-                      ) : (
-                        <>Something is wrong</>
-                      )
-                    }
-                  />
                 )}
               </>
             )}
