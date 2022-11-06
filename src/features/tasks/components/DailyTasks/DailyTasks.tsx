@@ -10,7 +10,6 @@ import {
   useToggleTheme,
 } from './DailyTasks.hooks';
 import * as styles from './DailyTasks.css';
-import { IconButton } from '../../../../components/_IconButton';
 import {
   Card,
   Classes,
@@ -26,7 +25,13 @@ import { TaskAggregator } from '../TaskAggregator';
 import { ja } from 'date-fns/locale';
 import { DailyTasksHeader } from './DailyTasksHeader';
 import { Button } from '../../../../components/Button';
-import { BsFilterLeft, BsFunnel } from 'react-icons/bs';
+import {
+  BsExclamationTriangle,
+  BsExclamationTriangleFill,
+  BsFilterLeft,
+  BsFunnel,
+} from 'react-icons/bs';
+import { BiTaskX } from 'react-icons/bi';
 
 type MonthNavButtonProps = {
   className?: string;
@@ -38,24 +43,6 @@ type MonthNavButtonProps = {
   label: string;
   onClick: () => void;
 };
-const MonthNavButton: FC<MonthNavButtonProps> = ({
-  className,
-  icon,
-  label,
-  onClick,
-}) => (
-  <IconButton
-    className={className}
-    minimal
-    large
-    icon={icon}
-    onClick={onClick}
-    aria-label={label}
-    iconProps={{
-      size: IconSize.LARGE,
-    }}
-  />
-);
 
 export const DailyTasks: FC = () => {
   const {
@@ -115,12 +102,13 @@ export const DailyTasks: FC = () => {
             <TaskList tasks={tasks} onUpdate={handleUpdate} />
           </>
         ) : (
-          <NonIdealState
-            className={styles.empty}
-            icon="th-disconnect"
-            title="Not found"
-            description="該当の日付にタスクが見つかりませんでした"
-          />
+          <div className={styles.empty}>
+            <BsExclamationTriangle className={styles.emptyIcon} />
+            <p className={styles.emptyHeading}>Not found</p>
+            <p className={styles.emptyText}>
+              該当の日付にタスクが見つかりませんでした
+            </p>
+          </div>
         )}
       </div>
 
