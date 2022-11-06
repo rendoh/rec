@@ -15,7 +15,7 @@ import { IconButton } from '../../../../components/IconButton';
 import { isFuture, isSameDay } from 'date-fns';
 import { deleteTask, updateTask } from '../../api';
 import * as styles from './UpdateTaskForm.css';
-import { TimePicker } from '../../../../components/TimePicker';
+import { TimeField } from '../../../../components/TimeField';
 import clsx from 'clsx';
 import { TaskTitleField } from '../TaskTitleField';
 import {
@@ -179,8 +179,8 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
               name="started_at"
               control={control}
               render={({ field }) => (
-                <TimePicker
-                  isInvalid={!!formState.errors.ended_at}
+                <TimeField
+                  error={!!formState.errors.ended_at}
                   value={field.value}
                   onChange={field.onChange}
                   onBlur={handleSubmit(onSubmit)}
@@ -193,14 +193,18 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
                 <Controller
                   name="ended_at"
                   control={control}
-                  render={({ field }) => (
-                    <TimePicker
-                      isInvalid={!!formState.errors.ended_at}
-                      value={field.value}
-                      onChange={field.onChange}
-                      onBlur={handleSubmit(onSubmit)}
-                    />
-                  )}
+                  render={({ field }) =>
+                    field.value ? (
+                      <TimeField
+                        error={!!formState.errors.ended_at}
+                        value={field.value}
+                        onChange={field.onChange}
+                        onBlur={handleSubmit(onSubmit)}
+                      />
+                    ) : (
+                      <></>
+                    )
+                  }
                 />
                 {isInSameDay && (
                   <Button small onClick={toggleDayCounter}>
