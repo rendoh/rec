@@ -1,5 +1,4 @@
 import { FC, useCallback, useEffect } from 'react';
-import { Classes, FormGroup } from '@blueprintjs/core';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Task, UpdateTaskDto, updateTaskDtoSchema } from '../../schemas';
@@ -8,7 +7,6 @@ import { isFuture } from 'date-fns';
 import { deleteTask, updateTask } from '../../api';
 import * as styles from './UpdateTaskForm.css';
 import { TimeField } from '../../../../components/TimeField';
-import clsx from 'clsx';
 import { TaskTitleField } from '../TaskTitleField';
 import { formatDurationTime } from '../../../../utils/formatDurationTime';
 import { useEverySecond } from '../../../../hooks/useEverySecond';
@@ -177,9 +175,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
           </div>
           <InvalidMessage>{formState.errors.ended_at?.message}</InvalidMessage>
         </div>
-        <p className={clsx(Classes.MONOSPACE_TEXT, styles.elapsedTime)}>
-          {elapsedTime}
-        </p>
+        <p className={styles.elapsedTime}>{elapsedTime}</p>
       </div>
     </div>
   );

@@ -114,11 +114,20 @@ function useTimeFieldKeyboard({
         e.key !== 'ArrowUp' &&
         e.key !== 'ArrowDown' &&
         e.key !== 'ArrowRight' &&
-        e.key !== 'ArrowLeft'
+        e.key !== 'ArrowLeft' &&
+        e.key !== 'Enter'
       ) {
         return;
       }
       e.preventDefault();
+
+      if (e.key === 'Enter') {
+        if (e.target instanceof HTMLElement) {
+          e.target.blur();
+        }
+        return;
+      }
+
       if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
         siblingRef.current?.focus();
         return;

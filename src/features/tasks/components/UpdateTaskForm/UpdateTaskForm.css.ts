@@ -38,6 +38,7 @@ export const elapsedTime = style({
   fontWeight: 'bold',
   fontSize: 16,
   margin: '0 4px',
+  letterSpacing: '.03em',
 });
 
 export const detailRow = style([
