@@ -4,7 +4,6 @@ import { vars } from '../../styles/theme.css';
 
 export const root = recipe({
   base: {
-    background: vars.color.neutralLighter,
     borderRadius: 4,
     padding: '5px 10px',
     lineHeight: 1.25,
@@ -13,9 +12,6 @@ export const root = recipe({
     selectors: {
       '&:not(:disabled)': {
         cursor: 'pointer',
-      },
-      '&:hover:not(:disabled)': {
-        background: vars.color.neutralLight,
       },
       '&:disabled': {
         color: vars.color.neutral,
@@ -29,6 +25,41 @@ export const root = recipe({
         border: `1px solid ${vars.color.neutral}`,
       },
     },
+    color: {
+      error: {
+        color: '#fff',
+        background: vars.color.error,
+        selectors: {
+          '&:hover:not(:disabled)': {
+            background: vars.color.errorDark,
+          },
+        },
+      },
+      normal: {
+        background: vars.color.neutralLighter,
+        selectors: {
+          '&:hover:not(:disabled)': {
+            background: vars.color.neutralLight,
+          },
+        },
+      },
+    },
+  },
+
+  compoundVariants: [
+    {
+      variants: {
+        border: true,
+        color: 'error',
+      },
+      style: {
+        borderColor: vars.color.errorDark,
+      },
+    },
+  ],
+
+  defaultVariants: {
+    color: 'normal',
   },
 });
 

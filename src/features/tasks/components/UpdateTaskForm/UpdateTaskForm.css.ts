@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { globalStyle, style } from '@vanilla-extract/css';
 import { vars } from '../../../../styles/theme.css';
 
 export const root = style({
@@ -54,3 +54,24 @@ export const range = style([
     gap: 5,
   },
 ]);
+
+export const deletePopoverContainer = style({
+  position: 'relative',
+});
+
+export const deletePopover = style({
+  position: 'absolute',
+  top: 'calc(100% + 10px)',
+  right: 0,
+  background: vars.color.white,
+  padding: '4px 4px',
+  gap: 4,
+  boxShadow: '0 0 6px rgba(0, 0, 0, .1)',
+  borderRadius: 4,
+  display: 'flex',
+});
+
+globalStyle(`${deletePopover} > *`, {
+  width: 'fit-content',
+  whiteSpace: 'nowrap',
+});

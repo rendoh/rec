@@ -13,6 +13,7 @@ export const Button: FC<ButtonProps> = ({
   className,
   children,
   leftIcon,
+  color,
   ...props
 }) => (
   <button
@@ -21,6 +22,7 @@ export const Button: FC<ButtonProps> = ({
     className={clsx(
       styles.root({
         border,
+        color,
       }),
       className,
     )}

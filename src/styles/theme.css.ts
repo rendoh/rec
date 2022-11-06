@@ -14,6 +14,7 @@ export const vars = createThemeContract({
     black: '',
     white: '',
     error: '',
+    errorDark: '',
   },
 });
 
@@ -31,5 +32,6 @@ export const lightThemeClass = createTheme(vars, {
     black: '#2d2d2d',
     white: '#fafafa',
     error: '#e57373',
+    errorDark: '#d46666',
   },
 });

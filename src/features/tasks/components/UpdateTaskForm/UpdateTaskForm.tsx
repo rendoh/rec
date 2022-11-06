@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect } from 'react';
+import { FC, useCallback, useEffect, useRef } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Task, UpdateTaskDto, updateTaskDtoSchema } from '../../schemas';
@@ -12,7 +12,10 @@ import { formatDurationTime } from '../../../../utils/formatDurationTime';
 import { useEverySecond } from '../../../../hooks/useEverySecond';
 import { handleErrorMessages } from '../../../../components/ErrorToaster';
 import { InvalidMessage } from '../../../../components/InvalidMessage';
-import { BsPauseFill, BsTrashFill } from 'react-icons/bs';
+import { BsPauseFill, BsTrashFill, BsXLg } from 'react-icons/bs';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Button } from '../../../../components/Button';
+import { useOverlayState } from '../../../../hooks/useOverlayState';
 
 export type UpdateTaskFormProps = {
   task: Task;
@@ -72,6 +75,10 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
     (endedAtValue || currentDate).getTime() - startedAtValue.getTime(),
   );
 
+  const ref = useRef<HTMLDivElement | null>(null);
+  const { isOpen: isDeletePopoverOpen, toggle: toggleDeletePopover } =
+    useOverlayState(ref);
+
   return (
     <div className={styles.root}>
       <div className={styles.headerRow}>
@@ -106,33 +113,27 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
               )}
             />
           )}
-          <IconButton aria-label="削除" border>
-            <BsTrashFill />
-          </IconButton>
-          {/* <Popover
-            placement="bottom-end"
-            content={
-              <div>
-                <Button
-                  intent="none"
-                  className={PopoverClasses.POPOVER2_DISMISS}
+          <div className={styles.deletePopoverContainer}>
+            <IconButton aria-label="削除" border onClick={toggleDeletePopover}>
+              {isDeletePopoverOpen ? <BsXLg /> : <BsTrashFill />}
+            </IconButton>
+            <AnimatePresence>
+              {isDeletePopoverOpen && (
+                <motion.div
+                  ref={ref}
+                  className={styles.deletePopover}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
                 >
-                  戻る
-                </Button>
-                <Button intent="danger" onClick={remove}>
-                  削除
-                </Button>
-              </div>
-            }
-            renderTarget={({ isOpen, ref, ...targetProps }) => (
-              <IconButton
-                {...targetProps}
-                elementRef={ref}
-                icon={isOpen ? 'cross' : 'trash'}
-                aria-label="Delete this task"
-              />
-            )}
-          /> */}
+                  <Button onClick={remove} color="error">
+                    削除
+                  </Button>
+                  <Button onClick={toggleDeletePopover}>戻る</Button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </div>
       <div className={styles.detailRow}>
