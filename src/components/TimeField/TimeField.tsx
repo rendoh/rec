@@ -1,10 +1,9 @@
-import { FC, KeyboardEvent } from 'react';
+import { FC, KeyboardEvent, MouseEvent, useRef } from 'react';
 import * as styles from './TimeField.css';
 import clsx from 'clsx';
 import { format, getHours, getMinutes, setHours, setMinutes } from 'date-fns';
 import { wrap } from '../../utils/wrap';
-import { useCallback } from 'react';
-import { FocusEventHandler } from 'react';
+import { useCallback, FocusEventHandler } from 'react';
 
 export type TimeFieldProps = {
   className?: string;
@@ -30,6 +29,13 @@ export const TimeField: FC<TimeFieldProps> = ({
     onChange,
     type: 'minutes',
   });
+  const hoursDivRef = useRef<HTMLDivElement | null>(null);
+  const rootDivRef = useRef<HTMLDivElement | null>(null);
+  const onClickRoot = useCallback(
+    (e: MouseEvent) =>
+      e.target === rootDivRef.current && hoursDivRef.current?.focus(),
+    [],
+  );
 
   return (
     <div
@@ -39,12 +45,15 @@ export const TimeField: FC<TimeFieldProps> = ({
         }),
         className,
       )}
+      ref={rootDivRef}
+      onClick={onClickRoot}
     >
       <div
         className={styles.field}
         tabIndex={0}
         onKeyDown={handleHoursKeyDown}
         onBlur={onBlur}
+        ref={hoursDivRef}
       >
         {format(value, 'HH')}
       </div>
