@@ -9,7 +9,7 @@ export type TimeFieldProps = {
   className?: string;
   value: Date;
   onChange: (date: Date) => void;
-  onBlur: FocusEventHandler;
+  onBlur?: FocusEventHandler;
 } & styles.RootVariants;
 
 export const TimeField: FC<TimeFieldProps> = ({
@@ -57,6 +57,7 @@ export const TimeField: FC<TimeFieldProps> = ({
         onKeyDown={handleHoursKeyDown}
         onBlur={onBlur}
         ref={hoursDivRef}
+        aria-label="時"
       >
         {format(value, 'HH')}
       </div>
@@ -67,6 +68,7 @@ export const TimeField: FC<TimeFieldProps> = ({
         onKeyDown={handleMinutesKeyDown}
         onBlur={onBlur}
         ref={minutesDivRef}
+        aria-label="分"
       >
         {format(value, 'mm')}
       </div>
