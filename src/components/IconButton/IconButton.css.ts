@@ -6,12 +6,12 @@ export const root = recipe({
   base: {
     borderRadius: '50%',
     background: vars.color.neutralLighter,
-    aspectRatio: '1',
     display: 'inline-grid',
     placeItems: 'center',
     flexShrink: 0,
     lineHeight: 1,
-    width: '2em',
+    width: '2.2em',
+    height: '2.2em',
     cursor: 'pointer',
     selectors: {
       '&:hover': {

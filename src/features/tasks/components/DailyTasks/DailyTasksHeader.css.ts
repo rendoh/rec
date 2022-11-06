@@ -7,6 +7,8 @@ export const root = style({
   gridTemplate: '"today center theme" 1fr / 1fr 5fr 1fr',
   justifyContent: 'space-between',
   padding: 10,
+  boxShadow: '0 0 6px rgba(0, 0, 0, .05)',
+  zIndex: 1,
 });
 
 export const center = style({

@@ -11,7 +11,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Task, UpdateTaskDto, updateTaskDtoSchema } from '../../schemas';
 import { blueprintRegister as bpRegister } from '../../../../utils/blueprintRegister';
-import { IconButton } from '../../../../components/_IconButton';
+import { IconButton } from '../../../../components/IconButton';
 import { isFuture, isSameDay } from 'date-fns';
 import { deleteTask, updateTask } from '../../api';
 import * as styles from './UpdateTaskForm.css';
@@ -26,6 +26,16 @@ import { DayCounter } from '../../../../components/DayCounter';
 import { formatDurationTime } from '../../../../utils/formatDurationTime';
 import { useEverySecond } from '../../../../hooks/useEverySecond';
 import { handleErrorMessages } from '../../../../components/ErrorToaster';
+import { InvalidMessage } from '../../../../components/InvalidMessage';
+import {
+  BsPause,
+  BsPauseBtn,
+  BsPauseFill,
+  BsStop,
+  BsTrash,
+  BsTrash2,
+  BsTrashFill,
+} from 'react-icons/bs';
 
 export type UpdateTaskFormProps = {
   task: Task;
@@ -93,7 +103,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
   );
 
   return (
-    <Card elevation={1}>
+    <div className={styles.root}>
       <div className={styles.headerRow}>
         <FormGroup
           className={styles.formGroup}
@@ -101,15 +111,14 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
           intent={formState.errors.title && 'danger'}
         >
           <TaskTitleField
+            {...register('title', {
+              onBlur: handleSubmit(onSubmit),
+            })}
             interactiveOutline
-            {...bpRegister(
-              register('title', {
-                onBlur: handleSubmit(onSubmit),
-              }),
-            )}
-            isError={!!formState.errors.title}
             onKeyUp={handleKeyUpEnter}
+            error={!!formState.errors.title}
           />
+          <InvalidMessage>{formState.errors.title?.message}</InvalidMessage>
         </FormGroup>
         <div className={styles.actions}>
           {isActive && (
@@ -118,18 +127,23 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
               control={control}
               render={({ field }) => (
                 <IconButton
-                  aria-label="Stop"
-                  icon="pause"
+                  aria-label="停止"
                   disabled={!startedAtValue || isFuture(startedAtValue)}
                   onClick={(e) => {
                     field.onChange(new Date());
                     handleSubmit(onSubmit)(e);
                   }}
-                />
+                  border
+                >
+                  <BsPauseFill />
+                </IconButton>
               )}
             />
           )}
-          <Popover
+          <IconButton aria-label="削除" border>
+            <BsTrashFill />
+          </IconButton>
+          {/* <Popover
             placement="bottom-end"
             content={
               <div>
@@ -152,7 +166,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
                 aria-label="Delete this task"
               />
             )}
-          />
+          /> */}
         </div>
       </div>
       <div className={styles.detailRow}>
@@ -224,6 +238,6 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
           {elapsedTime}
         </p>
       </div>
-    </Card>
+    </div>
   );
 };

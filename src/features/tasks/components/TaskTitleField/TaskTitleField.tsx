@@ -4,16 +4,14 @@ import * as styles from './TaskTitleField.css';
 import clsx from 'clsx';
 
 export type TaskTitleFieldProps = JSX.IntrinsicElements['input'] &
-  styles.RootVariants & {
-    interactiveOutline?: boolean;
-  };
+  styles.RootVariants;
 
 export const TaskTitleField = forwardRef<HTMLInputElement, TaskTitleFieldProps>(
-  ({ className, error, ...props }, ref) => (
+  ({ className, error, interactiveOutline, ...props }, ref) => (
     <input
       {...props}
       ref={ref}
-      className={clsx(styles.root({ error }), className)}
+      className={clsx(styles.root({ error, interactiveOutline }), className)}
       maxLength={maxTitleLength}
     />
   ),

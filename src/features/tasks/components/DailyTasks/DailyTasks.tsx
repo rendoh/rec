@@ -12,7 +12,6 @@ import {
 import * as styles from './DailyTasks.css';
 import { IconButton } from '../../../../components/_IconButton';
 import {
-  Button,
   Card,
   Classes,
   Dialog,
@@ -26,6 +25,8 @@ import clsx from 'clsx';
 import { TaskAggregator } from '../TaskAggregator';
 import { ja } from 'date-fns/locale';
 import { DailyTasksHeader } from './DailyTasksHeader';
+import { Button } from '../../../../components/Button';
+import { BsFilterLeft, BsFunnel } from 'react-icons/bs';
 
 type MonthNavButtonProps = {
   className?: string;
@@ -104,7 +105,10 @@ export const DailyTasks: FC = () => {
         {tasks.length > 0 ? (
           <>
             <div className={styles.actions}>
-              <Button icon="th-filtered" onClick={openAggregationModal}>
+              <Button
+                leftIcon={<BsFilterLeft />}
+                onClick={openAggregationModal}
+              >
                 集計
               </Button>
             </div>

@@ -18,7 +18,7 @@ export const fieldGroup = style({
 });
 
 export const startButton = style({
-  marginTop: 3,
+  marginTop: 4,
 });
 
 export const startButtons = style({

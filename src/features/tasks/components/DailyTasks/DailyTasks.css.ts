@@ -1,6 +1,4 @@
-import { Classes, Colors } from '@blueprintjs/core';
-import { globalStyle, style } from '@vanilla-extract/css';
-import { vars } from '../../../../styles/theme.css';
+import { style } from '@vanilla-extract/css';
 
 export const root = style({
   position: 'relative',
@@ -11,13 +9,16 @@ export const root = style({
 });
 
 export const content = style({
-  padding: 20,
+  padding: 12,
   flex: 1,
   overflowY: 'auto',
   position: 'relative',
 });
 
-export const footer = style({});
+export const footer = style({
+  boxShadow: '0 0px 6px rgba(0, 0, 0, .05)',
+  zIndex: 1,
+});
 
 export const empty = style({
   height: '100%',
@@ -37,7 +38,7 @@ export const spinnerWrapper = style({
 export const actions = style({
   display: 'flex',
   justifyContent: 'flex-end',
-  marginBottom: 20,
+  marginBottom: 12,
 });
 
 export const dialogContent = style({

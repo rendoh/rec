@@ -1,5 +1,11 @@
 import { Classes } from '@blueprintjs/core';
 import { globalStyle, style } from '@vanilla-extract/css';
+import { vars } from '../../../../styles/theme.css';
+
+export const root = style({
+  backgroundColor: vars.color.neutralLighter,
+  padding: 12,
+});
 
 const row = style({
   display: 'flex',
@@ -10,7 +16,7 @@ const row = style({
 export const headerRow = style([
   row,
   {
-    gap: 20,
+    gap: 12,
     alignItems: 'flex-start',
   },
 ]);
@@ -23,9 +29,9 @@ export const formGroup = style({
 export const actions = style([
   row,
   {
-    flexShrink: 0,
+    flexShrink: '0',
     gap: 10,
-    marginTop: 5,
+    marginTop: 3,
   },
 ]);
 

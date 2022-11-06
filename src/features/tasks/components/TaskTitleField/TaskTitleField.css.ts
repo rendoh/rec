@@ -30,6 +30,16 @@ export const root = recipe({
         },
       },
     },
+    interactiveOutline: {
+      true: {
+        selectors: {
+          '&:not(:focus):not(:hover)': {
+            backgroundColor: 'transparent',
+            borderColor: 'transparent',
+          },
+        },
+      },
+    },
   },
 });
 
