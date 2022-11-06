@@ -10,40 +10,11 @@ import {
   useToggleTheme,
 } from './DailyTasks.hooks';
 import * as styles from './DailyTasks.css';
-import {
-  Card,
-  Classes,
-  Dialog,
-  Icon,
-  IconSize,
-  NonIdealState,
-  Spinner,
-  Switch,
-} from '@blueprintjs/core';
-import clsx from 'clsx';
 import { TaskAggregator } from '../TaskAggregator';
-import { ja } from 'date-fns/locale';
 import { DailyTasksHeader } from './DailyTasksHeader';
 import { Button } from '../../../../components/Button';
-import {
-  BsExclamationTriangle,
-  BsExclamationTriangleFill,
-  BsFilterLeft,
-  BsFunnel,
-} from 'react-icons/bs';
-import { BiTaskX } from 'react-icons/bi';
+import { BsExclamationTriangle, BsFilterLeft } from 'react-icons/bs';
 import { Modal } from '../../../../components/Modal';
-
-type MonthNavButtonProps = {
-  className?: string;
-  icon:
-    | 'chevron-left'
-    | 'chevron-right'
-    | 'double-chevron-left'
-    | 'double-chevron-right';
-  label: string;
-  onClick: () => void;
-};
 
 export const DailyTasks: FC = () => {
   const {
@@ -87,7 +58,7 @@ export const DailyTasks: FC = () => {
       <div className={styles.content}>
         {isLoading && (
           <div className={styles.spinnerWrapper}>
-            <Spinner />
+            <div className={styles.spinner} />
           </div>
         )}
         {tasks.length > 0 ? (
@@ -129,16 +100,6 @@ export const DailyTasks: FC = () => {
       >
         <TaskAggregator tasks={tasks} />
       </Modal>
-      {/* 
-      <Dialog
-        isOpen={isAggregationModalOpen}
-        title={`${format(today, 'yyyy/MM/dd')} のタスク集計結果`}
-        onClose={closeAggregationModal}
-      >
-        <div className={styles.dialogContent}>
-          <TaskAggregator tasks={tasks} />
-        </div>
-      </Dialog> */}
     </div>
   );
 };

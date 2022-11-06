@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css';
+import { keyframes, style } from '@vanilla-extract/css';
 import { vars } from '../../../../styles/theme.css';
 
 export const root = style({
@@ -56,7 +56,31 @@ export const spinnerWrapper = style({
   position: 'absolute',
   top: 0,
   left: 0,
-  background: 'rgba(128, 128, 128, .2)',
+  background: 'rgba(128, 128, 128, .1)',
+  zIndex: 1,
+});
+
+const scale = keyframes({
+  '0%': {
+    scale: 0.2,
+    opacity: 0,
+  },
+  '50%': {
+    opacity: 1,
+  },
+  '100%': {
+    scale: 1,
+    opacity: 0,
+  },
+});
+
+export const spinner = style({
+  display: 'block',
+  width: 50,
+  aspectRatio: '1',
+  border: `4px solid ${vars.color.neutralDark}`,
+  borderRadius: '50%',
+  animation: `${scale} 1s infinite`,
 });
 
 export const actions = style({
