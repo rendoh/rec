@@ -32,6 +32,7 @@ import {
   BsFunnel,
 } from 'react-icons/bs';
 import { BiTaskX } from 'react-icons/bi';
+import { Modal } from '../../../../components/Modal';
 
 type MonthNavButtonProps = {
   className?: string;
@@ -121,6 +122,14 @@ export const DailyTasks: FC = () => {
         </div>
       )}
 
+      <Modal
+        header={`${format(today, 'yyyy/MM/dd')} のタスク集計結果`}
+        isOpen={isAggregationModalOpen}
+        onClose={closeAggregationModal}
+      >
+        <TaskAggregator tasks={tasks} />
+      </Modal>
+      {/* 
       <Dialog
         isOpen={isAggregationModalOpen}
         title={`${format(today, 'yyyy/MM/dd')} のタスク集計結果`}
@@ -129,7 +138,7 @@ export const DailyTasks: FC = () => {
         <div className={styles.dialogContent}>
           <TaskAggregator tasks={tasks} />
         </div>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };

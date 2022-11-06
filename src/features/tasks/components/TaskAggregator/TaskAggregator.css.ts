@@ -1,5 +1,5 @@
-import { Classes, Colors } from '@blueprintjs/core';
-import { globalStyle, style } from '@vanilla-extract/css';
+import { style } from '@vanilla-extract/css';
+import { vars } from '../../../../styles/theme.css';
 
 export const root = style({
   margin: 0,
@@ -8,17 +8,13 @@ export const root = style({
 export const row = style({
   display: 'flex',
   justifyContent: 'space-between',
-  gap: 15,
-  padding: '15px 0',
+  gap: 10,
+  padding: '12px 0',
   selectors: {
     '& + &': {
-      borderTop: `1px solid ${Colors.LIGHT_GRAY1}`,
+      borderTop: `1px solid ${vars.color.neutral}`,
     },
   },
-});
-
-globalStyle(`.${Classes.DARK} ${row}`, {
-  borderColor: Colors.GRAY1,
 });
 
 export const title = style({

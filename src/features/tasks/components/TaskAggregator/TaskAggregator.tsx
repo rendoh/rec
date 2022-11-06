@@ -1,5 +1,3 @@
-import { Classes } from '@blueprintjs/core';
-import clsx from 'clsx';
 import { FC, useMemo } from 'react';
 import { useEverySecond } from '../../../../hooks/useEverySecond';
 import { formatDurationTime } from '../../../../utils/formatDurationTime';
@@ -48,7 +46,7 @@ export const TaskAggregator: FC<TaskAggregatorProps> = ({ tasks }) => {
       {grouped.map((group, i) => (
         <div key={i} className={styles.row}>
           <dt className={styles.title}>{group.title}</dt>
-          <dd className={clsx(styles.time, Classes.MONOSPACE_TEXT)}>
+          <dd className={styles.time}>
             {formatDurationTime(
               group.total +
                 (group.lastStartedAt
