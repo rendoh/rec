@@ -8,3 +8,13 @@ export const App: FC = () => {
   }, []);
   return <DailyTasks />;
 };
+
+/**
+ * TODO:
+ * - theme
+ * - toast
+ * - FLIP
+ * - primary color
+ *   - aggregate
+ *   - start
+ */
