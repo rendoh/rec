@@ -164,20 +164,49 @@ describe('分フィールドの数値入力時', () => {
   });
 });
 
-test('時間フィールドにBackspace入力で0時になる', () => {
-  renderField(new Date(`2022-11-11T11:00:00.000Z`));
-  fireEvent.keyDown(screen.getByLabelText('時'), {
-    key: 'Backspace',
+describe('Backspace入力', () => {
+  describe('時間フィールド', () => {
+    const cases: [now: number, expected: number][] = [
+      [0, 0],
+      [1, 0],
+      [10, 1],
+      [15, 1],
+      [20, 2],
+    ];
+    cases.forEach(([now, expected]) => {
+      test(`${now}時の時間フィールドでBackspace入力で${expected}時になる`, () => {
+        renderField(
+          new Date(`2022-11-11T${now.toString().padStart(2, '0')}:00:00.000Z`),
+        );
+        fireEvent.keyDown(screen.getByLabelText('時'), {
+          key: 'Backspace',
+        });
+        expect(onChange.mock.calls[0][0].getHours()).toBe(expected);
+      });
+    });
   });
-  expect(onChange.mock.calls[0][0].getHours()).toBe(0);
-});
 
-test('分フィールドにBackspace入力で0分になる', () => {
-  renderField(new Date(`2022-11-11T11:30:00.000Z`));
-  fireEvent.keyDown(screen.getByLabelText('分'), {
-    key: 'Backspace',
+  describe('分フィールド', () => {
+    const cases: [now: number, expected: number][] = [
+      [0, 0],
+      [1, 0],
+      [10, 1],
+      [15, 1],
+      [35, 3],
+      [52, 5],
+    ];
+    cases.forEach(([now, expected]) => {
+      test(`${now}分の時間フィールドでBackspace入力で${expected}分になる`, () => {
+        renderField(
+          new Date(`2022-11-11T00:${now.toString().padStart(2, '0')}:00.000Z`),
+        );
+        fireEvent.keyDown(screen.getByLabelText('分'), {
+          key: 'Backspace',
+        });
+        expect(onChange.mock.calls[0][0].getMinutes()).toBe(expected);
+      });
+    });
   });
-  expect(onChange.mock.calls[0][0].getMinutes()).toBe(0);
 });
 
 describe('BaseDateが渡されているケース', () => {

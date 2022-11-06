@@ -137,7 +137,9 @@ function useTimeFieldKeyboard({
           const diff = hours - sliced;
           onChange(subHours(value, diff));
         } else {
-          onChange(setter(value, 0));
+          const currentValue = getter(value);
+          const sliced = Number(currentValue.toString().slice(0, -1)) || 0;
+          onChange(setter(value, sliced));
         }
         return;
       }
