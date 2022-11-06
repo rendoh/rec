@@ -18,22 +18,25 @@ export const TimeField: FC<TimeFieldProps> = ({
   error,
   onChange,
   onBlur,
+  interactiveOutline,
 }) => {
+  const hoursDivRef = useRef<HTMLDivElement | null>(null);
+  const minutesDivRef = useRef<HTMLDivElement | null>(null);
   const handleHoursKeyDown = useTimeFieldKeyboard({
     value,
     onChange,
     type: 'hours',
+    siblingRef: minutesDivRef,
   });
   const handleMinutesKeyDown = useTimeFieldKeyboard({
     value,
     onChange,
     type: 'minutes',
+    siblingRef: hoursDivRef,
   });
-  const hoursDivRef = useRef<HTMLDivElement | null>(null);
-  const rootDivRef = useRef<HTMLDivElement | null>(null);
   const onClickRoot = useCallback(
     (e: MouseEvent) =>
-      e.target === rootDivRef.current && hoursDivRef.current?.focus(),
+      e.target !== minutesDivRef.current && hoursDivRef.current?.focus(),
     [],
   );
 
@@ -42,10 +45,10 @@ export const TimeField: FC<TimeFieldProps> = ({
       className={clsx(
         styles.root({
           error,
+          interactiveOutline,
         }),
         className,
       )}
-      ref={rootDivRef}
       onClick={onClickRoot}
     >
       <div
@@ -63,6 +66,7 @@ export const TimeField: FC<TimeFieldProps> = ({
         tabIndex={0}
         onKeyDown={handleMinutesKeyDown}
         onBlur={onBlur}
+        ref={minutesDivRef}
       >
         {format(value, 'mm')}
       </div>
@@ -74,10 +78,12 @@ function useTimeFieldKeyboard({
   value,
   onChange,
   type,
+  siblingRef,
 }: {
   value: Date;
   onChange: (date: Date) => void;
   type: 'hours' | 'minutes';
+  siblingRef: React.MutableRefObject<HTMLDivElement | null>;
 }) {
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
@@ -85,11 +91,18 @@ function useTimeFieldKeyboard({
         e.key !== 'Backspace' &&
         !e.key.match(/^[0-9]{1}$/) &&
         e.key !== 'ArrowUp' &&
-        e.key !== 'ArrowDown'
+        e.key !== 'ArrowDown' &&
+        e.key !== 'ArrowRight' &&
+        e.key !== 'ArrowLeft'
       ) {
         return;
       }
       e.preventDefault();
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        siblingRef.current?.focus();
+        return;
+      }
+
       const isHours = type === 'hours';
       const setter = isHours ? setHours : setMinutes;
       const getter = isHours ? getHours : getMinutes;
@@ -113,7 +126,7 @@ function useTimeFieldKeyboard({
       const direction = e.key === 'ArrowUp' ? 1 : -1;
       onChange(setter(value, wrap(0, max, getter(value) + direction)));
     },
-    [onChange, type, value],
+    [onChange, siblingRef, type, value],
   );
 
   return handleKeyDown;

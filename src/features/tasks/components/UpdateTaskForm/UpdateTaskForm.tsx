@@ -184,6 +184,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
                   value={field.value}
                   onChange={field.onChange}
                   onBlur={handleSubmit(onSubmit)}
+                  interactiveOutline
                 />
               )}
             />
@@ -200,6 +201,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
                         value={field.value}
                         onChange={field.onChange}
                         onBlur={handleSubmit(onSubmit)}
+                        interactiveOutline
                       />
                     ) : (
                       <></>
