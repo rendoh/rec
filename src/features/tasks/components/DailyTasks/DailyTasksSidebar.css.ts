@@ -25,7 +25,7 @@ export const button = style({
   width: '100%',
   color: '#fff',
   backgroundColor: 'rgba(255, 255, 255, .05)',
-  padding: '12px 16px',
+  padding: '12px 12px',
   borderRadius: 4,
   cursor: 'pointer',
   display: 'flex',
@@ -42,4 +42,5 @@ export const button = style({
 export const playIcon = style({
   fontSize: 18,
   marginBottom: 1,
+  flexShrink: 0,
 });
