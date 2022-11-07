@@ -89,7 +89,7 @@ pub async fn create(pool: &SqlitePool, payload: CreateTask) -> Result<Task, ApiE
             strftime('%Y-%m-%dT%H:%M:%fZ', started_at, 'utc') AS started_at,
             strftime('%Y-%m-%dT%H:%M:%fZ', ended_at, 'utc') AS ended_at
     "#})
-    .bind(payload.title.trim())
+    .bind(payload.title)
     .bind(&payload.started_at)
     .fetch_one(pool)
     .await
@@ -124,7 +124,7 @@ pub async fn update(pool: &SqlitePool, id: i32, payload: UpdateTask) -> Result<T
             strftime('%Y-%m-%dT%H:%M:%fZ', ended_at, 'utc') AS ended_at
     "#})
     .bind(id)
-    .bind(payload.title.map(|title| title.trim().to_string()))
+    .bind(payload.title)
     .bind(payload.started_at)
     .bind(payload.ended_at)
     .fetch_one(pool)
