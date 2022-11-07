@@ -8,6 +8,7 @@ export type StartTaskButtonProps = {
   onStart: (title: string) => void;
 };
 
+// TODO: remove this
 export const StartTaskButton: FC<StartTaskButtonProps> = ({
   title,
   onStart,

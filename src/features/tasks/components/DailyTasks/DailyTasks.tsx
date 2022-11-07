@@ -1,6 +1,5 @@
 import { format, isSameDay } from 'date-fns';
 import { FC, useCallback } from 'react';
-import { CreateTaskForm } from '../CreateTaskForm';
 import { TaskList } from '../TaskList';
 import {
   useDailyTasks,
@@ -16,6 +15,7 @@ import { Button } from '../../../../components/Button';
 import { BsExclamationTriangle, BsFilterLeft } from 'react-icons/bs';
 import { Modal } from '../../../../components/Modal';
 import { DailyTasksSidebar } from './DailyTasksSidebar';
+import { DailyTasksContent } from './DailyTasksContent';
 
 export const DailyTasks: FC = () => {
   const {
@@ -64,7 +64,8 @@ export const DailyTasks: FC = () => {
         />
       </div>
       <div className={styles.content}>
-        <div>
+        <DailyTasksContent tasks={tasks} onUpdate={handleUpdate} />
+        <div style={{ display: 'none' }}>
           {isLoading && (
             <div className={styles.spinnerWrapper}>
               <div className={styles.spinner} />
@@ -93,15 +94,6 @@ export const DailyTasks: FC = () => {
             </div>
           )}
         </div>
-
-        {isToday && (
-          <div className={styles.footer}>
-            <CreateTaskForm
-              recentTaskTitles={recentTaskTitles}
-              onComplete={handleUpdate}
-            />
-          </div>
-        )}
       </div>
 
       <Modal

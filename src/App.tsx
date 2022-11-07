@@ -17,4 +17,6 @@ export const App: FC = () => {
  * - primary color
  *   - aggregate
  *   - start
+ * - remove spinner
+ * - hide ! on loading
  */

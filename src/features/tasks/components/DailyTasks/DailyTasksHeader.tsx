@@ -51,7 +51,7 @@ export const DailyTasksHeader: FC<DailyTasksHeaderProps> = ({
         onClick={onTodayClick}
         disabled={disabledToday}
       >
-        Today
+        今日
       </button>
     </div>
   </div>

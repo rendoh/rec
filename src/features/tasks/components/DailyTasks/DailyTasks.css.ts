@@ -8,7 +8,7 @@ export const root = style({
     "sidebar content" 1fr / 200px 1fr
   `,
   height: '100vh',
-  background: `linear-gradient(to right bottom, ${vars.color.primaryLight}, ${vars.color.primaryDark})`,
+  background: `linear-gradient(to right bottom, ${vars.color.primaryDark}, ${vars.color.primaryLight})`,
   color: '#fff',
 });
 
@@ -21,15 +21,12 @@ export const sidebar = style({
 });
 
 export const content = style({
-  padding: 12,
-  flex: 1,
-  overflowY: 'auto',
-  position: 'relative',
   gridArea: 'content',
-  background: '#f3f3f3',
+  background: '#f1f1f1', // TODO: use vars
   boxShadow: 'inset 3px 3px 5px rgba(0, 0, 0, 0.25)',
   borderTopLeftRadius: 5,
   color: '#333',
+  overflowY: 'auto',
 });
 
 export const footer = style({

@@ -2,9 +2,11 @@ import { globalStyle, style } from '@vanilla-extract/css';
 import { vars } from '../../../../styles/theme.css';
 
 export const root = style({
-  backgroundColor: vars.color.neutralLighter,
+  backgroundColor: vars.color.white,
   padding: 12,
   borderRadius: 4,
+  boxShadow: '0 2px 4px rgba(0, 0, 0, .03)',
+  // border: `1px solid ${vars.color.neutralLight}`,
 });
 
 const row = style({
