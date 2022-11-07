@@ -35,7 +35,7 @@ export const lightThemeClass = createTheme(vars, {
     neutralLighter: '#f2f2f2',
     black: '#2d2d2d',
     white: '#fafafa',
-    error: '#e57373',
-    errorDark: '#d46666',
+    error: '#d95b5b',
+    errorDark: '#c74a4a',
   },
 });

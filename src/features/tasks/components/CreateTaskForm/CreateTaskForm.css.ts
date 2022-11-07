@@ -37,10 +37,8 @@ export const button = style({
   height: 40,
   fontSize: 20,
   borderRadius: '0 4px 4px 0',
-  // color: vars.color.primary,
-  // background: `linear-gradient(to right bottom, ${vars.color.primaryDark}, ${vars.color.primaryLight})`,
   background: vars.color.primary,
-  color: vars.color.white,
+  color: '#fff',
   cursor: 'pointer',
   selectors: {
     '&:not(:disabled):hover': {
@@ -48,25 +46,3 @@ export const button = style({
     },
   },
 });
-
-// export const row = style({
-//   display: 'flex',
-//   justifyContent: 'space-between',
-//   alignItems: 'self-start',
-//   gap: 12,
-// });
-
-// export const fieldGroup = style({
-//   flex: 1,
-// });
-
-// export const startButton = style({
-//   marginTop: 4,
-// });
-
-// export const startButtons = style({
-//   display: 'grid',
-//   gridTemplateColumns: 'repeat(3, 1fr)',
-//   marginTop: 10,
-//   gap: 10,
-// });

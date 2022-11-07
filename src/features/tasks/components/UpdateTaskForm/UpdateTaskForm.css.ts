@@ -1,11 +1,39 @@
 import { globalStyle, style } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
 import { vars } from '../../../../styles/theme.css';
 
-export const root = style({
-  backgroundColor: vars.color.white,
-  padding: 8,
-  borderRadius: 4,
-  boxShadow: '0 2px 4px rgba(0, 0, 0, .03)',
+export const root = recipe({
+  base: {
+    backgroundColor: vars.color.white,
+    padding: 8,
+    borderRadius: 4,
+    boxShadow: '0 2px 4px rgba(0, 0, 0, .03)',
+    position: 'relative',
+    overflow: 'hidden',
+    transition: 'background-color .2s ease-out',
+    zIndex: 1,
+  },
+  variants: {
+    active: {
+      true: {
+        '::after': {
+          content: '""',
+          position: 'absolute',
+          bottom: 0,
+          left: 0,
+          width: '100%',
+          height: 4,
+          background: `linear-gradient(to right bottom, ${vars.color.primaryDark}, ${vars.color.primaryLight})`,
+          // opacity: 0.85,
+        },
+      },
+    },
+    grayout: {
+      true: {
+        background: vars.color.neutralLight,
+      },
+    },
+  },
 });
 
 const row = style({
@@ -35,11 +63,20 @@ export const actions = style([
   },
 ]);
 
-export const elapsedTime = style({
-  fontWeight: 'bold',
-  fontSize: 16,
-  margin: '0 4px',
-  letterSpacing: '.03em',
+export const elapsedTime = recipe({
+  base: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    margin: '0 4px',
+    letterSpacing: '.03em',
+  },
+  variants: {
+    active: {
+      true: {
+        color: vars.color.primary,
+      },
+    },
+  },
 });
 
 export const detailRow = style([
@@ -62,14 +99,36 @@ export const deletePopoverContainer = style({
 
 export const deletePopover = style({
   position: 'absolute',
-  top: 'calc(100% + 10px)',
+  top: 'calc(100% + 7px)',
   right: 0,
-  background: vars.color.white,
-  padding: '4px 4px',
-  gap: 4,
-  boxShadow: '0 0 6px rgba(0, 0, 0, .1)',
-  borderRadius: 4,
+  boxShadow: '0 4px 4px rgba(0, 0, 0, .1)',
   display: 'flex',
+});
+
+export const smallButton = recipe({
+  base: {
+    background: vars.color.white,
+    fontSize: 13,
+    padding: '3px 8px',
+    cursor: 'pointer',
+    color: vars.color.primary,
+    // border: `1px solid ${vars.color.primary}`,
+    ':first-of-type': {
+      borderRadius: '4px 0 0 4px',
+    },
+    ':last-of-type': {
+      borderRadius: '0 4px 4px 0',
+    },
+  },
+
+  variants: {
+    primary: {
+      true: {
+        background: vars.color.primary,
+        color: '#fff',
+      },
+    },
+  },
 });
 
 globalStyle(`${deletePopover} > *`, {

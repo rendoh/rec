@@ -12,7 +12,13 @@ import { formatDurationTime } from '../../../../utils/formatDurationTime';
 import { useEverySecond } from '../../../../hooks/useEverySecond';
 import { handleErrorMessages } from '../../../../components/ErrorToaster';
 import { InvalidMessage } from '../../../../components/InvalidMessage';
-import { BsPauseFill, BsTrashFill, BsXLg } from 'react-icons/bs';
+import {
+  BsPause,
+  BsPauseFill,
+  BsTrash,
+  BsTrashFill,
+  BsX,
+} from 'react-icons/bs';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '../../../../components/Button';
 import { useOverlayState } from '../../../../hooks/useOverlayState';
@@ -80,7 +86,12 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
     useOverlayState(ref);
 
   return (
-    <div className={styles.root}>
+    <div
+      className={styles.root({
+        active: isActive,
+        grayout: isDeletePopoverOpen,
+      })}
+    >
       <div className={styles.headerRow}>
         <div className={styles.titleField}>
           <TaskTitleField
@@ -108,28 +119,38 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
                   }}
                   border
                 >
-                  <BsPauseFill />
+                  <BsPause />
                 </IconButton>
               )}
             />
           )}
           <div className={styles.deletePopoverContainer}>
             <IconButton aria-label="削除" border onClick={toggleDeletePopover}>
-              {isDeletePopoverOpen ? <BsXLg /> : <BsTrashFill />}
+              {isDeletePopoverOpen ? <BsX /> : <BsTrash />}
             </IconButton>
             <AnimatePresence>
               {isDeletePopoverOpen && (
                 <motion.div
                   ref={ref}
                   className={styles.deletePopover}
-                  initial={{ opacity: 0, y: 10 }}
+                  initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
+                  exit={{ opacity: 0, y: -10 }}
                 >
-                  <Button onClick={remove} color="error">
+                  <button
+                    className={styles.smallButton({ primary: true })}
+                    type="button"
+                    onClick={remove}
+                  >
                     削除
-                  </Button>
-                  <Button onClick={toggleDeletePopover}>戻る</Button>
+                  </button>
+                  <button
+                    className={styles.smallButton()}
+                    type="button"
+                    onClick={toggleDeletePopover}
+                  >
+                    戻る
+                  </button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -176,7 +197,9 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
           </div>
           <InvalidMessage>{formState.errors.ended_at?.message}</InvalidMessage>
         </div>
-        <p className={styles.elapsedTime}>{elapsedTime}</p>
+        <p className={styles.elapsedTime({ active: isActive })}>
+          {elapsedTime}
+        </p>
       </div>
     </div>
   );
