@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { IconButton } from '../../../../components/IconButton';
 import * as styles from './DailyTasksHeader.css';
 import {
   BsChevronDoubleLeft,
@@ -9,7 +8,6 @@ import {
 } from 'react-icons/bs';
 import { ja } from 'date-fns/locale';
 import { format } from 'date-fns';
-import { Button } from '../../../../components/Button';
 
 type DailyTasksHeaderProps = {
   date: Date;
@@ -31,25 +29,30 @@ export const DailyTasksHeader: FC<DailyTasksHeaderProps> = ({
   disabledToday,
 }) => (
   <div className={styles.root}>
-    <div className={styles.today}>
-      <Button border onClick={onTodayClick} disabled={disabledToday}>
-        Today
-      </Button>
-    </div>
-    <div className={styles.center}>
-      <IconButton onClick={onPrevMonthClick}>
+    <div className={styles.controller}>
+      <button className={styles.button} onClick={onPrevMonthClick}>
         <BsChevronDoubleLeft />
-      </IconButton>
-      <IconButton onClick={onPrevDateClick}>
+      </button>
+      <button className={styles.button} onClick={onPrevDateClick}>
         <BsChevronLeft />
-      </IconButton>
+      </button>
       <p className={styles.date}>{formatDate(date)}</p>
-      <IconButton onClick={onNextDateClick}>
+      <button className={styles.button} onClick={onNextDateClick}>
         <BsChevronRight />
-      </IconButton>
-      <IconButton onClick={onNextMonthClick}>
+      </button>
+      <button className={styles.button} onClick={onNextMonthClick}>
         <BsChevronDoubleRight />
-      </IconButton>
+      </button>
+    </div>
+    <div className={styles.buttons}>
+      <button
+        className={styles.borderButton}
+        type="button"
+        onClick={onTodayClick}
+        disabled={disabledToday}
+      >
+        Today
+      </button>
     </div>
   </div>
 );

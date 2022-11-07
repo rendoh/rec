@@ -3,8 +3,8 @@ import { createTheme, createThemeContract } from '@vanilla-extract/css';
 export const vars = createThemeContract({
   color: {
     primary: '',
-    // primaryLight: '',
-    // primaryDark: '',
+    primaryLight: '',
+    primaryDark: '',
     // neutralPrimary: '',
     // neutralSecondary: '',
     // neutralTertiary: '',
@@ -22,9 +22,9 @@ export const vars = createThemeContract({
 
 export const lightThemeClass = createTheme(vars, {
   color: {
-    primary: '#7d3fe8',
-    // primaryLight: '#d6c2f8',
-    // primaryDark: '#5f30b0',
+    primary: '#3f637f',
+    primaryLight: '#253a4b',
+    primaryDark: '#507da0',
     // neutralPrimary: '#000000',
     // neutralSecondary: '#373737',
     // neutralTertiary: '#595959',

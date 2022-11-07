@@ -2,11 +2,22 @@ import { keyframes, style } from '@vanilla-extract/css';
 import { vars } from '../../../../styles/theme.css';
 
 export const root = style({
-  position: 'relative',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-between',
+  display: 'grid',
+  gridTemplate: `
+    "sidebar header " auto
+    "sidebar content" 1fr / 200px 1fr
+  `,
   height: '100vh',
+  background: `linear-gradient(to right bottom, ${vars.color.primaryLight}, ${vars.color.primaryDark})`,
+  color: '#fff',
+});
+
+export const header = style({
+  gridArea: 'header',
+});
+
+export const sidebar = style({
+  gridArea: 'sidebar',
 });
 
 export const content = style({
@@ -14,6 +25,11 @@ export const content = style({
   flex: 1,
   overflowY: 'auto',
   position: 'relative',
+  gridArea: 'content',
+  background: '#f3f3f3',
+  boxShadow: 'inset 3px 3px 5px rgba(0, 0, 0, 0.25)',
+  borderTopLeftRadius: 5,
+  color: '#333',
 });
 
 export const footer = style({

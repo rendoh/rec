@@ -3,7 +3,6 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { CreateTaskDto, createTaskDtoSchema } from '../../schemas';
-import { blueprintRegister as bpRegister } from '../../../../utils/blueprintRegister';
 import { IconButton } from '../../../../components/IconButton';
 import { createTask } from '../../api';
 import * as styles from './CreateTaskForm.css';

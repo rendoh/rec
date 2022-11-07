@@ -159,7 +159,7 @@ pub async fn find_recent_tasks(pool: &SqlitePool) -> Result<Vec<String>, ApiErro
         ORDER BY
             started_at DESC
         LIMIT
-            6
+            10
         "#})
     .map(|row: SqliteRow| row.try_get("title").unwrap())
     .fetch_all(pool)

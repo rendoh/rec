@@ -1,30 +1,55 @@
 import { style } from '@vanilla-extract/css';
-import { vars } from '../../../../styles/theme.css';
 
 export const root = style({
-  background: vars.color.neutralLighter,
-  display: 'grid',
-  gridTemplate: '"today center theme" 1fr / 1fr 5fr 1fr',
+  display: 'flex',
+  alignItems: 'center',
   justifyContent: 'space-between',
-  padding: 10,
-  boxShadow: '0 0 6px rgba(0, 0, 0, .05)',
-  zIndex: 1,
+  height: 50,
+  paddingRight: 12,
 });
 
-export const center = style({
+export const controller = style({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  // placeItems: 'center',
-  gap: 5,
+  gap: 2,
   gridArea: 'center',
 });
 
 export const date = style({
-  margin: '0 15px',
+  margin: '0 12px',
   letterSpacing: '.05em',
 });
 
-export const today = style({
-  gridArea: 'today',
+export const button = style({
+  display: 'inline-grid',
+  placeItems: 'center',
+  cursor: 'pointer',
+  padding: 5,
+  borderRadius: 4,
+  selectors: {
+    '&:hover': {
+      background: 'rgba(255, 255, 255, .1)',
+    },
+  },
+});
+
+export const borderButton = style([
+  button,
+  {
+    border: '1px solid rgba(255, 255, 255, .3)',
+    padding: '3px 12px',
+    selectors: {
+      '&:disabled': {
+        opacity: 0.3,
+        pointerEvents: 'none',
+      },
+    },
+  },
+]);
+
+export const buttons = style({
+  display: 'flex',
+  alignItems: 'center',
+  gap: 4,
 });
