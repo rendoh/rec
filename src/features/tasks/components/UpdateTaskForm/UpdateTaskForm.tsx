@@ -12,15 +12,8 @@ import { formatDurationTime } from '../../../../utils/formatDurationTime';
 import { useEverySecond } from '../../../../hooks/useEverySecond';
 import { handleErrorMessages } from '../../../../components/ErrorToaster';
 import { InvalidMessage } from '../../../../components/InvalidMessage';
-import {
-  BsPause,
-  BsPauseFill,
-  BsTrash,
-  BsTrashFill,
-  BsX,
-} from 'react-icons/bs';
+import { BsPause, BsTrash, BsX } from 'react-icons/bs';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Button } from '../../../../components/Button';
 import { useOverlayState } from '../../../../hooks/useOverlayState';
 
 export type UpdateTaskFormProps = {

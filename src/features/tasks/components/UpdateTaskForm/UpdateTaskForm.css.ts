@@ -99,6 +99,8 @@ export const deletePopoverContainer = style({
 
 export const deletePopover = style({
   position: 'absolute',
+  borderRadius: 4,
+  background: vars.color.white,
   top: 'calc(100% + 7px)',
   right: 0,
   boxShadow: '0 4px 4px rgba(0, 0, 0, .1)',

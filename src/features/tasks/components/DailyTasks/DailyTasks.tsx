@@ -12,7 +12,7 @@ import * as styles from './DailyTasks.css';
 import { TaskAggregator } from '../TaskAggregator';
 import { DailyTasksHeader } from './DailyTasksHeader';
 import { Button } from '../../../../components/Button';
-import { BsExclamationTriangle, BsFilterLeft } from 'react-icons/bs';
+import { BsFilterLeft } from 'react-icons/bs';
 import { Modal } from '../../../../components/Modal';
 import { DailyTasksSidebar } from './DailyTasksSidebar';
 import { DailyTasksContent } from './DailyTasksContent';
@@ -64,7 +64,12 @@ export const DailyTasks: FC = () => {
         />
       </div>
       <div className={styles.content}>
-        <DailyTasksContent tasks={tasks} onUpdate={handleUpdate} />
+        <DailyTasksContent
+          showCreateForm={isToday}
+          tasks={tasks}
+          onUpdate={handleUpdate}
+          isLoading={isLoading}
+        />
         <div style={{ display: 'none' }}>
           {isLoading && (
             <div className={styles.spinnerWrapper}>
@@ -85,13 +90,7 @@ export const DailyTasks: FC = () => {
               <TaskList tasks={tasks} onUpdate={handleUpdate} />
             </>
           ) : (
-            <div className={styles.empty}>
-              <BsExclamationTriangle className={styles.emptyIcon} />
-              <p className={styles.emptyHeading}>Not found</p>
-              <p className={styles.emptyText}>
-                該当の日付にタスクが見つかりませんでした
-              </p>
-            </div>
+            <div>hi</div>
           )}
         </div>
       </div>
