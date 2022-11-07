@@ -2,7 +2,11 @@ import { FC, useCallback } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { CreateTaskDto, createTaskDtoSchema } from '../../schemas';
+import {
+  CreateTaskDto,
+  createTaskDtoSchema,
+  maxTitleLength,
+} from '../../schemas';
 import { createTask } from '../../api';
 import * as styles from './CreateTaskForm.css';
 import { handleErrorMessages } from '../../../../components/ErrorToaster';
@@ -51,6 +55,7 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({ onComplete }) => {
         type="text"
         {...register('title')}
         placeholder="タスク・プロジェクト名"
+        maxLength={maxTitleLength}
       />
       <button className={styles.button} type="submit" aria-label="開始">
         <BsPlay />

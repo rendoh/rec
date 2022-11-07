@@ -25,7 +25,7 @@ export const content = style({
   background: '#f1f1f1', // TODO: use vars
   boxShadow: 'inset 3px 3px 5px rgba(0, 0, 0, 0.25)',
   borderTopLeftRadius: 5,
-  color: '#333',
+  color: '#333', // TODO: use vars
   overflowY: 'auto',
 });
 

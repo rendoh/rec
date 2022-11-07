@@ -5,13 +5,12 @@ import { vars } from '../../styles/theme.css';
 export const root = recipe({
   base: {
     borderRadius: '50%',
-    background: vars.color.neutralLighter,
     display: 'inline-grid',
     placeItems: 'center',
     flexShrink: 0,
     lineHeight: 1,
-    width: '2.2em',
-    height: '2.2em',
+    width: '1.8em',
+    height: '1.8em',
     cursor: 'pointer',
     selectors: {
       '&:hover': {
@@ -32,6 +31,6 @@ export const root = recipe({
 export type RootVariants = RecipeVariants<typeof root>;
 
 globalStyle(`${root()} > *`, {
-  width: '1em',
+  width: '0.9em',
   color: 'currentcolor',
 });

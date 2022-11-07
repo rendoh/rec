@@ -10,7 +10,7 @@ export const root = recipe({
     gap: 6,
     width: '100%',
     backgroundColor: vars.color.neutralLight,
-    padding: 6,
+    padding: '3px 3px',
   },
 
   variants: {
@@ -43,7 +43,7 @@ export const root = recipe({
 export type RootVariants = RecipeVariants<typeof root>;
 
 export const field = style({
-  padding: '2px 5px',
+  padding: '1px 5px',
   selectors: {
     '&:focus': {
       background: vars.color.neutral,

@@ -5,11 +5,15 @@ export const root = recipe({
   base: {
     width: '100%',
     borderRadius: 4,
-    fontSize: 16,
+    fontWeight: 'bold',
+    fontSize: 14,
     backgroundColor: vars.color.neutralLight,
-    padding: '6px 12px',
+    padding: '4px 8px',
     outline: 'none',
     border: '1px solid transparent',
+    ':focus': {
+      fontWeight: 'normal',
+    },
     selectors: {
       '&::placeholder': {
         color: vars.color.neutral,
