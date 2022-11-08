@@ -76,7 +76,7 @@ export const tabSelector = recipe({
   variants: {
     selected: {
       true: {
-        background: vars.color.white,
+        background: '#fff',
         color: vars.color.primary,
         pointerEvents: 'none',
         ':hover': {
