@@ -34,7 +34,7 @@ export const button = style({
   letterSpacing: '.05em',
   selectors: {
     '&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, .075)',
+      backgroundColor: 'rgba(255, 255, 255, .095)',
     },
   },
 });
