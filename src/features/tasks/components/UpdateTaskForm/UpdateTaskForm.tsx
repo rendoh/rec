@@ -16,6 +16,7 @@ import { BsPause, BsTrash, BsX } from 'react-icons/bs';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useOverlayState } from '../../../../hooks/useOverlayState';
 import { useFetchTasks } from '../../state/tasks';
+import { useIsFirstRender } from '../../../../hooks/useIsFirstRender';
 
 export type UpdateTaskFormProps = {
   task: Task;
@@ -43,9 +44,12 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({ task }) => {
     [fetchTasks, task.id],
   );
 
+  const isFirstRender = useIsFirstRender();
   useEffect(() => {
+    if (!isFirstRender) {
     reset(task);
-  }, [reset, task]);
+    }
+  }, [isFirstRender, reset, task]);
 
   const remove = useCallback(async () => {
     try {
