@@ -6,7 +6,6 @@ import {
   Reducer,
   useCallback,
   useContext,
-  useEffect,
   useReducer,
 } from 'react';
 import { handleErrorMessages } from '../../../components/ErrorToaster';
