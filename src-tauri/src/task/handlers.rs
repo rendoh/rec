@@ -33,7 +33,8 @@ pub async fn find_all(pool: &SqlitePool, payload: FindTasks) -> Result<Vec<Task>
     .map_err(ApiError::DbError)
 }
 
-pub async fn create(pool: &SqlitePool, payload: CreateTask) -> Result<Task, ApiError> {
+pub async fn create(pool: &SqlitePool, mut payload: CreateTask) -> Result<Task, ApiError> {
+    payload.title = payload.title.trim().to_string();
     payload.validate().map_err(ApiError::ValidationError)?;
 
     let active_task = sqlx::query_as::<_, Task>(indoc! {r#"
@@ -96,7 +97,8 @@ pub async fn create(pool: &SqlitePool, payload: CreateTask) -> Result<Task, ApiE
     .map_err(ApiError::DbError)
 }
 
-pub async fn update(pool: &SqlitePool, id: i32, payload: UpdateTask) -> Result<Task, ApiError> {
+pub async fn update(pool: &SqlitePool, id: i32, mut payload: UpdateTask) -> Result<Task, ApiError> {
+    payload.title = payload.title.map(|title| title.trim().to_string());
     payload.validate().map_err(ApiError::ValidationError)?;
 
     sqlx::query_as::<_, Task>(indoc! {r#"
