@@ -25,6 +25,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.38.0",
     "react-icons": "^4.6.0",
+    "react-toastify": "^9.1.1",
     "the-new-css-reset": "^1.7.3",
     "zod": "^3.19.1"
   },
