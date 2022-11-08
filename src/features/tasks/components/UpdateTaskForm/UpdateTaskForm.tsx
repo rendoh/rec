@@ -8,14 +8,13 @@ import { deleteTask, updateTask } from '../../api';
 import * as styles from './UpdateTaskForm.css';
 import { TimeField } from '../../../../components/TimeField';
 import { TaskTitleField } from '../TaskTitleField';
-import { formatDurationTime } from '../../../../utils/formatDurationTime';
-import { useEverySecond } from '../../../../hooks/useEverySecond';
 import { handleErrorMessages } from '../../../../components/ErrorToaster';
 import { InvalidMessage } from '../../../../components/InvalidMessage';
 import { BsPause, BsTrash, BsX } from 'react-icons/bs';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useOverlayState } from '../../../../hooks/useOverlayState';
 import { useFetchTasks } from '../../state/tasks';
+import { ElapsedTime } from '../ElapsedTime';
 import { useIsFirstRender } from '../../../../hooks/useIsFirstRender';
 
 export type UpdateTaskFormProps = {
@@ -47,7 +46,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({ task }) => {
   const isFirstRender = useIsFirstRender();
   useEffect(() => {
     if (!isFirstRender) {
-    reset(task);
+      reset(task);
     }
   }, [isFirstRender, reset, task]);
 
@@ -70,11 +69,6 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({ task }) => {
   const startedAtValue = getValues('started_at');
   const endedAtValue = getValues('ended_at');
   const isActive = !endedAtValue;
-  const currentDate = useEverySecond(!isActive); // TODO: reparate
-
-  const elapsedTime = formatDurationTime(
-    (endedAtValue || currentDate).getTime() - startedAtValue.getTime(),
-  );
 
   const ref = useRef<HTMLDivElement | null>(null);
   const { isOpen: isDeletePopoverOpen, toggle: toggleDeletePopover } =
@@ -193,7 +187,14 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({ task }) => {
           <InvalidMessage>{formState.errors.ended_at?.message}</InvalidMessage>
         </div>
         <p className={styles.elapsedTime({ active: isActive })}>
-          {elapsedTime}
+          <ElapsedTime
+            duration={
+              endedAtValue
+                ? endedAtValue.getTime() - startedAtValue.getTime()
+                : 0
+            }
+            start={endedAtValue ? undefined : startedAtValue}
+          />
         </p>
       </div>
     </div>

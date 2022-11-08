@@ -3,6 +3,7 @@ import { BsCheck2Square } from 'react-icons/bs';
 import { useIsCurrentDateToday } from '../../state/currentDate';
 import { useTasks } from '../../state/tasks';
 import { CreateTaskForm } from '../CreateTaskForm';
+import { TaskAggregation } from '../TaskAggregation';
 import { TaskList } from '../TaskList';
 import * as styles from './DailyTasksContent.css';
 
@@ -21,6 +22,7 @@ export const DailyTasksContent: FC = () => {
         {tasks.length > 0 ? (
           <TaskList tasks={tasks} />
         ) : (
+          // <TaskAggregation tasks={tasks} />
           !isLoading && (
             <div className={styles.empty}>
               <BsCheck2Square className={styles.emptyIcon} />

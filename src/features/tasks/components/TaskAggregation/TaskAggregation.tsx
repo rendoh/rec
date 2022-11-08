@@ -1,10 +1,9 @@
 import { FC, useMemo } from 'react';
-import { useEverySecond } from '../../../../hooks/useEverySecond';
-import { formatDurationTime } from '../../../../utils/formatDurationTime';
 import { Task } from '../../schemas';
-import * as styles from './TaskAggregator.css';
+import { ElapsedTime } from '../ElapsedTime';
+import * as styles from './TaskAggregation.css';
 
-export type TaskAggregatorProps = {
+export type TaskAggregationProps = {
   tasks: Task[];
 };
 
@@ -14,8 +13,7 @@ type TaskGroup = {
   lastStartedAt?: Date;
 };
 
-export const TaskAggregator: FC<TaskAggregatorProps> = ({ tasks }) => {
-  const currentDate = useEverySecond();
+export const TaskAggregation: FC<TaskAggregationProps> = ({ tasks }) => {
   const grouped = useMemo(
     () =>
       tasks.reduce<TaskGroup[]>((result, task) => {
@@ -47,12 +45,7 @@ export const TaskAggregator: FC<TaskAggregatorProps> = ({ tasks }) => {
         <div key={i} className={styles.row}>
           <dt className={styles.title}>{group.title}</dt>
           <dd className={styles.time}>
-            {formatDurationTime(
-              group.total +
-                (group.lastStartedAt
-                  ? currentDate.getTime() - group.lastStartedAt.getTime()
-                  : 0),
-            )}
+            <ElapsedTime duration={group.total} start={group.lastStartedAt} />
           </dd>
         </div>
       ))}

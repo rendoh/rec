@@ -12,12 +12,13 @@ export const App: FC = () => {
 /**
  * TODO:
  * - [ ] theme
- * - [ ] toast
+ * - [x] toast
  * - [x] FLIP
  * - [x] primary color
  *   - [ ] aggregate
  *   - [x] start
- * - [ ] remove spinner
+ * - [x] remove spinner
  * - [ ] trim whitespace before validate in rust
  * - [x] hide ! on loading
+ * - [ ] useEverySecond
  */
