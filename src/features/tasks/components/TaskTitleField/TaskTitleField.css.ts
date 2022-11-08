@@ -7,7 +7,8 @@ export const root = recipe({
     borderRadius: 4,
     fontWeight: 'bold',
     fontSize: 14,
-    backgroundColor: vars.color.neutralLight,
+    backgroundColor: vars.color.neutralLighter,
+    boxShadow: 'inset 1px 1px 3px rgba(0, 0, 0, .05)',
     padding: '4px 8px',
     outline: 'none',
     border: '1px solid transparent',
@@ -26,7 +27,7 @@ export const root = recipe({
       },
       false: {
         ':focus': {
-          borderColor: vars.color.neutral,
+          borderColor: vars.color.primary,
         },
       },
     },
@@ -36,6 +37,7 @@ export const root = recipe({
           '&:not(:focus):not(:hover)': {
             backgroundColor: 'transparent',
             borderColor: 'transparent',
+            boxShadow: 'none',
           },
         },
       },

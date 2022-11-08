@@ -9,7 +9,8 @@ export const root = recipe({
     display: 'inline-flex',
     gap: 6,
     width: '100%',
-    backgroundColor: vars.color.neutralLight,
+    backgroundColor: vars.color.neutralLighter,
+    boxShadow: 'inset 1px 1px 3px rgba(0, 0, 0, .05)',
     padding: '3px 3px',
   },
 
@@ -20,7 +21,7 @@ export const root = recipe({
       },
       false: {
         ':focus-within': {
-          borderColor: vars.color.neutral,
+          borderColor: vars.color.primary,
         },
       },
     },
@@ -31,6 +32,7 @@ export const root = recipe({
           '&:not(:focus-within):not(:hover)': {
             backgroundColor: 'transparent',
             borderColor: 'transparent',
+            boxShadow: 'none',
           },
         },
       },
@@ -43,8 +45,9 @@ export type RootVariants = RecipeVariants<typeof root>;
 export const field = style({
   padding: '1px 5px',
   ':focus': {
-    background: vars.color.neutral,
+    background: vars.color.primaryLight,
     borderRadius: 4,
     outline: 'none',
+    color: '#fff',
   },
 });
