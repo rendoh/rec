@@ -36,9 +36,9 @@ export const lightThemeClass = createTheme(vars, {
 
 export const darkThemeClass = createTheme(vars, {
   color: {
-    primary: '#456b89',
-    primaryLight: '#507da0',
-    primaryDark: '#253a4b',
+    primary: '#5381a6',
+    primaryLight: '#5388b0',
+    primaryDark: '#263a4a',
     neutralDarker: '#f1f1f1',
     neutralDark: '#e8e8e8',
     neutral: '#666',

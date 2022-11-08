@@ -80,7 +80,7 @@ export const tabSelector = recipe({
         color: vars.color.primary,
         pointerEvents: 'none',
         ':hover': {
-          background: vars.color.neutralLight,
+          background: '#f2f2f2',
         },
       },
     },
