@@ -20,7 +20,10 @@ export const root = recipe({
   variants: {
     border: {
       true: {
-        border: `1px solid ${vars.color.neutral}`,
+        border: `1px solid ${vars.color.neutralLight}`,
+        ':hover': {
+          borderColor: vars.color.neutral,
+        },
       },
     },
   },
