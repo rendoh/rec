@@ -14,7 +14,7 @@ export const header = style({
 
 export const content = style({
   gridArea: '1 / -1',
-  padding: 16,
+  padding: 20,
   flex: 1,
   overflowY: 'auto',
 });

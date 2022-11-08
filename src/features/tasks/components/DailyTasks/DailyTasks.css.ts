@@ -23,8 +23,21 @@ export const sidebar = style({
 export const content = style({
   gridArea: 'content',
   background: vars.color.neutralLighter,
-  boxShadow: 'inset 3px 3px 5px rgba(0, 0, 0, 0.25)',
   borderTopLeftRadius: 5,
   color: vars.color.neutralDarker,
   overflowY: 'auto',
+  position: 'relative',
+  '::after': {
+    content: '""',
+    pointerEvents: 'none',
+    display: 'block',
+    width: '100%',
+    height: '100%',
+    boxShadow: 'inset 3px 3px 6px rgba(0, 0, 0, 0.25)',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    borderTopLeftRadius: 5,
+    zIndex: 1,
+  },
 });
