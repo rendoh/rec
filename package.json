@@ -11,9 +11,6 @@
     "test": "TZ=UTC vitest"
   },
   "dependencies": {
-    "@blueprintjs/core": "^4.11.5",
-    "@blueprintjs/datetime": "^4.4.5",
-    "@blueprintjs/popover2": "^1.8.0",
     "@hookform/resolvers": "^2.9.10",
     "@tauri-apps/api": "^1.1.0",
     "@vanilla-extract/css": "^1.9.1",
