@@ -14,7 +14,7 @@ export const input = style({
   width: 'calc(100% - 20px)',
   padding: '5px 12px',
   outline: 'none',
-  backgroundColor: '#fff',
+  backgroundColor: vars.color.white,
   borderRadius: '4px 0 0 4px',
   border: `1px solid ${vars.color.neutral}`,
   borderRight: 'none',
