@@ -33,3 +33,20 @@ export const lightThemeClass = createTheme(vars, {
     errorDark: '#c74a4a',
   },
 });
+
+export const darkThemeClass = createTheme(vars, {
+  color: {
+    primary: '#456b89',
+    primaryLight: '#507da0',
+    primaryDark: '#253a4b',
+    neutralDarker: '#f1f1f1',
+    neutralDark: '#e8e8e8',
+    neutral: '#666',
+    neutralLight: '#444',
+    neutralLighter: '#333',
+    black: '#fafafa',
+    white: '#2d2d2d',
+    error: '#d95b5b',
+    errorDark: '#c74a4a',
+  },
+});

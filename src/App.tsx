@@ -1,10 +1,9 @@
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { DailyTasks } from './features/tasks/components/DailyTasks';
-import { lightThemeClass } from './styles/theme.css';
+import { ThemeProvider } from './styles/theme';
 
-export const App: FC = () => {
-  useEffect(() => {
-    document.body.classList.add(lightThemeClass);
-  }, []);
-  return <DailyTasks />;
-};
+export const App: FC = () => (
+  <ThemeProvider>
+    <DailyTasks />
+  </ThemeProvider>
+);

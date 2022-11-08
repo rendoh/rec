@@ -1,4 +1,5 @@
 import { style } from '@vanilla-extract/css';
+import { recipe } from '@vanilla-extract/recipes';
 
 export const root = style({
   height: '100%',
@@ -19,6 +20,7 @@ export const list = style({
   gap: 8,
   overflowY: 'auto',
   padding: '0 12px 12px',
+  flex: 1,
 });
 
 export const button = style({
@@ -43,4 +45,47 @@ export const playIcon = style({
   fontSize: 18,
   marginBottom: 1,
   flexShrink: 0,
+});
+
+export const themeButton = style({
+  cursor: 'pointer',
+  display: 'flex',
+  alignItems: 'center',
+  gap: 6,
+  fontSize: 12,
+  margin: 10,
+});
+
+const iconSize = 8;
+
+export const switchIcon = recipe({
+  base: {
+    display: 'block',
+    width: 28,
+    height: iconSize + 6,
+    border: '1px solid currentcolor',
+    borderRadius: '100vmax',
+    position: 'relative',
+    '::before': {
+      content: '""',
+      display: 'block',
+      borderRadius: '50%',
+      background: 'currentcolor',
+      width: iconSize,
+      aspectRatio: '1',
+      position: 'absolute',
+      top: 2,
+      left: 2,
+      transition: 'translate 0.2s ease-out',
+    },
+  },
+  variants: {
+    selected: {
+      true: {
+        '::before': {
+          translate: '14px 0',
+        },
+      },
+    },
+  },
 });
