@@ -21,10 +21,8 @@ export const input = style({
   ':focus': {
     borderColor: vars.color.primary,
   },
-  selectors: {
-    '&::placeholder': {
-      color: vars.color.neutral,
-    },
+  '::placeholder': {
+    color: vars.color.neutral,
   },
 });
 

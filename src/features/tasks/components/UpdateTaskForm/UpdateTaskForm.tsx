@@ -15,34 +15,32 @@ import { InvalidMessage } from '../../../../components/InvalidMessage';
 import { BsPause, BsTrash, BsX } from 'react-icons/bs';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useOverlayState } from '../../../../hooks/useOverlayState';
+import { useFetchTasks } from '../../state/tasks';
 
 export type UpdateTaskFormProps = {
   task: Task;
-  onComplete?: () => void;
 };
 
-export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
-  task,
-  onComplete,
-}) => {
+export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({ task }) => {
   const { control, register, handleSubmit, formState, reset, getValues } =
     useForm<UpdateTaskDto>({
       defaultValues: task,
       resolver: zodResolver(updateTaskDtoSchema),
     });
 
+  const fetchTasks = useFetchTasks();
   const onSubmit: SubmitHandler<UpdateTaskDto> = useCallback(
     async (values) => {
       try {
         await updateTask(task.id, {
           ...values,
         });
-        onComplete?.();
+        fetchTasks();
       } catch (error: unknown) {
         handleErrorMessages(error);
       }
     },
-    [onComplete, task.id],
+    [fetchTasks, task.id],
   );
 
   useEffect(() => {
@@ -52,11 +50,11 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
   const remove = useCallback(async () => {
     try {
       await deleteTask(task.id);
-      onComplete?.();
+      fetchTasks();
     } catch (error: unknown) {
       handleErrorMessages(error);
     }
-  }, [onComplete, task.id]);
+  }, [fetchTasks, task.id]);
 
   const handleKeyUpEnter = useCallback(
     (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -68,7 +66,7 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({
   const startedAtValue = getValues('started_at');
   const endedAtValue = getValues('ended_at');
   const isActive = !endedAtValue;
-  const currentDate = useEverySecond(!isActive);
+  const currentDate = useEverySecond(!isActive); // TODO: reparate
 
   const elapsedTime = formatDurationTime(
     (endedAtValue || currentDate).getTime() - startedAtValue.getTime(),

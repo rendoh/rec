@@ -12,10 +12,8 @@ export const root = recipe({
     width: '1.8em',
     height: '1.8em',
     cursor: 'pointer',
-    selectors: {
-      '&:hover': {
-        background: vars.color.neutralLight,
-      },
+    ':hover': {
+      background: vars.color.neutralLight,
     },
   },
 

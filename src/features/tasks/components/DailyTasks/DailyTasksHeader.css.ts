@@ -27,10 +27,8 @@ export const button = style({
   cursor: 'pointer',
   padding: 5,
   borderRadius: 4,
-  selectors: {
-    '&:hover': {
-      background: 'rgba(255, 255, 255, .1)',
-    },
+  ':hover': {
+    background: 'rgba(255, 255, 255, .1)',
   },
 });
 
@@ -39,11 +37,9 @@ export const borderButton = style([
   {
     border: '1px solid rgba(255, 255, 255, .3)',
     padding: '3px 12px',
-    selectors: {
-      '&:disabled': {
-        opacity: 0.3,
-        pointerEvents: 'none',
-      },
+    ':disabled': {
+      opacity: 0.3,
+      pointerEvents: 'none',
     },
   },
 ]);

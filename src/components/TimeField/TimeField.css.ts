@@ -19,10 +19,8 @@ export const root = recipe({
         borderColor: vars.color.error,
       },
       false: {
-        selectors: {
-          '&:focus-within': {
-            borderColor: vars.color.neutral,
-          },
+        ':focus-within': {
+          borderColor: vars.color.neutral,
         },
       },
     },
@@ -44,11 +42,9 @@ export type RootVariants = RecipeVariants<typeof root>;
 
 export const field = style({
   padding: '1px 5px',
-  selectors: {
-    '&:focus': {
-      background: vars.color.neutral,
-      borderRadius: 4,
-      outline: 'none',
-    },
+  ':focus': {
+    background: vars.color.neutral,
+    borderRadius: 4,
+    outline: 'none',
   },
 });

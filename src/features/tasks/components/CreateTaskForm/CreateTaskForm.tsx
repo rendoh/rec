@@ -11,18 +11,16 @@ import { createTask } from '../../api';
 import * as styles from './CreateTaskForm.css';
 import { handleErrorMessages } from '../../../../components/ErrorToaster';
 import { BsPlay } from 'react-icons/bs';
+import { useFetchTasks } from '../../state/tasks';
 
 const createTaskFormSchema = createTaskDtoSchema.omit({ started_at: true });
 type CreateTaskFormValues = z.infer<typeof createTaskFormSchema>;
 
-export type CreateTaskFormProps = {
-  onComplete?: () => void;
-};
-
-export const CreateTaskForm: FC<CreateTaskFormProps> = ({ onComplete }) => {
+export const CreateTaskForm: FC = () => {
   const { register, handleSubmit, reset } = useForm<CreateTaskFormValues>({
     resolver: zodResolver(createTaskFormSchema),
   });
+  const fetchTasks = useFetchTasks();
 
   const handleCreateTask = useCallback(
     async (title: string) => {
@@ -33,12 +31,12 @@ export const CreateTaskForm: FC<CreateTaskFormProps> = ({ onComplete }) => {
       try {
         await createTask(createTaskDto);
         reset();
-        onComplete?.();
+        fetchTasks();
       } catch (error: unknown) {
         handleErrorMessages(error);
       }
     },
-    [onComplete, reset],
+    [fetchTasks, reset],
   );
 
   const onSubmit: SubmitHandler<CreateTaskFormValues> = useCallback(

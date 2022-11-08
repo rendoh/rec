@@ -14,10 +14,8 @@ export const root = recipe({
     ':focus': {
       fontWeight: 'normal',
     },
-    selectors: {
-      '&::placeholder': {
-        color: vars.color.neutral,
-      },
+    '::placeholder': {
+      color: vars.color.neutral,
     },
   },
 
@@ -27,10 +25,8 @@ export const root = recipe({
         borderColor: vars.color.error,
       },
       false: {
-        selectors: {
-          '&:focus': {
-            borderColor: vars.color.neutral,
-          },
+        ':focus': {
+          borderColor: vars.color.neutral,
         },
       },
     },

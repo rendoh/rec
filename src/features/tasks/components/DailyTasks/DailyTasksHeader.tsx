@@ -8,54 +8,71 @@ import {
 } from 'react-icons/bs';
 import { ja } from 'date-fns/locale';
 import { format } from 'date-fns';
+import {
+  useCurrentDate,
+  useIsCurrentDateToday,
+  useToNextDay,
+  useToNextMonth,
+  useToPrevDay,
+  useToPrevMonth,
+  useToToday,
+} from '../../state/currentDate';
 
-type DailyTasksHeaderProps = {
-  date: Date;
-  onPrevMonthClick: () => void;
-  onPrevDateClick: () => void;
-  onNextDateClick: () => void;
-  onNextMonthClick: () => void;
-  onTodayClick: () => void;
-  disabledToday?: boolean;
+export const DailyTasksHeader: FC = () => {
+  const currentDate = useCurrentDate();
+  const toPrevDay = useToPrevDay();
+  const toNextDay = useToNextDay();
+  const toPrevMonth = useToPrevMonth();
+  const toNextMonth = useToNextMonth();
+  const toToday = useToToday();
+  const isToday = useIsCurrentDateToday();
+
+  return (
+    <div className={styles.root}>
+      <div className={styles.controller}>
+        <button
+          className={styles.button}
+          onClick={toPrevMonth}
+          aria-label="前の月へ"
+        >
+          <BsChevronDoubleLeft />
+        </button>
+        <button
+          className={styles.button}
+          onClick={toPrevDay}
+          aria-label="前日へ"
+        >
+          <BsChevronLeft />
+        </button>
+        <p className={styles.date}>{formatDate(currentDate)}</p>
+        <button
+          className={styles.button}
+          onClick={toNextDay}
+          aria-label="翌日へ"
+        >
+          <BsChevronRight />
+        </button>
+        <button
+          className={styles.button}
+          onClick={toNextMonth}
+          aria-label="次の月へ"
+        >
+          <BsChevronDoubleRight />
+        </button>
+      </div>
+      <div className={styles.buttons}>
+        <button
+          className={styles.borderButton}
+          type="button"
+          onClick={toToday}
+          disabled={isToday}
+        >
+          今日
+        </button>
+      </div>
+    </div>
+  );
 };
-
-export const DailyTasksHeader: FC<DailyTasksHeaderProps> = ({
-  date,
-  onPrevMonthClick,
-  onPrevDateClick,
-  onNextDateClick,
-  onNextMonthClick,
-  onTodayClick,
-  disabledToday,
-}) => (
-  <div className={styles.root}>
-    <div className={styles.controller}>
-      <button className={styles.button} onClick={onPrevMonthClick}>
-        <BsChevronDoubleLeft />
-      </button>
-      <button className={styles.button} onClick={onPrevDateClick}>
-        <BsChevronLeft />
-      </button>
-      <p className={styles.date}>{formatDate(date)}</p>
-      <button className={styles.button} onClick={onNextDateClick}>
-        <BsChevronRight />
-      </button>
-      <button className={styles.button} onClick={onNextMonthClick}>
-        <BsChevronDoubleRight />
-      </button>
-    </div>
-    <div className={styles.buttons}>
-      <button
-        className={styles.borderButton}
-        type="button"
-        onClick={onTodayClick}
-        disabled={disabledToday}
-      >
-        今日
-      </button>
-    </div>
-  </div>
-);
 
 function formatDate(date: Date): string {
   return format(date, 'yyyy/MM/dd (iii)', {

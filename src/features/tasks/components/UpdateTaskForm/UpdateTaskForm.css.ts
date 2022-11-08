@@ -11,7 +11,6 @@ export const root = recipe({
     position: 'relative',
     overflow: 'hidden',
     transition: 'background-color .2s ease-out',
-    zIndex: 1,
   },
   variants: {
     active: {
@@ -24,7 +23,6 @@ export const root = recipe({
           width: '100%',
           height: 4,
           background: `linear-gradient(to right bottom, ${vars.color.primaryDark}, ${vars.color.primaryLight})`,
-          // opacity: 0.85,
         },
       },
     },

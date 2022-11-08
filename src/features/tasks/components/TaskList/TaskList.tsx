@@ -6,14 +6,13 @@ import * as styles from './TaskList.css';
 
 export type TaskListProps = {
   tasks: Task[];
-  onUpdate: () => void;
 };
 
-export const TaskList: FC<TaskListProps> = ({ tasks, onUpdate }) => (
+export const TaskList: FC<TaskListProps> = ({ tasks }) => (
   <div className={styles.list}>
     {tasks.map((task) => (
       <motion.div key={task.id} layout>
-        <UpdateTaskForm task={task} onComplete={onUpdate} />
+        <UpdateTaskForm task={task} />
       </motion.div>
     ))}
   </div>
