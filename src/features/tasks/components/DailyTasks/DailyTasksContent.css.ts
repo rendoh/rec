@@ -8,7 +8,7 @@ export const root = style({
 });
 
 export const header = style({
-  padding: 16,
+  padding: 20,
   borderBottom: `1px solid ${vars.color.neutral}`,
 });
 
