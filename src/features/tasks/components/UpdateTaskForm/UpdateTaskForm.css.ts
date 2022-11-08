@@ -10,7 +10,6 @@ export const root = recipe({
     boxShadow: '0 2px 4px rgba(0, 0, 0, .03)',
     position: 'relative',
     overflow: 'hidden',
-    transition: 'background-color .2s ease-out',
   },
   variants: {
     active: {
