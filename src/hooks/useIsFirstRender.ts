@@ -1,8 +1,11 @@
 import { useRef } from 'react';
 
 export function useIsFirstRender() {
-  const ref = useRef(true);
-  const firstRender = ref.current;
-  ref.current = false;
-  return firstRender;
+  const isFirst = useRef(true);
+  if (isFirst.current) {
+    isFirst.current = false;
+    return true;
+  }
+
+  return isFirst.current;
 }

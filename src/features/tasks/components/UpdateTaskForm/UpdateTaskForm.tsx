@@ -48,7 +48,9 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({ task }) => {
     if (!isFirstRender) {
       reset(task);
     }
-  }, [isFirstRender, reset, task]);
+    // isFirstRenderがtrue→falseに変更されたときにresetが実行されるのを防ぐためにdepsに含めない
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reset, task]);
 
   const remove = useCallback(async () => {
     try {
