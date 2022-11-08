@@ -26,11 +26,6 @@ export const root = recipe({
         },
       },
     },
-    grayout: {
-      true: {
-        background: vars.color.neutralLight,
-      },
-    },
   },
 });
 
@@ -112,9 +107,13 @@ export const smallButton = recipe({
     padding: '3px 8px',
     cursor: 'pointer',
     color: vars.color.primary,
-    // border: `1px solid ${vars.color.primary}`,
+    border: `1px solid ${vars.color.primary}`,
+    ':hover': {
+      background: vars.color.neutralLight,
+    },
     ':first-of-type': {
       borderRadius: '4px 0 0 4px',
+      borderRight: 'none',
     },
     ':last-of-type': {
       borderRadius: '0 4px 4px 0',
@@ -126,6 +125,9 @@ export const smallButton = recipe({
       true: {
         background: vars.color.primary,
         color: '#fff',
+        ':hover': {
+          background: vars.color.primaryLight,
+        },
       },
     },
   },

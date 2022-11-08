@@ -80,7 +80,6 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({ task }) => {
     <div
       className={styles.root({
         active: isActive,
-        grayout: isDeletePopoverOpen,
       })}
     >
       <div className={styles.headerRow}>
