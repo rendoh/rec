@@ -6,9 +6,10 @@ import { DailyTasksContent } from './DailyTasksContent';
 import { Composer } from '../../../../components/Composer';
 import { CurrentDateProvider } from '../../state/currentDate';
 import { TasksProvider, useFetchTasks } from '../../state/tasks';
+import { TabsStateProvider } from '../../state/tabs';
 
 export const DailyTasks: FC = () => (
-  <Composer providers={[CurrentDateProvider, TasksProvider]}>
+  <Composer providers={[CurrentDateProvider, TasksProvider, TabsStateProvider]}>
     <DailyTasksRoot />
   </Composer>
 );

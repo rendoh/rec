@@ -2,6 +2,9 @@ import { FC, useMemo } from 'react';
 import { Task } from '../../schemas';
 import { ElapsedTime } from '../ElapsedTime';
 import * as styles from './TaskAggregation.css';
+import { useCurrentDate } from '../../state/currentDate';
+import { format } from 'date-fns';
+import { ja } from 'date-fns/locale';
 
 export type TaskAggregationProps = {
   tasks: Task[];
@@ -14,6 +17,8 @@ type TaskGroup = {
 };
 
 export const TaskAggregation: FC<TaskAggregationProps> = ({ tasks }) => {
+  const currentDate = useCurrentDate();
+
   const grouped = useMemo(
     () =>
       tasks.reduce<TaskGroup[]>((result, task) => {
@@ -40,15 +45,30 @@ export const TaskAggregation: FC<TaskAggregationProps> = ({ tasks }) => {
   );
 
   return (
-    <dl className={styles.root}>
-      {grouped.map((group, i) => (
-        <div key={i} className={styles.row}>
-          <dt className={styles.title}>{group.title}</dt>
-          <dd className={styles.time}>
-            <ElapsedTime duration={group.total} start={group.lastStartedAt} />
-          </dd>
-        </div>
-      ))}
-    </dl>
+    <div className={styles.root}>
+      <h1 className={styles.heading}>
+        {formatDate(currentDate)} のタスク集計結果
+      </h1>
+      <dl>
+        {grouped.map((group) => (
+          <div key={group.title} className={styles.row}>
+            <dt className={styles.title}>{group.title}</dt>
+            <dd
+              className={styles.time({
+                active: !!group.lastStartedAt,
+              })}
+            >
+              <ElapsedTime duration={group.total} start={group.lastStartedAt} />
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
   );
 };
+
+function formatDate(date: Date): string {
+  return format(date, 'yyyy/MM/dd', {
+    locale: ja,
+  });
+}

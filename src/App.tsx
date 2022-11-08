@@ -8,17 +8,3 @@ export const App: FC = () => {
   }, []);
   return <DailyTasks />;
 };
-
-/**
- * TODO:
- * - [ ] theme
- * - [x] toast
- * - [x] FLIP
- * - [x] primary color
- *   - [ ] aggregate
- *   - [x] start
- * - [x] remove spinner
- * - [ ] trim whitespace before validate in rust
- * - [x] hide ! on loading
- * - [ ] useEverySecond
- */

@@ -1,10 +1,12 @@
 import { FC } from 'react';
 import * as styles from './DailyTasksHeader.css';
 import {
+  BsCalculator,
   BsChevronDoubleLeft,
   BsChevronDoubleRight,
   BsChevronLeft,
   BsChevronRight,
+  BsListUl,
 } from 'react-icons/bs';
 import { ja } from 'date-fns/locale';
 import { format } from 'date-fns';
@@ -17,6 +19,7 @@ import {
   useToPrevMonth,
   useToToday,
 } from '../../state/currentDate';
+import { useSelectTab, useTabState } from '../../state/tabs';
 
 export const DailyTasksHeader: FC = () => {
   const currentDate = useCurrentDate();
@@ -26,6 +29,8 @@ export const DailyTasksHeader: FC = () => {
   const toNextMonth = useToNextMonth();
   const toToday = useToToday();
   const isToday = useIsCurrentDateToday();
+  const tabState = useTabState();
+  const selectTab = useSelectTab();
 
   return (
     <div className={styles.root}>
@@ -69,6 +74,26 @@ export const DailyTasksHeader: FC = () => {
         >
           今日
         </button>
+        <div className={styles.tabSelectors}>
+          <button
+            className={styles.tabSelector({ selected: tabState === 'list' })}
+            type="button"
+            onClick={() => selectTab('list')}
+          >
+            <BsListUl />
+            一覧
+          </button>
+          <button
+            className={styles.tabSelector({
+              selected: tabState === 'aggregation',
+            })}
+            type="button"
+            onClick={() => selectTab('aggregation')}
+          >
+            <BsCalculator />
+            集計
+          </button>
+        </div>
       </div>
     </div>
   );
