@@ -105,7 +105,7 @@ export const smallButton = recipe({
     fontSize: 13,
     padding: '3px 8px',
     cursor: 'pointer',
-    color: vars.color.black,
+    color: vars.color.primary,
     border: `1px solid ${vars.color.primary}`,
     ':hover': {
       background: vars.color.neutralLight,
