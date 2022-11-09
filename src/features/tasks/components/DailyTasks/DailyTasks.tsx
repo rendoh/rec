@@ -22,11 +22,11 @@ const DailyTasksRoot: FC = () => {
 
   return (
     <div className={styles.root}>
-      <div className={styles.header}>
-        <DailyTasksHeader />
-      </div>
       <div className={styles.sidebar}>
         <DailyTasksSidebar />
+      </div>
+      <div className={styles.header}>
+        <DailyTasksHeader />
       </div>
       <div className={styles.content}>
         <DailyTasksContent />
