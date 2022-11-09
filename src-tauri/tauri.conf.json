@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "rec",
+    "productName": "Rec",
     "version": "0.0.0"
   },
   "tauri": {
@@ -58,7 +58,7 @@
         "width": 800,
         "height": 600,
         "resizable": true,
-        "title": "Rec timetracker",
+        "title": "Rec Timetracker",
         "minWidth": 600,
         "minHeight": 450
       }
