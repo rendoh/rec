@@ -20,6 +20,10 @@ import {
   useToToday,
 } from '../../state/currentDate';
 import { useSelectTab, useTabState } from '../../state/tabs';
+import {
+  GlassButton,
+  GlassButtonGroup,
+} from '../../../../components/GlassButton';
 
 export const DailyTasksHeader: FC = () => {
   const currentDate = useCurrentDate();
@@ -70,34 +74,29 @@ export const DailyTasksHeader: FC = () => {
         )}
       </div>
       <div className={styles.buttons}>
-        <button
-          className={styles.borderButton}
-          type="button"
+        <GlassButton
+          // className={styles.borderButton}
           onClick={toToday}
           disabled={isToday}
         >
           今日
-        </button>
-        <div className={styles.tabSelectors}>
-          <button
-            className={styles.tabSelector({ selected: tabState === 'list' })}
-            type="button"
+        </GlassButton>
+        <GlassButtonGroup>
+          <GlassButton
             onClick={() => selectTab('list')}
+            selected={tabState === 'list'}
           >
             <BsListUl />
             一覧
-          </button>
-          <button
-            className={styles.tabSelector({
-              selected: tabState === 'aggregation',
-            })}
-            type="button"
+          </GlassButton>
+          <GlassButton
             onClick={() => selectTab('aggregation')}
+            selected={tabState === 'aggregation'}
           >
             <BsCalculator />
             集計
-          </button>
-        </div>
+          </GlassButton>
+        </GlassButtonGroup>
       </div>
     </div>
   );

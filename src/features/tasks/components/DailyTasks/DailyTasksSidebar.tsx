@@ -7,6 +7,7 @@ import { useFetchTasks, useTasks } from '../../state/tasks';
 import { handleErrorMessages } from '../../../../components/ErrorToaster';
 import { useIsCurrentDateToday, useToToday } from '../../state/currentDate';
 import { useChangeTheme, useIsDarkMode } from '../../../../styles/theme';
+import { GlassButton } from '../../../../components/GlassButton';
 
 export const DailyTasksSidebar: FC = () => {
   const { recentTasks } = useTasks();
@@ -18,7 +19,9 @@ export const DailyTasksSidebar: FC = () => {
       <p className={styles.heading}>最近のタスク</p>
       <div className={styles.list}>
         {recentTasks.map((title) => (
-          <StartButton key={title}>{title}</StartButton>
+          <motion.div key={title} layout>
+            <StartButton>{title}</StartButton>
+          </motion.div>
         ))}
       </div>
       <div>
@@ -58,14 +61,9 @@ const StartButton: FC<{ children: string }> = ({ children }) => {
   }, [children, fetchTasks, isToday, toToday]);
 
   return (
-    <motion.button
-      className={styles.button}
-      type="button"
-      onClick={startTask}
-      layout
-    >
+    <GlassButton className={styles.button} onClick={startTask} size="large">
       <BsPlay className={styles.playIcon} />
       {children}
-    </motion.button>
+    </GlassButton>
   );
 };

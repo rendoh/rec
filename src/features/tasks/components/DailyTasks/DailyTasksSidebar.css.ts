@@ -25,20 +25,6 @@ export const list = style({
 
 export const button = style({
   width: '100%',
-  color: '#fff',
-  backgroundColor: 'rgba(255, 255, 255, .05)',
-  padding: '12px 12px',
-  borderRadius: 4,
-  cursor: 'pointer',
-  display: 'flex',
-  alignItems: 'center',
-  gap: 8,
-  letterSpacing: '.05em',
-  selectors: {
-    '&:hover': {
-      backgroundColor: 'rgba(255, 255, 255, .095)',
-    },
-  },
 });
 
 export const playIcon = style({

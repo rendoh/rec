@@ -59,8 +59,8 @@
         "height": 600,
         "resizable": true,
         "title": "Rec Timetracker",
-        "minWidth": 600,
-        "minHeight": 450
+        "minWidth": 640,
+        "minHeight": 480
       }
     ]
   }
