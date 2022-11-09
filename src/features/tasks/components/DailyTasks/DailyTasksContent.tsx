@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import { FC } from 'react';
 import { BsCheck2Square } from 'react-icons/bs';
 import { useIsCurrentDateToday } from '../../state/currentDate';
@@ -22,11 +23,33 @@ export const DailyTasksContent: FC = () => {
       )}
       <div className={styles.content}>
         {tasks.length > 0 ? (
-          tabState === 'list' ? (
-            <TaskList tasks={tasks} />
-          ) : (
-            <TaskAggregation tasks={tasks} />
-          )
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={tabState}
+              initial={{
+                opacity: 0,
+                x: tabState === 'list' ? -50 : 50,
+              }}
+              animate={{
+                opacity: 1,
+                x: 0,
+              }}
+              exit={{
+                opacity: 0,
+                x: tabState === 'list' ? -50 : 50,
+              }}
+              transition={{
+                ease: 'easeOut',
+                duration: 0.15,
+              }}
+            >
+              {tabState === 'list' ? (
+                <TaskList tasks={tasks} />
+              ) : (
+                <TaskAggregation tasks={tasks} />
+              )}
+            </motion.div>
+          </AnimatePresence>
         ) : (
           !isLoading && (
             <div className={styles.empty}>
