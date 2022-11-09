@@ -20,7 +20,7 @@ export const vars = createThemeContract({
 export const lightThemeClass = createTheme(vars, {
   color: {
     primary: '#456b89',
-    primaryLight: '#507da0',
+    primaryLight: '#5788ad',
     primaryDark: '#253a4b',
     neutralDarker: '#333',
     neutralDark: '#7c7c7c',
@@ -36,9 +36,9 @@ export const lightThemeClass = createTheme(vars, {
 
 export const darkThemeClass = createTheme(vars, {
   color: {
-    primary: '#5381a6',
-    primaryLight: '#5388b0',
-    primaryDark: '#263a4a',
+    primary: '#5c8fb5',
+    primaryLight: '#659ec9',
+    primaryDark: '#253a4b',
     neutralDarker: '#f1f1f1',
     neutralDark: '#e8e8e8',
     neutral: '#666',
