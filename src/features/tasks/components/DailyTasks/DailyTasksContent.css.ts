@@ -25,7 +25,7 @@ export const empty = style({
   alignItems: 'center',
   justifyContent: 'center',
   flexDirection: 'column',
-  paddingBottom: 15,
+  paddingBottom: 28,
 });
 
 export const emptyIcon = style({
