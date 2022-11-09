@@ -51,7 +51,7 @@ export const actions = style([
   {
     flexShrink: '0',
     gap: 10,
-    marginTop: 3,
+    marginTop: 4,
   },
 ]);
 
@@ -93,7 +93,7 @@ export const deletePopover = style({
   position: 'absolute',
   borderRadius: 4,
   background: vars.color.white,
-  top: 'calc(100% + 7px)',
+  top: 'calc(100% + 9px)',
   right: 0,
   boxShadow: '0 4px 4px rgba(0, 0, 0, .1)',
   display: 'flex',
