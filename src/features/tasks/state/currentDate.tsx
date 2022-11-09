@@ -106,6 +106,10 @@ export const CurrentDateProvider: FC<PropsWithChildren> = ({ children }) => {
   );
 };
 
+export function useToday(): Date {
+  return useContext(stateContext).today;
+}
+
 export function useCurrentDate(): Date {
   return useContext(stateContext).currentDate;
 }
@@ -134,15 +138,16 @@ export function useToPrevMonth() {
 
 export function useToNextMonth() {
   const currentDate = useCurrentDate();
+  const today = useToday();
   const dispatch = useContext(dispatchContext);
-  return useCallback(
-    () =>
-      dispatch({
-        type: 'CURRENT_DATE_SET',
-        payload: addMonths(startOfMonth(currentDate), 1),
-      }),
-    [currentDate, dispatch],
-  );
+  return useCallback(() => {
+    const nextMonth = addMonths(startOfMonth(currentDate), 1);
+    const payload = nextMonth.getTime() > today.getTime() ? today : nextMonth;
+    dispatch({
+      type: 'CURRENT_DATE_SET',
+      payload,
+    });
+  }, [currentDate, dispatch, today]);
 }
 
 export function useToPrevDay() {

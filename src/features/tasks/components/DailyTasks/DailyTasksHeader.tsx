@@ -50,20 +50,24 @@ export const DailyTasksHeader: FC = () => {
           <BsChevronLeft />
         </button>
         <p className={styles.date}>{formatDate(currentDate)}</p>
-        <button
-          className={styles.button}
-          onClick={toNextDay}
-          aria-label="翌日へ"
-        >
-          <BsChevronRight />
-        </button>
-        <button
-          className={styles.button}
-          onClick={toNextMonth}
-          aria-label="次の月へ"
-        >
-          <BsChevronDoubleRight />
-        </button>
+        {!isToday && (
+          <>
+            <button
+              className={styles.button}
+              onClick={toNextDay}
+              aria-label="翌日へ"
+            >
+              <BsChevronRight />
+            </button>
+            <button
+              className={styles.button}
+              onClick={toNextMonth}
+              aria-label="次の月へ"
+            >
+              <BsChevronDoubleRight />
+            </button>
+          </>
+        )}
       </div>
       <div className={styles.buttons}>
         <button
