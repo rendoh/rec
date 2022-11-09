@@ -40,7 +40,7 @@ export const DailyTasksContent: FC = () => {
               }}
               transition={{
                 ease: 'easeOut',
-                duration: 0.15,
+                duration: 0.1,
               }}
             >
               {tabState === 'list' ? (
