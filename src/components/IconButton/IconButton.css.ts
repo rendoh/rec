@@ -12,9 +12,6 @@ export const root = recipe({
     width: '1.8em',
     height: '1.8em',
     cursor: 'pointer',
-    ':hover': {
-      background: vars.color.neutralLight,
-    },
   },
 
   variants: {
@@ -26,6 +23,39 @@ export const root = recipe({
         },
       },
     },
+    color: {
+      primary: {
+        background: vars.color.primary,
+        color: '#fff',
+        ':hover': {
+          background: vars.color.primaryLight,
+        },
+      },
+      normal: {
+        ':hover': {
+          background: vars.color.neutralLight,
+        },
+      },
+    },
+  },
+
+  compoundVariants: [
+    {
+      variants: {
+        color: 'primary',
+        border: true,
+      },
+      style: {
+        borderColor: vars.color.primary,
+        ':hover': {
+          borderColor: vars.color.primary,
+        },
+      },
+    },
+  ],
+
+  defaultVariants: {
+    color: 'normal',
   },
 });
 

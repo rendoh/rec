@@ -10,7 +10,7 @@ import { TimeField } from '../../../../components/TimeField';
 import { TaskTitleField } from '../TaskTitleField';
 import { handleErrorMessages } from '../../../../components/ErrorToaster';
 import { InvalidMessage } from '../../../../components/InvalidMessage';
-import { BsPause, BsTrash, BsX } from 'react-icons/bs';
+import { BsPauseFill, BsTrash, BsX } from 'react-icons/bs';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useOverlayState } from '../../../../hooks/useOverlayState';
 import { useFetchTasks } from '../../state/tasks';
@@ -107,9 +107,10 @@ export const UpdateTaskForm: FC<UpdateTaskFormProps> = ({ task }) => {
                     field.onChange(new Date());
                     handleSubmit(onSubmit)(e);
                   }}
+                  color="primary"
                   border
                 >
-                  <BsPause />
+                  <BsPauseFill />
                 </IconButton>
               )}
             />

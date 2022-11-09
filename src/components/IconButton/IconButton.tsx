@@ -8,6 +8,7 @@ export type IconButtonProps = JSX.IntrinsicElements['button'] &
 export const IconButton: FC<IconButtonProps> = ({
   type = 'button',
   border,
+  color,
   children,
   className,
   ...props
@@ -17,6 +18,7 @@ export const IconButton: FC<IconButtonProps> = ({
     className={clsx(
       styles.root({
         border,
+        color,
       }),
       className,
     )}
