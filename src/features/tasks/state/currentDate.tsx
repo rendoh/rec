@@ -82,6 +82,7 @@ const dispatchContext = createContext<Dispatch<Action>>(() => undefined);
 
 export const CurrentDateProvider: FC<PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
   useEffect(() => {
     const now = new Date();
     const startOfNextDay = startOfDay(addDays(now, 1));
@@ -95,7 +96,7 @@ export const CurrentDateProvider: FC<PropsWithChildren> = ({ children }) => {
     return () => {
       clearTimeout(timerId);
     };
-  }, []);
+  }, [state.today]);
 
   return (
     <stateContext.Provider value={state}>
