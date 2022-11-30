@@ -16,6 +16,8 @@ type TaskGroup = {
   lastStartedAt?: Date;
 };
 
+type Amount = { value: number; lastStartedAt?: Date };
+
 export const TaskAggregation: FC<TaskAggregationProps> = ({ tasks }) => {
   const currentDate = useCurrentDate();
 
@@ -44,11 +46,36 @@ export const TaskAggregation: FC<TaskAggregationProps> = ({ tasks }) => {
     [tasks],
   );
 
+  const amount = useMemo<Amount>(() => {
+    return tasks.reduce<Amount>(
+      (result, task) => {
+        if (task.ended_at) {
+          result.value += task.ended_at.getTime() - task.started_at.getTime();
+        } else {
+          result.lastStartedAt = task.started_at;
+        }
+        return result;
+      },
+      { value: 0 },
+    );
+  }, [tasks]);
+
   return (
     <div className={styles.root}>
-      <h1 className={styles.heading}>
-        {formatDate(currentDate)} のタスク集計結果
-      </h1>
+      <div className={styles.header}>
+        <h1 className={styles.heading}>
+          {formatDate(currentDate)} のタスク集計結果
+        </h1>
+        <p className={styles.heading}>
+          <span
+            className={styles.time({
+              active: !!amount.lastStartedAt,
+            })}
+          >
+            <ElapsedTime duration={amount.value} start={amount.lastStartedAt} />
+          </span>
+        </p>
+      </div>
       <dl>
         {grouped.map((group) => (
           <div key={group.title} className={styles.row}>

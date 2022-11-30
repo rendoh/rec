@@ -9,10 +9,15 @@ export const root = style({
   boxShadow: '0 2px 4px rgba(0, 0, 0, .03)',
 });
 
+export const header = style({
+  display: 'flex',
+  justifyContent: 'space-between',
+  marginBottom: 8,
+});
+
 export const heading = style({
   fontWeight: 'bold',
-  fontSize: 14,
-  marginBottom: 8,
+  fontSize: 15,
 });
 
 export const row = style({
