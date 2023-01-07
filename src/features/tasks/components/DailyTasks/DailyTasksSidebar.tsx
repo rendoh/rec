@@ -39,8 +39,6 @@ export const DailyTasksSidebar: FC = () => {
   );
 };
 
-// const Switch:
-
 const StartButton: FC<{ children: string }> = ({ children }) => {
   const toToday = useToToday();
   const isToday = useIsCurrentDateToday();

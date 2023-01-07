@@ -8,13 +8,7 @@ import { CurrentDateProvider } from '../../state/currentDate';
 import { TasksProvider, useFetchTasks } from '../../state/tasks';
 import { TabsStateProvider } from '../../state/tabs';
 
-export const DailyTasks: FC = () => (
-  <Composer providers={[CurrentDateProvider, TasksProvider, TabsStateProvider]}>
-    <DailyTasksRoot />
-  </Composer>
-);
-
-const DailyTasksRoot: FC = () => {
+const InternalDailyTasks: FC = () => {
   const fetchTasks = useFetchTasks();
   useEffect(() => {
     fetchTasks();
@@ -34,3 +28,9 @@ const DailyTasksRoot: FC = () => {
     </div>
   );
 };
+
+export const DailyTasks: FC = () => (
+  <Composer providers={[CurrentDateProvider, TasksProvider, TabsStateProvider]}>
+    <InternalDailyTasks />
+  </Composer>
+);

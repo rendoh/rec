@@ -74,11 +74,7 @@ export const DailyTasksHeader: FC = () => {
         )}
       </div>
       <div className={styles.buttons}>
-        <GlassButton
-          // className={styles.borderButton}
-          onClick={toToday}
-          disabled={isToday}
-        >
+        <GlassButton onClick={toToday} disabled={isToday}>
           今日
         </GlassButton>
         <GlassButtonGroup>
