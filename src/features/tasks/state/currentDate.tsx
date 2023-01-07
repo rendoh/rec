@@ -3,6 +3,7 @@ import {
   addMonths,
   endOfDay,
   isSameDay,
+  isToday,
   startOfDay,
   startOfMonth,
   subDays,
@@ -84,18 +85,15 @@ export const CurrentDateProvider: FC<PropsWithChildren> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
-    const now = new Date();
-    const startOfNextDay = startOfDay(addDays(now, 1));
-    const difference = startOfNextDay.getTime() - now.getTime();
-    const timerId = setTimeout(() => {
-      dispatch({
-        type: 'TODAY_CHANGED',
-        payload: startOfNextDay,
-      });
-    }, difference);
-    return () => {
-      clearTimeout(timerId);
-    };
+    const intervalId = setInterval(() => {
+      if (!isToday(state.today)) {
+        dispatch({
+          type: 'TODAY_CHANGED',
+          payload: new Date(),
+        });
+      }
+    }, 1000);
+    return () => clearInterval(intervalId);
   }, [state.today]);
 
   return (
