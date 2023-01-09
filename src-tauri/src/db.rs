@@ -9,18 +9,18 @@ use tauri::AppHandle;
 
 pub async fn setup_db(app_handle: AppHandle) -> Result<SqlitePool, sqlx::Error> {
     const DATABASE_FILE: &str = "database.db";
-    let app_dir = app_handle
+    let config_dir = app_handle
         .path_resolver()
-        .app_dir()
-        .expect("cannot get app dir");
-    let database_file = app_dir.join(DATABASE_FILE);
+        .app_config_dir()
+        .expect("cannot get config dir");
+    let database_file = config_dir.join(DATABASE_FILE);
     let db_exists = std::fs::metadata(&database_file).is_ok();
 
     if !db_exists {
-        std::fs::create_dir(&app_dir).expect("cannot create db directory");
+        std::fs::create_dir(&config_dir).expect("cannot create db directory");
     }
 
-    let database_dir_str = std::fs::canonicalize(&app_dir)
+    let database_dir_str = std::fs::canonicalize(&config_dir)
         .unwrap()
         .to_string_lossy()
         .replace('\\', "/");
